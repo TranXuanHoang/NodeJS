@@ -5,6 +5,9 @@
     },
     {
       "path": "00-basic"
+    },
+    {
+      "path": "01-online-shop"
     }
   ]
 }
