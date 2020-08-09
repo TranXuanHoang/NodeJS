@@ -1,7 +1,10 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	]
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "00-basic"
+    }
+  ]
 }
