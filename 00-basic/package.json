@@ -1,0 +1,26 @@
+{
+  "name": "00-basic",
+  "version": "1.0.0",
+  "description": "Users Portal Web App",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TranXuanHoang/NodeJS.git",
+    "directory": "00-basic"
+  },
+  "keywords": [
+    "Node.js"
+  ],
+  "author": "Hoang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TranXuanHoang/NodeJS/issues"
+  },
+  "homepage": "https://github.com/TranXuanHoang/NodeJS/tree/master/00-basic",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
