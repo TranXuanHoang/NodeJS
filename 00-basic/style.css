@@ -1,0 +1,47 @@
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  margin: 20px 20px;
+}
+
+nav a {
+  cursor: pointer;
+  font-size: 20px;
+  color: gray;
+}
+
+nav a.active {
+  font-weight: bold;
+  color: darkcyan
+}
+
+h1 {
+  color: coral;
+}
+
+form p {
+  padding-bottom: 20px;
+}
+
+form input {
+  padding: 10px 20px;
+  font-size: 20px;
+}
+
+form button {
+  font-size: 20px;
+  background-color: cornflowerblue;
+  color: white;
+  border: 1px solid cornflowerblue;
+  padding: 10px 20px;
+  border-radius: 40px;
+}
+
+form button:hover {
+  background-color: lightskyblue;
+  color: black;
+  cursor: pointer;
+  border: 1px solid lightskyblue;
+}
