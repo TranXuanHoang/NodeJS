@@ -15,3 +15,6 @@ The app uses the following 3rd-party packages
 | [express](https://www.npmjs.com/package/express) | `production` | Provide a web framework while using Node.js |
 | [body-parser](https://www.npmjs.com/package/body-parser) | `production` | Parse incoming request bodies in a middleware before the request handlers |
 | [nodemon](https://www.npmjs.com/package/nodemon) | `dev` | Auto reload app when making any changes to source code |
+| [ejs](https://www.npmjs.com/package/ejs) | `production` | `Template Engine` [`Homepage`](https://ejs.co/) Generate HTML markup dynamically |
+| [pug](https://www.npmjs.com/package/pug) | `production` | `Template Engine` [`Homepage`](https://pugjs.org/) Render HTML templates dynamically |
+| [express-handlebars](https://www.npmjs.com/package/express-handlebars) | `production` | `Template Engine` Precompile HTML templates on server side for [Express.js](https://expressjs.com/) apps |
