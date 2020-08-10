@@ -1,9 +1,19 @@
-const http = require('http')
-
 const express = require('express')
+const bodyParser = require('body-parser')
+
+const adminRoutes = require('./routes/admin')
+const shopRoutes = require('./routes/shop')
 
 const app = express()
 
-const server = http.createServer(app)
+app.use(bodyParser.urlencoded({ extended: true }))
 
-server.listen(3000)
+app.use('/', (req, res, next) => {
+  console.log(`${req.method} ${req.url}`)
+  next()
+})
+
+app.use(adminRoutes)
+app.use(shopRoutes)
+
+app.listen(3000)
