@@ -10,10 +10,17 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/', (req, res, next) => {
   console.log(`${req.method} ${req.url}`)
+  if (req.method === 'POST') {
+    console.log(req.body)
+  }
   next()
 })
 
-app.use(adminRoutes)
+app.use(adminRoutes.ROOT_ROUTE_SEGMENT, adminRoutes.route)
 app.use(shopRoutes)
+
+app.use((req, res, next) => {
+  res.status(404).send('<h1>Page Not Found</h1>')
+})
 
 app.listen(3000)
