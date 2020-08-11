@@ -25,7 +25,10 @@ route.get('/add-product', (req, res) => {
   // })
 
   // Render HTML code from add-product.ejs, then send clients with that HTML code
-  res.render('add-product', { pageTitle: 'Add Product' })
+  res.render('add-product', {
+    pageTitle: 'Add Product',
+    path: '/admin/add-product'
+  })
 })
 
 route.post('/add-product', (req, res) => {

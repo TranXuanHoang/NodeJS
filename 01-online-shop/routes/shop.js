@@ -27,7 +27,8 @@ route.get('/', (req, res) => {
   // Render HTML code from shop.ejs, then send clients with that HTML code
   res.render('shop', {
     pageTitle: 'Online Shop',
-    prods: products
+    prods: products,
+    path: '/'
   })
 })
 
