@@ -10,14 +10,16 @@ const ROOT_ROUTE_SEGMENT = '/admin'
 const products = []
 
 route.get('/add-product', (req, res) => {
-  res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
+  // Serve add-product.html
+  // res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
+
+  // Render HTML code from add-product.pug, then send clients with that HTML code
+  res.render('add-product', { docTitle: 'Add Product' })
 })
 
 route.post('/add-product', (req, res) => {
-  const id = products.length
-  const title = req.body.title
-  products.push(title)
-  res.send({ id, title })
+  products.push({ title: req.body.title })
+  res.redirect('/')
 })
 
-module.exports = { route, ROOT_ROUTE_SEGMENT }
+module.exports = { routes: route, ROOT_ROUTE_SEGMENT, products }

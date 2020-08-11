@@ -3,10 +3,13 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const adminRoutes = require('./routes/admin')
+const adminData = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 
 const app = express()
+
+app.set('view engine', 'pug')
+app.set('views', 'views')
 
 // Parse the request body so that the following handlers can directly read the body
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -24,12 +27,16 @@ app.use('/', (req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Handle app's routes
-app.use(adminRoutes.ROOT_ROUTE_SEGMENT, adminRoutes.route)
+app.use(adminData.ROOT_ROUTE_SEGMENT, adminData.routes)
 app.use(shopRoutes)
 
 // Handle 404 Not Found
 app.use((req, res, next) => {
-  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
+  // Serve 404.html
+  // res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
+
+  // Render HTML code from 404.pug, then send clients with that HTML code
+  res.status(404).render('404', { docTitle: 'Page Not Found' })
 })
 
 app.listen(3000)

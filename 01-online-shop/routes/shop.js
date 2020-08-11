@@ -3,11 +3,18 @@ const path = require('path')
 const express = require('express')
 
 const rootDir = require('../util/path')
+const adminData = require('./admin')
 
 const route = express.Router()
 
 route.get('/', (req, res) => {
-  res.sendFile(path.join(rootDir, 'views', 'shop.html'))
+  // Serve shop.html
+  // res.sendFile(path.join(rootDir, 'views', 'shop.html'))
+
+  const products = adminData.products
+
+  // Render HTML code from shop.pug, then send clients with that HTML code
+  res.render('shop', { prods: products, docTitle: 'Online Shop' })
 })
 
 module.exports = route
