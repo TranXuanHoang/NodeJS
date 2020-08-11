@@ -2,38 +2,12 @@ const path = require('path')
 
 const express = require('express')
 
-const rootDir = require('../util/path')
+const productsController = require('../controllers/products')
 
 const route = express.Router()
-const ROOT_ROUTE_SEGMENT = '/admin'
 
-const products = []
+route.get('/add-product', productsController.getAddProduct)
 
-route.get('/add-product', (req, res) => {
-  // Serve add-product.html
-  // res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
+route.post('/add-product', productsController.postAddProduct)
 
-  // Render HTML code from add-product.pug, then send clients with that HTML code
-  // res.render('add-product', { pageTitle: 'Add Product', path: '/admin/add-product' })
-
-  // Render HTML code from add-product.hbs, then send clients with that HTML code
-  // res.render('add-product', {
-  //   pageTitle: 'Add Product',
-  //   formsCSS: true,
-  //   productCSS: true,
-  //   activeAddProduct: true
-  // })
-
-  // Render HTML code from add-product.ejs, then send clients with that HTML code
-  res.render('add-product', {
-    pageTitle: 'Add Product',
-    path: '/admin/add-product'
-  })
-})
-
-route.post('/add-product', (req, res) => {
-  products.push({ title: req.body.title })
-  res.redirect('/')
-})
-
-module.exports = { routes: route, ROOT_ROUTE_SEGMENT, products }
+module.exports = route

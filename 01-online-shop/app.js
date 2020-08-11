@@ -3,7 +3,9 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 
-const adminData = require('./routes/admin')
+const errorController = require('./controllers/error')
+
+const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 
 const app = express()
@@ -42,23 +44,10 @@ app.use('/', (req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Handle app's routes
-app.use(adminData.ROOT_ROUTE_SEGMENT, adminData.routes)
+app.use('/admin', adminRoutes)
 app.use(shopRoutes)
 
 // Handle 404 Not Found
-app.use((req, res, next) => {
-  // Serve 404.html
-  // res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
-
-  // Render HTML code from either 404.pug or 404.hbs
-  // (depending on template engine used), then send clients that HTML code
-  // res.status(404).render('404', { pageTitle: 'Page Not Found' })
-
-  // Render HTML code from 404.ejs, then send clients that HTML code
-  res.status(404).render('404', {
-    pageTitle: 'Page Not Found',
-    path: null
-  })
-})
+app.use(errorController.get404)
 
 app.listen(3000)
