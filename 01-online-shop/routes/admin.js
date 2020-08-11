@@ -17,7 +17,12 @@ route.get('/add-product', (req, res) => {
   // res.render('add-product', { pageTitle: 'Add Product', path: '/admin/add-product' })
 
   // Render HTML code from add-product.hbs, then send clients with that HTML code
-  res.render('add-product', { layout: false, pageTitle: 'Add Product', path: '/admin/add-product' })
+  res.render('add-product', {
+    pageTitle: 'Add Product',
+    formsCSS: true,
+    productCSS: true,
+    activeAddProduct: true
+  })
 })
 
 route.post('/add-product', (req, res) => {
