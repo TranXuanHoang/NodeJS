@@ -17,11 +17,17 @@ route.get('/', (req, res) => {
   // res.render('shop', { prods: products, pageTitle: 'Online Shop', path: '/' })
 
   // Render HTML code from shop.hbs, then send clients with that HTML code
+  // res.render('shop', {
+  //   prods: products,
+  //   pageTitle: 'Online Shop',
+  //   productCSS: true,
+  //   activeShop: true
+  // })
+
+  // Render HTML code from shop.ejs, then send clients with that HTML code
   res.render('shop', {
-    prods: products,
     pageTitle: 'Online Shop',
-    productCSS: true,
-    activeShop: true
+    prods: products
   })
 })
 
