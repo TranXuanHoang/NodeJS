@@ -14,7 +14,7 @@ route.get('/add-product', (req, res) => {
   // res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
 
   // Render HTML code from add-product.pug, then send clients with that HTML code
-  res.render('add-product', { docTitle: 'Add Product' })
+  res.render('add-product', { pageTitle: 'Add Product', path: '/admin/add-product' })
 })
 
 route.post('/add-product', (req, res) => {

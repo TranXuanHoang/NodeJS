@@ -14,7 +14,7 @@ route.get('/', (req, res) => {
   const products = adminData.products
 
   // Render HTML code from shop.pug, then send clients with that HTML code
-  res.render('shop', { prods: products, docTitle: 'Online Shop' })
+  res.render('shop', { prods: products, pageTitle: 'Online Shop', path: '/' })
 })
 
 module.exports = route
