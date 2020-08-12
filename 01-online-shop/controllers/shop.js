@@ -36,6 +36,17 @@ exports.getProducts = (req, res) => {
   })
 }
 
+exports.getProduct = (req, res, next) => {
+  const prodId = req.params.productId
+  Product.findById(prodId, product => {
+    res.render('shop/product-detail', {
+      pageTitle: `${product.title} | Details`,
+      path: '/products',
+      product: product
+    })
+  })
+}
+
 exports.getCart = (req, res, next) => {
   res.render('shop/cart', {
     pageTitle: 'Your Cart',
