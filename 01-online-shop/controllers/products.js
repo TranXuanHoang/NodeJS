@@ -1,4 +1,4 @@
-const products = []
+const Product = require('../modules/product')
 
 exports.getAddProduct = (req, res) => {
   // Serve add-product.html
@@ -24,7 +24,8 @@ exports.getAddProduct = (req, res) => {
 }
 
 exports.postAddProduct = (req, res) => {
-  products.push({ title: req.body.title })
+  const product = new Product(req.body.title)
+  product.save()
   res.redirect('/')
 }
 
@@ -47,7 +48,7 @@ exports.getProducts = (req, res) => {
   // Render HTML code from shop.ejs, then send clients with that HTML code
   res.render('shop', {
     pageTitle: 'Online Shop',
-    prods: products,
+    prods: Product.fetchAll(),
     path: '/'
   })
 }
