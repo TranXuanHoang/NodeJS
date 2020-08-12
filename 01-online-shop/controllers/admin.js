@@ -17,7 +17,7 @@ exports.getAddProduct = (req, res) => {
   // })
 
   // Render HTML code from add-product.ejs, then send clients with that HTML code
-  res.render('add-product', {
+  res.render('admin/add-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product'
   })
@@ -29,28 +29,11 @@ exports.postAddProduct = (req, res) => {
   res.redirect('/')
 }
 
-exports.getProducts = (req, res) => {
-  // Serve shop.html
-  // const rootDir = require('../util/path')
-  // res.sendFile(path.join(rootDir, 'views', 'shop.html'))
-
-  // Render HTML code from shop.pug, then send clients with that HTML code
-  // res.render('shop', { prods: products, pageTitle: 'Online Shop', path: '/' })
-
-  // Render HTML code from shop.hbs, then send clients with that HTML code
-  // res.render('shop', {
-  //   prods: products,
-  //   pageTitle: 'Online Shop',
-  //   productCSS: true,
-  //   activeShop: true
-  // })
-
+exports.getProducts = (req, res, next) => {
   Product.fetchAll(products => {
-    // Render HTML code from shop.ejs, then send clients with that HTML code
-    res.render('shop', {
-      pageTitle: 'Online Shop',
-      prods: products,
-      path: '/'
+    res.render('admin/products', {
+      pageTitle: 'Admin Products',
+      path: '/admin/products'
     })
   })
 }
