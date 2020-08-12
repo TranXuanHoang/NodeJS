@@ -45,10 +45,12 @@ exports.getProducts = (req, res) => {
   //   activeShop: true
   // })
 
-  // Render HTML code from shop.ejs, then send clients with that HTML code
-  res.render('shop', {
-    pageTitle: 'Online Shop',
-    prods: Product.fetchAll(),
-    path: '/'
+  Product.fetchAll(products => {
+    // Render HTML code from shop.ejs, then send clients with that HTML code
+    res.render('shop', {
+      pageTitle: 'Online Shop',
+      prods: products,
+      path: '/'
+    })
   })
 }
