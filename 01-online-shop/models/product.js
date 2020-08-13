@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
+const Cart = require('./cart')
+
 const p = path.join(
   path.dirname(process.mainModule.filename),
   'data',
@@ -57,9 +59,36 @@ module.exports = class Product {
   }
 
   /**
+   * Deletes a product whose `productId` is `id`, then calls the callback
+   * function `cb` passing a list of remaining products as an argument.
+   * @param {string} id - the id of the product to be deleted.
+   * @param {callback} cb - the callback function to be executed after the
+   *    delete logic finished.
+   */
+  static deleteById(id, cb) {
+    getProductsFromFile(products => {
+      const product = products.find(prod => prod.id === id)
+      const updatedProducts = products.filter(prod => prod.id !== id)
+      fs.writeFile(
+        p,
+        JSON.stringify(updatedProducts, '', 2),
+        err => {
+          if (!err) {
+            Cart.deleteProduct(id, product.price)
+            cb(updatedProducts)
+          } else {
+            console.err(err)
+            cb(products)
+          }
+        }
+      )
+    })
+  }
+
+  /**
    * Fetchs all products data.
    * @param {callback} cb - a callback function called with file content
-   *  in JSON format passed in.
+   *    in JSON format passed in.
    */
   static fetchAll(cb) {
     getProductsFromFile(cb)

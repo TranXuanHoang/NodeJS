@@ -86,3 +86,19 @@ exports.getProducts = (req, res, next) => {
     })
   })
 }
+
+exports.postDeleteProduct = (req, res, next) => {
+  const productId = req.body.productId
+  Product.deleteById(productId, products => {
+    // Method 1: Render admin/products view passing products list getting from deleteById
+    // res.render('admin/products', {
+    //   pageTitle: 'Admin Products',
+    //   path: '/admin/products',
+    //   prods: products
+    // })
+
+    // Method 2: Simply redirect to /admin/products leaving 'GET /admin/products'
+    // to retrieve the list of products again
+    res.redirect('/admin/products')
+  })
+}
