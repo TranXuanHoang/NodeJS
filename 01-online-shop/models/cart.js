@@ -48,20 +48,21 @@ module.exports = class Cart {
 
       const updatedCart = { ...JSON.parse(fileContent) }
       const product = updatedCart.products.find(prod => prod.id === id)
-
-      if (product) {
-        // Update list of remaining products and total remaining amount
-        const productQty = product.qty
-        updatedCart.products = updatedCart.products.filter(prod => prod.id !== id)
-        updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQty
-
-        // Save updated cart back to file
-        fs.writeFile(
-          p,
-          JSON.stringify(updatedCart, '', 2),
-          err => console.log(err)
-        )
+      if (!product) {
+        return
       }
+
+      // Update list of remaining products and total remaining amount
+      const productQty = product.qty
+      updatedCart.products = updatedCart.products.filter(prod => prod.id !== id)
+      updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQty
+
+      // Save updated cart back to file
+      fs.writeFile(
+        p,
+        JSON.stringify(updatedCart, '', 2),
+        err => console.log(err)
+      )
     })
   }
 
