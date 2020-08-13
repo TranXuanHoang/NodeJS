@@ -23,7 +23,8 @@ const getProductsFromFile = cb => {
 }
 
 module.exports = class Product {
-  constructor(title, imageUrl, description, price) {
+  constructor(id, title, imageUrl, description, price) {
+    this.id = id
     this.title = title
     this.imageUrl = imageUrl
     this.description = description
@@ -31,14 +32,27 @@ module.exports = class Product {
   }
 
   save() {
-    this.id = Math.random().toString()
     getProductsFromFile(products => {
-      products.push(this)
-      fs.writeFile(
-        p,
-        JSON.stringify(products, '', 2),
-        err => console.log(err)
-      )
+      if (this.id) {
+        // Update product
+        const existingProductIndex = products.findIndex(prod => prod.id === this.id)
+        const updatedProducts = [...products]
+        updatedProducts[existingProductIndex] = this
+        fs.writeFile(
+          p,
+          JSON.stringify(updatedProducts, '', 2),
+          err => console.log(err)
+        )
+      } else {
+        // Add new product
+        this.id = Math.random().toString()
+        products.push(this)
+        fs.writeFile(
+          p,
+          JSON.stringify(products, '', 2),
+          err => console.log(err)
+        )
+      }
     })
   }
 
@@ -55,6 +69,28 @@ module.exports = class Product {
     getProductsFromFile(products => {
       const product = products.find(p => p.id === id)
       cb(product)
+    })
+  }
+
+  static update(id, title, imageUrl, price, description, cb) {
+    getProductsFromFile(products => {
+      const updatedProducts = products.map(product => {
+        if (product.id !== id) {
+          return product
+        }
+        const updatedProduct = { ...product }
+        updatedProduct.title = title
+        updatedProduct.imageUrl = imageUrl
+        updatedProduct.price = price
+        updatedProduct.description = description
+        return updatedProduct
+      })
+      fs.writeFile(
+        p,
+        JSON.stringify(updatedProducts, '', 2),
+        err => console.log(err)
+      )
+      cb(updatedProducts)
     })
   }
 }
