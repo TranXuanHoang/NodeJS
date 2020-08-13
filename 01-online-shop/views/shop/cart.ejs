@@ -5,6 +5,15 @@
   <%- include('../includes/navigation') %>
 
   <main>
-    Cart Page Content
+    <% if (products.length > 0) { %>
+      <ul>
+        <% products.forEach(p => { %>
+          <li><%= p.productData.title %> (<%= p.qty %>)</li>
+        <% }) %>
+      </ul>
+      Total Price: <%= totalPrice %>
+    <% } else { %>
+      <h1>No Products in Cart!</h1>
+    <% } %>
   </main>
 <%- include('../includes/end') %>

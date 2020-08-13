@@ -49,9 +49,28 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getCart = (req, res, next) => {
-  res.render('shop/cart', {
-    pageTitle: 'Your Cart',
-    path: '/cart'
+  Cart.getCart(cart => {
+    if (cart === null) {
+      return res.render('shop/cart', {
+        pageTitle: 'Your Cart',
+        path: '/cart',
+        products: [],
+        totalPrice: 0
+      })
+    }
+
+    Product.fetchAll(products => {
+      const cartProducts = cart.products.map(cartProduct => {
+        const product = products.find(prod => prod.id === cartProduct.id)
+        return { productData: product, qty: cartProduct.qty }
+      })
+      res.render('shop/cart', {
+        pageTitle: 'Your Cart',
+        path: '/cart',
+        products: cartProducts,
+        totalPrice: cart.totalPrice
+      })
+    })
   })
 }
 
@@ -59,8 +78,10 @@ exports.postAddToCard = (req, res, next) => {
   const prodId = req.body.productId
   Product.findById(prodId, product => {
     Cart.addProduct(prodId, product.price)
+
+    // Note that, should call redirect as a callback of addProduct
+    res.redirect('/cart')
   })
-  res.redirect('shop/cart')
 }
 
 exports.getOrders = (req, res, next) => {
