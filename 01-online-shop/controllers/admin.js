@@ -16,7 +16,7 @@ exports.postAddProduct = (req, res) => {
   Product.create({ title, imageUrl, price, description })
     .then(result => {
       console.log(result)
-      res.redirect('/')
+      res.redirect('/admin/products')
     })
     .catch(err => console.log(err))
 }
@@ -27,19 +27,21 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/')
   }
   const prodId = req.params.productId
-  Product.findById(prodId, product => {
-    if (!product) {
-      // This is not a good solution in the view point of UX.
-      // Here for simplicity, we just redirect to top page.
-      return res.redirect('/')
-    }
-    res.render('admin/edit-product', {
-      pageTitle: 'Edit Product',
-      path: '/admin/edit-product',
-      editing: editMode,
-      product: product
+  Product.findByPk(prodId)
+    .then(product => {
+      if (!product) {
+        // This is not a good solution in the view point of UX.
+        // Here for simplicity, we just redirect to top page.
+        return res.redirect('/')
+      }
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
+        editing: editMode,
+        product: product
+      })
     })
-  })
+    .catch(err => console.log(err))
 }
 
 exports.postEditProduct = (req, res, next) => {
@@ -49,43 +51,60 @@ exports.postEditProduct = (req, res, next) => {
   const price = req.body.price
   const description = req.body.description
 
-  // Method 1: Update product with static method
-  // Product.update(id, title, imageUrl, price, description, updatedProducts => {
-  //   res.render('admin/products', {
-  //     pageTitle: 'Admin Products',
-  //     path: '/admin/products',
-  //     prods: updatedProducts
-  //   })
-  // })
+  // Method 1: Optimistic update (without checking existence)
+  // Product.update(
+  //   { title, imageUrl, description, price }, {
+  //   where: { id: id }
+  // }).then(result => {
+  //   res.redirect('/admin/products')
+  // }).catch(err => console.log(err))
 
-  // Method 2: Mimic postAddProduct()
-  const updatedProduct = new Product(id, title, imageUrl, description, price)
-  updatedProduct.save()
-  res.redirect('/admin/products')
+  // Method 2: Deterministic update (check existence first)
+  Product.findByPk(id)
+    .then(product => {
+      product.title = title
+      product.imageUrl = imageUrl
+      product.price = price
+      product.description = description
+      return product.save() // save updated product data back to db
+    })
+    .then(result => {
+      res.redirect('/admin/products')
+    })
+    .catch(err => console.log(err))
 }
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll(products => {
-    res.render('admin/products', {
-      pageTitle: 'Admin Products',
-      path: '/admin/products',
-      prods: products
+  Product.findAll()
+    .then(products => {
+      res.render('admin/products', {
+        pageTitle: 'Admin Products',
+        path: '/admin/products',
+        prods: products
+      })
     })
-  })
+    .catch(err => console.log(err))
 }
 
 exports.postDeleteProduct = (req, res, next) => {
   const productId = req.body.productId
-  Product.deleteById(productId, products => {
-    // Method 1: Render admin/products view passing products list getting from deleteById
-    // res.render('admin/products', {
-    //   pageTitle: 'Admin Products',
-    //   path: '/admin/products',
-    //   prods: products
-    // })
 
-    // Method 2: Simply redirect to /admin/products leaving 'GET /admin/products'
-    // to retrieve the list of products again
-    res.redirect('/admin/products')
-  })
+  // Method 1: Optimistic delete
+  // Product.destroy({
+  //   where: { id: productId }
+  // })
+  //   .then(result => {
+  //     res.redirect('/admin/products')
+  //   })
+  //   .catch(err => console.log(err))
+
+  // Method 2: Deterministic delete
+  Product.findByPk(productId)
+    .then(product => {
+      return product.destroy()
+    })
+    .then(result => {
+      res.redirect('/admin/products')
+    })
+    .catch(err => console.log(err))
 }
