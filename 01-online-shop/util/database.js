@@ -1,3 +1,5 @@
+/* Uncomment this block of source code to use mysql2 to work with databases.
+
 const mysql = require('mysql2')
 
 // Create a pool of connections so that can handle multiple queries
@@ -14,3 +16,14 @@ const pool = mysql.createPool({
 // Export promise() to allow us to write SQL queries asynchronous code using
 // async chains (that are more structured) instead of using nested callbacks
 module.exports = pool.promise()
+*/
+
+
+const Sequelize = require('sequelize')
+
+const sequelize = new Sequelize('online_shopping', 'node_app_user', 'ThePassword', {
+  host: 'localhost',
+  dialect: 'mysql'
+})
+
+module.exports = sequelize
