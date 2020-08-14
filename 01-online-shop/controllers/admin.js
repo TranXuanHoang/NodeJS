@@ -1,22 +1,6 @@
 const Product = require('../models/product')
 
 exports.getAddProduct = (req, res) => {
-  // Serve add-product.html
-  // const rootDir = require('../util/path')
-  // res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
-
-  // Render HTML code from add-product.pug, then send clients with that HTML code
-  // res.render('add-product', { pageTitle: 'Add Product', path: '/admin/add-product' })
-
-  // Render HTML code from add-product.hbs, then send clients with that HTML code
-  // res.render('add-product', {
-  //   pageTitle: 'Add Product',
-  //   formsCSS: true,
-  //   productCSS: true,
-  //   activeAddProduct: true
-  // })
-
-  // Render HTML code from add-product.ejs, then send clients with that HTML code
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
@@ -31,7 +15,11 @@ exports.postAddProduct = (req, res) => {
   const description = req.body.description
   const product = new Product(null, title, imageUrl, description, price)
   product.save()
-  res.redirect('/')
+    .then(result => {
+      console.log(result)
+      res.redirect('/')
+    })
+    .catch(err => console.log(err))
 }
 
 exports.getEditProduct = (req, res, next) => {
