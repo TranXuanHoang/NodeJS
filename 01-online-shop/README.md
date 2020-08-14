@@ -18,3 +18,4 @@ The app uses the following 3rd-party packages
 | [ejs](https://www.npmjs.com/package/ejs) | `production` | `Template Engine` [`Homepage`](https://ejs.co/) Generate HTML markup dynamically |
 | [pug](https://www.npmjs.com/package/pug) | `production` | `Template Engine` [`Homepage`](https://pugjs.org/) Render HTML templates dynamically |
 | [express-handlebars](https://www.npmjs.com/package/express-handlebars) | `production` | `Template Engine` Precompile HTML templates on server side for [Express.js](https://expressjs.com/) apps |
+| [mysql2](https://www.npmjs.com/package/mysql2) | `production` | Connect to and run SQL queries against [`MySQL`](https://www.mysql.com/) databases. _Note that, [mysql](https://www.npmjs.com/package/mysql) also provides adequate functionalities to work with *MySQL* databases._ See [online_shopping_database.sql](./databases/online_shopping_database.sql) for instructions on how to prepare a MySQL database. |
