@@ -20,3 +20,9 @@ The app uses the following 3rd-party packages
 | [express-handlebars](https://www.npmjs.com/package/express-handlebars) | `production` | `Template Engine` Precompile HTML templates on server side for [Express.js](https://expressjs.com/) apps |
 | [mysql2](https://www.npmjs.com/package/mysql2) | `production` | Connect to and run SQL queries against [`MySQL`](https://www.mysql.com/) databases. _Note that, [mysql](https://www.npmjs.com/package/mysql) also provides adequate functionalities to work with *MySQL* databases._ See [online_shopping_database.sql](./databases/online_shopping_database.sql) for instructions on how to prepare a MySQL database. |
 | [sequelize](https://www.npmjs.com/package/sequelize) | `production` | [`Homepage`](https://sequelize.org/) Map information between objects (JavaScript objects in Node.js) and relational databases (MySQL in this project) - usually refered as `ORM` - [_Object Relational Mapping_](https://en.wikipedia.org/wiki/Object-relational_mapping). `sequelize` requires [mysql2](https://www.npmjs.com/package/mysql2) to be installed in order to work with MySQL databases. |
+
+## SQL Database Model
+
+During the first launch, [sequelize](https://www.npmjs.com/package/sequelize) will automatically create tables and their relationships depicted as the following EER diagram. Run [online_shopping_database.sql](./databases/online_shopping_database.sql) to _manually create the database and its tables and relationships_.
+
+![EER Diagram](./databases/EER_Diagram_of_the_Online_Shopping_Database.png)

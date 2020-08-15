@@ -7,6 +7,8 @@ const errorController = require('./controllers/error')
 const sequelize = require('./util/database')
 const Product = require('./models/product')
 const User = require('./models/user')
+const Cart = require('./models/cart')
+const CartItem = require('./models/cart-item')
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
@@ -67,8 +69,11 @@ app.use(errorController.get404)
 // - One-To-Many relationship exists between 'User' and 'Product'
 //   (one user may buy multiple products, one admin may create multiple products)
 // - The foreign key is defined in 'Product'
-//   FOREIGN KEY (`UserId`) REFERENCES `Users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
-// - Updating/deleting 'User' rows will automatically updating/deleting 'Product' matching rows
+//   FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+// - Updating/deleting 'User' rows will automatically update/delete 'Product' matching rows
+// - References:
+//     (1) https://sequelize.org/master/manual/assocs.html#one-to-many-relationships
+//     (2) https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html#foreign-key-referential-actions
 User.hasMany(Product, {
   constraints: true,
   onUpdate: 'CASCADE',
@@ -76,6 +81,32 @@ User.hasMany(Product, {
 })
 Product.belongsTo(User)
 
+// - One-To-One relationship between 'User' and 'Cart'
+//   (one user has only one cart, a cart belongs to only one user)
+// - The foreign key is defined in 'Cart'
+//   FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE
+// - Deleting 'User' rows will automatically set the foreign key column in 'Cart' (userId) to NULL
+//   Updating 'User' rows will automatically update the foregign key column in 'Cart' (userId)
+// - References:
+//     (1) https://sequelize.org/master/manual/assocs.html#one-to-one-relationships
+//     (2) https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html#foreign-key-referential-actions
+User.hasOne(Cart)
+Cart.belongsTo(User)
+
+// - Many-To-Many relationship between 'Cart' and 'Product'
+//   (one cart may contain many products, and one product may be added to multiple carts)
+// - 'CartItem' will act as a junction model between 'Cart' and 'Product'
+//   Sequelize will generate two foreign keys in this 'CartItem' that will reference to
+//   corresponding primary keys of 'Cart' and 'Product'
+//   FOREIGN KEY (`cartId`) REFERENCES `carts`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+//   FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+// - Deleting/Updating rows in 'Cart' and/or 'Product' will automatically delete/update matching rows
+//   in 'CartItem'
+// - References:
+//     (1) https://sequelize.org/master/manual/assocs.html#many-to-many-relationships
+//     (2) https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html#foreign-key-referential-actions
+Cart.belongsToMany(Product, { through: CartItem })
+Product.belongsToMany(Cart, { through: CartItem })
 
 // Sysc database, and if successful start the app server
 sequelize.sync(/*{ force: true }*/)
