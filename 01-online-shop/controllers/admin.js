@@ -41,8 +41,13 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/')
   }
   const prodId = req.params.productId
-  Product.findByPk(prodId)
-    .then(product => {
+  // Method 1: Use Product.findByPk()
+  // Product.findByPk(prodId)
+  //   .then(product => {
+
+  // Method 2:  Call auto-generated User.getProducts()
+  req.user.getProducts({ where: { id: prodId } })
+    .then(([product]) => {
       if (!product) {
         // This is not a good solution in the view point of UX.
         // Here for simplicity, we just redirect to top page.
@@ -89,7 +94,7 @@ exports.postEditProduct = (req, res, next) => {
 }
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  req.user.getProducts()
     .then(products => {
       res.render('admin/products', {
         pageTitle: 'Admin Products',
