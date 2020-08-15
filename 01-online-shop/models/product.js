@@ -6,9 +6,10 @@ const sequelize = require('../util/database')
 // https://sequelize.org/master/class/lib/model.js~Model.html#static-method-init
 const Product = sequelize.define('Product', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     allowNull: false,
+    unique: true,
     primaryKey: true
   },
   title: {

@@ -24,16 +24,30 @@ grant all on online_shopping.* to 'node_app_user'@'localhost';
 
 use online_shopping;
 
--- Create tables
+-- Drop existing tables and re-create them
 DROP TABLE IF EXISTS `online_shopping`.`products`;
+DROP TABLE IF EXISTS `online_shopping`.`users`;
+
+CREATE TABLE `online_shopping`.`users` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+)
+ENGINE=InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARSET=utf8
+COMMENT = 'Holds user accounts data';
+
 CREATE TABLE `online_shopping`.`products` (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `title` VARCHAR(255) NOT NULL,
   `price` DOUBLE NOT NULL,
   `description` TEXT NOT NULL,
   `imageUrl` VARCHAR(255) NOT NULL,
+  `UserId` INT UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC)
+  FOREIGN KEY (`UserId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
 )
 ENGINE = InnoDB
 AUTO_INCREMENT = 1
