@@ -4,7 +4,7 @@ const sequelize = require('../util/database')
 
 // For more information about attributes that can be set for fiels, see:
 // https://sequelize.org/master/class/lib/model.js~Model.html#static-method-init
-const Product = sequelize.define('Product', {
+const Product = sequelize.define('product', {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,

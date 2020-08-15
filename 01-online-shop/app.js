@@ -43,6 +43,16 @@ app.use('/', (req, res, next) => {
   next()
 })
 
+// Get user info from database
+app.use((req, res, next) => {
+  User.findByPk(1)
+    .then(user => {
+      req.user = user
+    })
+    .catch(err => console.log(err))
+    .finally(() => next())
+})
+
 // Serve static contents
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -68,8 +78,17 @@ Product.belongsTo(User)
 
 
 // Sysc database, and if successful start the app server
-sequelize.sync({ force: true })
+sequelize.sync(/*{ force: true }*/)
   .then(result => {
+    return User.findByPk(1)
+  })
+  .then(user => {
+    if (!user) {
+      return User.create({ name: 'Hoang', email: 'test@mail.com' })
+    }
+    return user
+  })
+  .then(user => {
     app.listen(3000)
   })
   .catch(err => {

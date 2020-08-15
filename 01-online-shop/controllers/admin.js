@@ -13,9 +13,23 @@ exports.postAddProduct = (req, res) => {
   const imageUrl = req.body.imageUrl
   const price = req.body.price
   const description = req.body.description
-  Product.create({ title, imageUrl, price, description })
+
+  // Method 1: Manually pass in userId when calling Product.create()
+  // const userId = req.user.id
+  // Product.create({ title, imageUrl, price, description, userId })
+  //   .then(result => {
+  //     res.redirect('/admin/products')
+  //   })
+  //   .catch(err => console.log(err))
+
+  // Method 2: Use Sequelize's auto generated User.createProduct()
+  // The auto generated method is available when defining association
+  // between 'User' and 'Product'
+  //     User.hasMany(Product)
+  //     Product.belongsTo(User)
+  // See: https://sequelize.org/master/manual/assocs.html#special-methods-mixins-added-to-instances
+  req.user.createProduct({ title, imageUrl, price, description })
     .then(result => {
-      console.log(result)
       res.redirect('/admin/products')
     })
     .catch(err => console.log(err))
