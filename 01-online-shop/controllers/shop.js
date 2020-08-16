@@ -39,47 +39,83 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getCart = (req, res, next) => {
-  Cart.getCart(cart => {
-    if (cart === null) {
-      return res.render('shop/cart', {
-        pageTitle: 'Your Cart',
-        path: '/cart',
-        products: [],
-        totalPrice: 0
-      })
-    }
-
-    Product.fetchAll(products => {
-      const cartProducts = cart.products.map(cartProduct => {
-        const product = products.find(prod => prod.id === cartProduct.id)
-        return { productData: product, qty: cartProduct.qty }
-      })
-      res.render('shop/cart', {
-        pageTitle: 'Your Cart',
-        path: '/cart',
-        products: cartProducts,
-        totalPrice: cart.totalPrice
-      })
+  req.user.getCart()
+    .then(cart => {
+      cart.getProducts()
+        .then(products => {
+          res.render('shop/cart', {
+            pageTitle: 'Your Cart',
+            path: '/cart',
+            products: products,
+            totalPrice: 0
+          })
+        })
+        .catch(err => console.log(err))
     })
-  })
+    .catch(err => console.log(err))
 }
 
 exports.postAddToCard = (req, res, next) => {
   const prodId = req.body.productId
-  Product.findById(prodId, product => {
-    Cart.addProduct(prodId, product.price)
+  let fetchedCart;
+  let newQuantity = 1
+  req.user.getCart()
+    .then(cart => {
+      fetchedCart = cart
+      return cart.getProducts({ where: { id: prodId } })
+    })
+    .then(products => {
+      let product;
+      if (products.length > 0) {
+        product = products[0]
+      }
 
-    // Note that, should call redirect as a callback of addProduct
-    res.redirect('/cart')
-  })
+      if (product) {
+        const oldQuantity = product.cartItem.quantity
+        newQuantity = oldQuantity + 1
+        return product
+      }
+      return Product.findByPk(prodId)
+    })
+    .then(product => {
+      // Cart.addProduct() will decide whether to INSERT or UPDATE CartItem model (CartItems table)
+      // INSERT INTO `cartItems` (`id`,`quantity`,`createdAt`,`updatedAt`,`cartId`,`productId`) VALUES (NULL,?,?,?,?,?);
+      // UPDATE `cartItems` SET `quantity`=?,`updatedAt`=? WHERE `cartId` = ? AND `productId` = ?
+      return fetchedCart.addProduct(product, {
+        through: { quantity: newQuantity }
+      })
+    })
+    .then(() => {
+      res.redirect('/cart')
+    })
+    .catch(err => console.log(err))
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId
-  Product.findById(prodId, product => {
-    Cart.deleteProduct(prodId, product.price)
-    res.redirect('/cart')
-  })
+  let fetchedCart
+  req.user.getCart()
+    .then(cart => {
+      fetchedCart = cart
+      return cart.getProducts({ where: { id: prodId } })
+    })
+    .then(products => {
+      const product = products[0]
+      // Method 1: use Cart.removeProduct() to delete record from CartItem
+      // if (product) {
+      //   return fetchedCart.removeProduct(product)
+      // }
+
+      // Method 2: call auto-generated product.cartItem.destroy()
+      if (product) {
+        return product.cartItem.destroy()
+      }
+    })
+    .then(result => {
+      console.log(`Delete result: ${result}`)
+      res.redirect('/cart')
+    })
+    .catch(err => console.log(err))
 }
 
 exports.getOrders = (req, res, next) => {

@@ -10,7 +10,10 @@ const CartItem = sequelize.define('cartItem', {
     unique: true,
     primaryKey: true
   },
-  quantity: DataTypes.INTEGER.UNSIGNED
+  quantity: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false
+  }
 })
 
 module.exports = CartItem
