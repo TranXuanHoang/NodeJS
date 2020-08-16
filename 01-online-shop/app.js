@@ -9,6 +9,8 @@ const Product = require('./models/product')
 const User = require('./models/user')
 const Cart = require('./models/cart')
 const CartItem = require('./models/cart-item')
+const Order = require('./models/order')
+const OrderItem = require('./models/order-item')
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
@@ -108,6 +110,25 @@ Cart.belongsTo(User)
 Cart.belongsToMany(Product, { through: CartItem })
 Product.belongsToMany(Cart, { through: CartItem })
 
+// - One-To-Many relationship between 'User' and 'Order'
+//   (a user may place multiple orders, and each order is created by only one user)
+// - The foreign key is defined in 'Order'
+//   FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE
+// - Deleting rows in 'User' will set the 'Order'.'userId' of matching rows in 'Order' to NULL
+//   Updating rows in 'User' will automatically update matching rows in 'Order'
+User.hasMany(Order)
+Order.belongsTo(User)
+
+// - Many-To-Many relationship between 'Order' and 'Product'
+//   (An order may contain many products, and a product may appear in multiple orders)
+// - 'OrderItem' will act as a junction model having 2 foreign keys referencing to 'Order' and 'Product'
+//   FOREIGN KEY (`orderId`) REFERENCES `orders`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+//   FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+// - Deleting/Updating rows in 'Cart' and/or 'Product' will automatically delete/update
+//   'OrderItem' matching rows
+Order.belongsToMany(Product, { through: OrderItem })
+Product.belongsToMany(Order, { through: OrderItem })
+
 // Sysc database, and if successful start the app server
 sequelize.sync(/*{ force: true }*/)
   .then(result => {
@@ -119,10 +140,8 @@ sequelize.sync(/*{ force: true }*/)
     }
     return user
   })
-  .then(user => {
-    return user.getCart()
-  })
-  .then(cart => {
+  .then(async user => {
+    const cart = await user.getCart()
     if (!cart) {
       return user.createCart()
     }

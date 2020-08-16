@@ -25,6 +25,8 @@ grant all on online_shopping.* to 'node_app_user'@'localhost';
 use online_shopping;
 
 -- Drop existing tables and re-create them
+DROP TABLE IF EXISTS `online_shopping`.`orderItems`;
+DROP TABLE IF EXISTS `online_shopping`.`orders`;
 DROP TABLE IF EXISTS `online_shopping`.`cartItems`;
 DROP TABLE IF EXISTS `online_shopping`.`carts`;
 DROP TABLE IF EXISTS `online_shopping`.`products`;
@@ -66,14 +68,14 @@ CREATE TABLE IF NOT EXISTS `online_shopping`.`carts` (
   `updatedAt` DATETIME NOT NULL,
   `userId` INTEGER UNSIGNED,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+  FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE
 )
 ENGINE=InnoDB
 DEFAULT CHARSET = utf8
 COMMENT = 'Saves shopping carts data';
 
 CREATE TABLE IF NOT EXISTS `online_shopping`.`cartItems` (
-  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE ,
+  `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
   `quantity` INTEGER UNSIGNED,
   `createdAt` DATETIME NOT NULL,
   `updatedAt` DATETIME NOT NULL,
@@ -87,6 +89,34 @@ CREATE TABLE IF NOT EXISTS `online_shopping`.`cartItems` (
 ENGINE=InnoDB
 DEFAULT CHARSET = utf8
 COMMENT = 'Acts as a junction table between `carts` and `products` tables';
+
+CREATE TABLE IF NOT EXISTS `online_shopping`.`orders` (
+  `id`        INTEGER UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NOT NULL,
+  `userId`    INTEGER UNSIGNED,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE
+)
+ENGINE=InnoDB
+DEFAULT CHARSET = utf8
+COMMENT = 'Contains orders data';
+
+CREATE TABLE IF NOT EXISTS `online_shopping`.`orderItems` (
+  `id`        INTEGER UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+  `quantity`  INTEGER UNSIGNED NOT NULL,
+  `createdAt` DATETIME NOT NULL,
+  `updatedAt` DATETIME NOT NULL,
+  `orderId`   INTEGER UNSIGNED,
+  `productId` INTEGER UNSIGNED,
+  UNIQUE `orderItems_productId_orderId_unique` (`orderid`, `productid`),
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`orderId`) REFERENCES `orders`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`productId`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+)
+ENGINE=InnoDB
+DEFAULT CHARSET = utf8
+COMMENT = 'Acts as a junction table between `orders` and `products` tables';
 
 -- Show all created tables
 use online_shopping;
