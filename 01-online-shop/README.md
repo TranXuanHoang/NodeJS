@@ -20,6 +20,17 @@ The app uses the following 3rd-party packages
 | [express-handlebars](https://www.npmjs.com/package/express-handlebars) | `production` | `Template Engine` Precompile HTML templates on server side for [Express.js](https://expressjs.com/) apps |
 | [mysql2](https://www.npmjs.com/package/mysql2) | `production` | Connect to and run SQL queries against [`MySQL`](https://www.mysql.com/) databases. _Note that, [mysql](https://www.npmjs.com/package/mysql) also provides adequate functionalities to work with *MySQL* databases._ See [online_shopping_database.sql](./databases/online_shopping_database.sql) for instructions on how to prepare a MySQL database. |
 | [sequelize](https://www.npmjs.com/package/sequelize) | `production` | [`Homepage`](https://sequelize.org/) Map information between objects (JavaScript objects in Node.js) and relational databases (MySQL in this project) - usually refered as `ORM` - [_Object Relational Mapping_](https://en.wikipedia.org/wiki/Object-relational_mapping). `sequelize` requires [mysql2](https://www.npmjs.com/package/mysql2) to be installed in order to work with MySQL databases. |
+| [mongodb](https://www.npmjs.com/package/mongodb) | `production` | A [MongoDB Node.js driver](https://github.com/mongodb/node-mongodb-native) allowing Node.js app to connect to [MongoDB](https://www.mongodb.com/) databases. This project will use cloud-based [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) as a NoSQL backend database. |
+
+## Source Code
+
+Switch the source code to versions described below to view different implementations.
+
+| Git Tag | Implementation |
+|---------|----------------|
+| [online-shop/save-data-in-files](https://github.com/TranXuanHoang/NodeJS/releases/tag/online-shop%2Fsave-data-in-files) | Saving app data in files |
+| [v2.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v2.0.0) | Saving app data in a SQL database ([MySQL](https://www.mysql.com/)) |
+| TBD | Saving app data in a NoSQL database ([MongoDB](https://www.mongodb.com/)) |
 
 ## SQL Database Model
 
