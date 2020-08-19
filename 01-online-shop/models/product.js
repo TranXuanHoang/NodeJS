@@ -1,33 +1,32 @@
-const { Sequelize, DataTypes } = require('sequelize')
+const { getDb } = require('../util/database')
 
-const sequelize = require('../util/database')
-
-// For more information about attributes that can be set for fiels, see:
-// https://sequelize.org/master/class/lib/model.js~Model.html#static-method-init
-const Product = sequelize.define('product', {
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    allowNull: false,
-    unique: true,
-    primaryKey: true
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  price: {
-    type: DataTypes.DOUBLE,
-    allowNull: false
-  },
-  imageUrl: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: false
+class Product {
+  constructor(title, price, description, imageUrl) {
+    this.title = title
+    this.price = price
+    this.description = description
+    this.imageUrl = imageUrl
   }
-})
+
+  save() {
+    const db = getDb()
+    return db.collection('products').insertOne(this)
+      .then(result => {
+        console.log(result)
+      })
+      .catch(err => console.log(err))
+  }
+
+  static fetchAll() {
+    const db = getDb()
+    return db.collection('products')
+      .find().toArray()
+      .then(products => {
+        console.log(products)
+        return products
+      })
+      .catch(err => console.log(err))
+  }
+}
 
 module.exports = Product

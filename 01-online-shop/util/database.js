@@ -36,22 +36,38 @@ module.exports = sequelize
 const mongodb = require('mongodb')
 const MongoClient = mongodb.MongoClient;
 
+const db_username = 'node_app_user'
+const password = '2QbSWJVa64KbXe65'
+const db_name = 'online_shop'
+
+let _db;
+
 const mongoConnect = (callback) => {
   MongoClient.connect(
-    'mongodb+srv://node_app_user:2QbSWJVa64KbXe65@experiment.ejqjk.mongodb.net/<dbname>?retryWrites=true&w=majority',
+    `mongodb+srv://${db_username}:${password}@experiment.ejqjk.mongodb.net/${db_name}?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
     .then(client => {
       console.log('Database Connected!')
       // client is an object which gives the app access to the database
-      callback(client)
+      _db = client.db()
+      callback()
     })
     .catch(err => {
       console.log(err)
+      throw err
     })
 }
 
-module.exports = mongoConnect
+const getDb = () => {
+  if (_db) {
+    return _db
+  }
+  throw 'No database found!'
+}
+
+exports.mongoConnect = mongoConnect
+exports.getDb = getDb
 
 
 // Method 2: Connect to MongoDB with the following code snippet

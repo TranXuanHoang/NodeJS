@@ -4,10 +4,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const errorController = require('./controllers/error')
-const mongoConnect = require('./util/database')
+const { mongoConnect } = require('./util/database')
 
-// const adminRoutes = require('./routes/admin')
-// const shopRoutes = require('./routes/shop')
+const adminRoutes = require('./routes/admin')
+const shopRoutes = require('./routes/shop')
 
 const app = express()
 
@@ -35,19 +35,19 @@ app.use((req, res, next) => {
   //   })
   //   .catch(err => console.log(err))
   //   .finally(() => next())
+  next()
 })
 
 // Serve static contents
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Handle app's routes
-// app.use('/admin', adminRoutes)
-// app.use(shopRoutes)
+app.use('/admin', adminRoutes)
+app.use(shopRoutes)
 
 // Handle 404 Not Found
 app.use(errorController.get404)
 
-mongoConnect((client) => {
-  console.log(client)
+mongoConnect(() => {
   app.listen(3000)
 })
