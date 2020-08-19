@@ -28,13 +28,8 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/')
   }
   const prodId = req.params.productId
-  // Method 1: Use Product.findByPk()
-  // Product.findByPk(prodId)
-  //   .then(product => {
-
-  // Method 2:  Call auto-generated User.getProducts()
-  req.user.getProducts({ where: { id: prodId } })
-    .then(([product]) => {
+  Product.findById(prodId)
+    .then(product => {
       if (!product) {
         // This is not a good solution in the view point of UX.
         // Here for simplicity, we just redirect to top page.
@@ -57,23 +52,8 @@ exports.postEditProduct = (req, res, next) => {
   const price = req.body.price
   const description = req.body.description
 
-  // Method 1: Optimistic update (without checking existence)
-  // Product.update(
-  //   { title, imageUrl, description, price }, {
-  //   where: { id: id }
-  // }).then(result => {
-  //   res.redirect('/admin/products')
-  // }).catch(err => console.log(err))
-
-  // Method 2: Deterministic update (check existence first)
-  Product.findByPk(id)
-    .then(product => {
-      product.title = title
-      product.imageUrl = imageUrl
-      product.price = price
-      product.description = description
-      return product.save() // save updated product data back to db
-    })
+  const product = new Product(title, price, description, imageUrl, id)
+  product.save()
     .then(result => {
       res.redirect('/admin/products')
     })
@@ -81,7 +61,7 @@ exports.postEditProduct = (req, res, next) => {
 }
 
 exports.getProducts = (req, res, next) => {
-  req.user.getProducts()
+  Product.fetchAll()
     .then(products => {
       res.render('admin/products', {
         pageTitle: 'Admin Products',
@@ -94,21 +74,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const productId = req.body.productId
-
-  // Method 1: Optimistic delete
-  // Product.destroy({
-  //   where: { id: productId }
-  // })
-  //   .then(result => {
-  //     res.redirect('/admin/products')
-  //   })
-  //   .catch(err => console.log(err))
-
-  // Method 2: Deterministic delete
-  Product.findByPk(productId)
-    .then(product => {
-      return product.destroy()
-    })
+  Product.deleteById(productId)
     .then(result => {
       res.redirect('/admin/products')
     })
