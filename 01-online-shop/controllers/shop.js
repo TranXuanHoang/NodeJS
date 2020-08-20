@@ -72,29 +72,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 }
 
 exports.postOrder = (req, res, next) => {
-  let fetchedCart
-  req.user.getCart()
-    .then(cart => {
-      fetchedCart = cart
-      return cart.getProducts()
-    })
-    .then(products => {
-      // Create an order, then copy all products from CartItems to OrderItems
-      return req.user.createOrder()
-        .then(order => {
-          return order.addProducts(
-            products.map(product => {
-              product.orderItem = { quantity: product.cartItem.quantity }
-              return product
-            })
-          )
-        })
-        .catch(err => console.log(err))
-    })
-    .then(order => {
-      // Delete all products from cart after order has been made
-      return fetchedCart.setProducts(null)
-    })
+  req.user.addOrder()
     .then(result => {
       res.redirect('/orders')
     })
@@ -102,10 +80,14 @@ exports.postOrder = (req, res, next) => {
 }
 
 exports.getOrders = (req, res, next) => {
-  // Eager load orders and their associating products
-  // https://sequelize.org/master/manual/eager-loading.html
-  req.user.getOrders({ include: Product })
+  req.user.getOrders()
     .then(orders => {
+      orders = orders.map(order => {
+        return {
+          ...order,
+          createdAt: new Date(order.createdAt).toLocaleString()
+        }
+      })
       res.render('shop/orders', {
         pageTitle: 'Your Orders',
         path: '/orders',
