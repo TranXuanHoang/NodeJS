@@ -64,24 +64,7 @@ exports.postAddToCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId
-  let fetchedCart
-  req.user.getCart()
-    .then(cart => {
-      fetchedCart = cart
-      return cart.getProducts({ where: { id: prodId } })
-    })
-    .then(products => {
-      const product = products[0]
-      // Method 1: use Cart.removeProduct() to delete record from CartItem
-      // if (product) {
-      //   return fetchedCart.removeProduct(product)
-      // }
-
-      // Method 2: call auto-generated product.cartItem.destroy()
-      if (product) {
-        return product.cartItem.destroy()
-      }
-    })
+  req.user.deleteItemFromCart(prodId)
     .then(result => {
       res.redirect('/cart')
     })
