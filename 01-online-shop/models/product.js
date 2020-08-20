@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb')
 const { getDb } = require('../util/database')
 
 class Product {
-  constructor(title, price, description, imageUrl, id) {
+  constructor(title, price, description, imageUrl, id, userId) {
     this.title = title
     this.price = price
     this.description = description
@@ -11,6 +11,7 @@ class Product {
     if (id) {
       this._id = new ObjectId(id)
     }
+    this.userId = userId
   }
 
   save() {

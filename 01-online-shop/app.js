@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 
 const errorController = require('./controllers/error')
 const { mongoConnect } = require('./util/database')
+const User = require('./models/user')
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
@@ -29,13 +30,12 @@ app.use('/', (req, res, next) => {
 
 // Get user info from database
 app.use((req, res, next) => {
-  // User.findByPk(1)
-  //   .then(user => {
-  //     req.user = user
-  //   })
-  //   .catch(err => console.log(err))
-  //   .finally(() => next())
-  next()
+  User.findById('5f3dc9684b3db4123455edbd')
+    .then(user => {
+      req.user = user
+    })
+    .catch(err => console.log(err))
+    .finally(() => next())
 })
 
 // Serve static contents
