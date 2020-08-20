@@ -54,37 +54,13 @@ exports.getCart = (req, res, next) => {
     .catch(err => console.log(err))
 }
 
-exports.postAddToCard = (req, res, next) => {
+exports.postAddToCart = (req, res, next) => {
   const prodId = req.body.productId
-  let fetchedCart;
-  let newQuantity = 1
-  req.user.getCart()
-    .then(cart => {
-      fetchedCart = cart
-      return cart.getProducts({ where: { id: prodId } })
-    })
-    .then(products => {
-      let product;
-      if (products.length > 0) {
-        product = products[0]
-      }
-
-      if (product) {
-        const oldQuantity = product.cartItem.quantity
-        newQuantity = oldQuantity + 1
-        return product
-      }
-      return Product.findByPk(prodId)
-    })
+  Product.findById(prodId)
     .then(product => {
-      // Cart.addProduct() will decide whether to INSERT or UPDATE CartItem model (CartItems table)
-      // INSERT INTO `cartItems` (`id`,`quantity`,`createdAt`,`updatedAt`,`cartId`,`productId`) VALUES (NULL,?,?,?,?,?);
-      // UPDATE `cartItems` SET `quantity`=?,`updatedAt`=? WHERE `cartId` = ? AND `productId` = ?
-      return fetchedCart.addProduct(product, {
-        through: { quantity: newQuantity }
-      })
+      return req.user.addToCart(product)
     })
-    .then(() => {
+    .then(result => {
       res.redirect('/cart')
     })
     .catch(err => console.log(err))
