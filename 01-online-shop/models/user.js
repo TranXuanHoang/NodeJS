@@ -1,4 +1,3 @@
-const util = require('util')
 const { ObjectId } = require('mongodb')
 
 const { getDb } = require('../util/database')
@@ -41,6 +40,24 @@ class User {
       { _id: new ObjectId(this._id) },
       { $set: { cart: updatedCart } }
     )
+  }
+
+  getCart() {
+    const db = getDb()
+    const productIds = this.cart.items.map(i => i.productId)
+    return db.collection('products')
+      .find({ _id: { $in: productIds } })
+      .toArray()
+      .then(products => {
+        return products.map(p => {
+          return {
+            ...p,
+            quantity: this.cart.items.find(
+              i => i.productId.toString() === p._id.toString()
+            ).quantity
+          }
+        })
+      })
   }
 
   static findById(userId) {
