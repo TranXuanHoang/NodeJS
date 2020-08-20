@@ -2,9 +2,9 @@ const path = require('path')
 
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const errorController = require('./controllers/error')
-const { mongoConnect } = require('./util/database')
 const User = require('./models/user')
 
 const adminRoutes = require('./routes/admin')
@@ -49,6 +49,15 @@ app.use(shopRoutes)
 // Handle 404 Not Found
 app.use(errorController.get404)
 
-mongoConnect(() => {
+const db_username = 'node_app_user'
+const password = '2QbSWJVa64KbXe65'
+const db_name = 'online_shop'
+mongoose.connect(
+  `mongodb+srv://${db_username}:${password}@experiment.ejqjk.mongodb.net/${db_name}?retryWrites=true&w=majority`,
+  { useNewUrlParser: true, useUnifiedTopology: true }
+).then(result => {
+  console.log('Database Connected.')
   app.listen(3000)
+}).catch(err => {
+  console.log(err)
 })
