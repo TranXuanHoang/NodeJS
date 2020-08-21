@@ -53,7 +53,7 @@ const password = '2QbSWJVa64KbXe65'
 const db_name = 'online_shop'
 mongoose.connect(
   `mongodb+srv://${db_username}:${password}@experiment.ejqjk.mongodb.net/${db_name}?retryWrites=true&w=majority`,
-  { useNewUrlParser: true, useUnifiedTopology: true }
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 ).then(result => {
   console.log('Database Connected.')
   User.findOne().then(user => {

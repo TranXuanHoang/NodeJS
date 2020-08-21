@@ -32,9 +32,86 @@ Switch the source code to versions described below to view different implementat
 | [online-shop/save-data-in-files](https://github.com/TranXuanHoang/NodeJS/releases/tag/online-shop%2Fsave-data-in-files) | Saving app data in files |
 | [v2.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v2.0.0) | Saving app data in a SQL database ([MySQL](https://www.mysql.com/)) |
 | [v3.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v3.0.0) | Saving app data in a NoSQL database ([MongoDB](https://www.mongodb.com/)) and using [MongoDB Driver](https://github.com/mongodb/node-mongodb-native) to connect and interact with the database |
+| [v4.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v4.0.0) | Saving app data in a NoSQL [MongoDB](https://www.mongodb.com/) while using [Mongoose](https://mongoosejs.com/) to avoid boilerplate code when just using [MongoDB Driver](https://github.com/mongodb/node-mongodb-native) |
 
 ## SQL Database Model
 
 During the first launch, [sequelize](https://www.npmjs.com/package/sequelize) will automatically create tables and their relationships depicted as the following EER diagram. Run [online_shopping_database.sql](./databases/online_shopping_database.sql) to _manually create the database and its tables and relationships_.
 
 ![EER Diagram](./databases/EER_Diagram_of_the_Online_Shopping_Database.png)
+
+## Example of NoSQL Data Model
+
+Below is an example of collections and documents representing the app data released under [v4.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v4.0.0):
+
+```json
+// Users collection
+{
+  "_id": "5f3f350a5394a02da09c6139",
+  "name": "Hoang",
+  "email": "test@mail.com",
+  "cart": {
+    "items": [
+      {
+        "_id": "5f3ff05766de5a5c74bd87e1",
+        "productId": "5f3f3deb43a8e554ac7c8b93",
+        "quantity": 2
+      },
+      {
+        "_id": "5f3ff05d66de5a5c74bd87e2",
+        "productId": "5f3f89e8fbdf8967908535a9",
+        "quantity": 1
+      }
+    ]
+  }
+}
+```
+
+```json
+// Products collection
+[
+  {
+    "_id": "5f3f3deb43a8e554ac7c8b93",
+    "title": "A Book",
+    "price": 19.5,
+    "description": "A great book",
+    "imageUrl": "https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png",
+    "userId": "5f3f350a5394a02da09c6139"
+  },
+  {
+    "_id": "5f3f89e8fbdf8967908535a9",
+    "title": "Car",
+    "price": 6010,
+    "description": "A new generation of engine with high speed!",
+    "imageUrl": "https://img.icons8.com/plasticine/2x/car.png",
+    "userId": "5f3f350a5394a02da09c6139"
+  }
+]
+```
+
+```json
+// Orders collection
+[
+  {
+    "user": {
+      "name": "Hoang",
+      "userId": "5f3f350a5394a02da09c6139"
+    },
+    "products": [
+      {
+        "_id": "5f3fe5115fee2d668ca61495",
+        "quantity": 1,
+        "product": {
+          "_id": "5f3f89e8fbdf8967908535a9",
+          "title": "Car",
+          "price": 6010,
+          "description": "A new generation of engine with high speed!",
+          "imageUrl": "https://img.icons8.com/plasticine/2x/car.png",
+          "userId": "5f3f350a5394a02da09c6139"
+        }
+      }
+    ],
+    "createdAt": "2020-08-21T15:15:29.373Z"
+  }
+]
+```
