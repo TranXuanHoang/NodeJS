@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 
 const errorController = require('./controllers/error')
-// const User = require('./models/user')
+const User = require('./models/user')
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
@@ -29,15 +29,14 @@ app.use('/', (req, res, next) => {
 })
 
 // Get user info from database
-// app.use((req, res, next) => {
-//   User.findById('5f3dc9684b3db4123455edbd')
-//     .then(user => {
-//       req.user = new User(user.name, user.email, user.cart, user._id)
-//       console.log(req.user)
-//     })
-//     .catch(err => console.log(err))
-//     .finally(() => next())
-// })
+app.use((req, res, next) => {
+  User.findById('5f3f350a5394a02da09c6139')
+    .then(user => {
+      req.user = user
+    })
+    .catch(err => console.log(err))
+    .finally(() => next())
+})
 
 // Serve static contents
 app.use(express.static(path.join(__dirname, 'public')))
@@ -57,6 +56,18 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true }
 ).then(result => {
   console.log('Database Connected.')
+  User.findOne().then(user => {
+    if (!user) {
+      user = new User({
+        name: 'Hoang',
+        email: 'test@mail.com',
+        cart: {
+          items: []
+        }
+      })
+      user.save()
+    }
+  })
   app.listen(3000)
 }).catch(err => {
   console.log(err)

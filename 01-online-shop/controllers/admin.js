@@ -13,8 +13,9 @@ exports.postAddProduct = (req, res) => {
   const imageUrl = req.body.imageUrl
   const price = req.body.price
   const description = req.body.description
+  const userId = req.user // another way to write userId = req.user._id
 
-  const product = new Product({ title, price, description, imageUrl })
+  const product = new Product({ title, price, description, imageUrl, userId })
   product.save()
     .then(result => {
       res.redirect('/admin/products')
@@ -68,6 +69,19 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find()
+    // To get only product's title and price; and relate the userId with User
+    // object in which only user's name is fetched use the following 2 methods
+    // .select('title price -_id')
+    // .populate('userId', 'name')
+    //
+    // We will get back data in the following form:
+    // [
+    //   {
+    //     title: 'A Book',
+    //     price: 19.5,
+    //     userId: { _id: 5f3f350a5394a02da09c6139, name: 'Hoang' }
+    //   }
+    // ]
     .then(products => {
       res.render('admin/products', {
         pageTitle: 'Admin Products',
