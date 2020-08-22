@@ -9,6 +9,7 @@ const User = require('./models/user')
 
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
+const authRoutes = require('./routes/auth')
 
 const app = express()
 
@@ -44,6 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Handle app's routes
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)
+app.use(authRoutes)
 
 // Handle 404 Not Found
 app.use(errorController.get404)
