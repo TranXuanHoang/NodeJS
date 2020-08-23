@@ -11,7 +11,7 @@ Create an online shopping website with [Node.js](https://nodejs.org/) and [Expre
 The app uses the following 3rd-party packages
 
 | Package | Type | Purpose |
-|---------|-------|---------|
+|---------|------|---------|
 | [express](https://www.npmjs.com/package/express) | `production` | Provide a web framework while using Node.js |
 | [body-parser](https://www.npmjs.com/package/body-parser) | `production` | Parse incoming request bodies in a middleware before the request handlers |
 | [nodemon](https://www.npmjs.com/package/nodemon) | `dev` | Auto reload app when making any changes to source code |
@@ -22,6 +22,8 @@ The app uses the following 3rd-party packages
 | [sequelize](https://www.npmjs.com/package/sequelize) | `production` | [`Homepage`](https://sequelize.org/) Map information between objects (JavaScript objects in Node.js) and relational databases (MySQL in this project) - usually refered as `ORM` - [_Object Relational Mapping_](https://en.wikipedia.org/wiki/Object-relational_mapping). `sequelize` requires [mysql2](https://www.npmjs.com/package/mysql2) to be installed in order to work with MySQL databases. |
 | [mongodb](https://www.npmjs.com/package/mongodb) | `production` | A [MongoDB Node.js driver](https://github.com/mongodb/node-mongodb-native) allowing Node.js app to connect to [MongoDB](https://www.mongodb.com/) databases. This project will use cloud-based [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) as a NoSQL backend database. |
 | [mongoose](https://www.npmjs.com/package/mongoose) | `production` | [`Homepage`](https://mongoosejs.com/) Model app data and handle boilerplate queries and logic code when working with [MongoDB](https://www.mongodb.com/) - usually refered as `ODM` _Object Document Modeling_. |
+| [express-session](https://www.npmjs.com/package/express-session) | `production` | Create and manage sessions and cookies |
+| [connect-mongodb-session](https://www.npmjs.com/package/connect-mongodb-session) | `production` | Lightweight MongoDB-based session store that will be used to store user sessions in a MongoDB database |
 
 ## Source Code
 

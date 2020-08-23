@@ -9,6 +9,7 @@ exports.get404 = (req, res, next) => {
   // Render HTML code from 404.ejs, then send clients that HTML code
   res.status(404).render('404', {
     pageTitle: 'Page Not Found',
-    path: null
+    path: null,
+    isAuthenticated: req.session.isLoggedIn
   })
 }
