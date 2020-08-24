@@ -23,22 +23,27 @@ exports.postLogin = (req, res, next) => {
 
   User.findOne({ email: email })
     .then(user => {
-      if (user && email === user.email && password === user.password) {
-        // Authenticated successfully
-        req.session.isLoggedIn = true
-        req.session.user = user
-      } else {
-        // Not authenticated
-        req.session.isLoggedIn = false
-        req.session.user = null
+      if (!user) {
+        return res.redirect('/login')
       }
-      req.session.save(err => {
-        // Only redirect after finishing storing session to the database
-        // to make sure that the session has been created before navigating
-        // to the top page - so that the top page's logic that depends on
-        // the session will work as expected.
-        res.redirect('/')
-      })
+      bcrypt.compare(password, user.password)
+        .then(doMatch => {
+          // Authenticated successfully
+          if (doMatch) {
+            req.session.isLoggedIn = true
+            req.session.user = user
+            return req.session.save(err => {
+              // Only redirect after finishing storing session to the database
+              // to make sure that the session has been created before navigating
+              // to the top page - so that the top page's logic that depends on
+              // the session will work as expected.
+              res.redirect('/')
+            })
+          }
+
+          // Not authenticated, redirect to /login again
+          res.redirect('/login')
+        })
     })
     .catch(err => console.log(err))
 }
