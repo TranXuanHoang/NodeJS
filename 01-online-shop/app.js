@@ -64,8 +64,14 @@ app.use('/', (req, res, next) => {
 
 // Get user info from database
 app.use((req, res, next) => {
-  User.findById('5f3f350a5394a02da09c6139')
+  if (!req.session.user) {
+    return next()
+  }
+  User.findById(req.session.user._id)
     .then(user => {
+      // While the req.session.user is an object that contains only user data,
+      // the 'user' here is a Mongoose model containing not just user data,
+      // but also auto-generated methods a Mongoose model should have.
       req.user = user
     })
     .catch(err => console.log(err))
