@@ -8,12 +8,20 @@ exports.getLogin = (req, res, next) => {
   })
 }
 
+exports.getSignup = (req, res, next) => {
+  res.render('auth/signup', {
+    pageTitle: 'Signup',
+    path: '/signup',
+    isAuthenticated: false
+  })
+}
+
 exports.postLogin = (req, res, next) => {
   const { email, password } = req.body
 
-  User.findById('5f3f350a5394a02da09c6139')
+  User.findOne({ email: email })
     .then(user => {
-      if (email === user.email) {
+      if (user && email === user.email && password === user.password) {
         // Authenticated successfully
         req.session.isLoggedIn = true
         req.session.user = user
@@ -29,6 +37,26 @@ exports.postLogin = (req, res, next) => {
         // the session will work as expected.
         res.redirect('/')
       })
+    })
+    .catch(err => console.log(err))
+}
+
+exports.postSignup = (req, res, next) => {
+  const { email, password, confirmPassword } = req.body
+  User.findOne({ email: email })
+    .then(userDoc => {
+      if (userDoc) {
+        return res.redirect('/signup')
+      }
+      const user = new User({
+        email,
+        password,
+        cart: { items: [] }
+      })
+      return user.save()
+    })
+    .then(result => {
+      res.redirect('/login')
     })
     .catch(err => console.log(err))
 }

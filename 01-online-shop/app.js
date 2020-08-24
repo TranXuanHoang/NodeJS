@@ -94,18 +94,6 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 ).then(result => {
   console.log('Database Connected.')
-  User.findOne().then(user => {
-    if (!user) {
-      user = new User({
-        name: 'Hoang',
-        email: 'test@mail.com',
-        cart: {
-          items: []
-        }
-      })
-      user.save()
-    }
-  })
   app.listen(3000)
 }).catch(err => {
   console.log(err)
