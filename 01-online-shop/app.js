@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
+const csrf = require('csurf')
 
 const errorController = require('./controllers/error')
 const User = require('./models/user')
@@ -24,6 +25,10 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: 'sessions'
 })
+
+// Initialize CSRF protection with default saving token secret in req.session
+// https://www.npmjs.com/package/csurf
+const csrfProtection = csrf()
 
 // Set up EJS as template engine
 app.set('view engine', 'ejs')
@@ -53,6 +58,9 @@ app.use(session({
   store: store
 }))
 
+// Config CSRF protection
+app.use(csrfProtection)
+
 // Logout requests' info
 app.use('/', (req, res, next) => {
   console.log(`${req.method} ${req.url}`)
@@ -76,6 +84,15 @@ app.use((req, res, next) => {
     })
     .catch(err => console.log(err))
     .finally(() => next())
+})
+
+// Set available fields for view templates of every request
+app.use((req, res, next) => {
+  // Fields (data) of res.locals will be accessible to every view
+  // http://expressjs.com/en/api.html#res.locals
+  res.locals.isAuthenticated = req.session.isLoggedIn
+  res.locals.csrfToken = req.csrfToken()
+  next()
 })
 
 // Serve static contents

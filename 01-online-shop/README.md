@@ -25,6 +25,7 @@ The app uses the following 3rd-party packages
 | [express-session](https://www.npmjs.com/package/express-session) | `production` | Create and manage sessions and cookies |
 | [connect-mongodb-session](https://www.npmjs.com/package/connect-mongodb-session) | `production` | Lightweight MongoDB-based session store that will be used to store user sessions in a MongoDB database |
 | [bcryptjs](https://www.npmjs.com/package/bcryptjs) | `production` | Hash passwords using the widely supported [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) algorithm |
+| [csurf](https://www.npmjs.com/package/csurf) | `production` | Provide [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery) protection for Node.js app |
 
 ## Source Code
 
