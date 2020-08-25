@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const csrf = require('csurf')
+const flash = require('connect-flash')
 
 const errorController = require('./controllers/error')
 const User = require('./models/user')
@@ -60,6 +61,10 @@ app.use(session({
 
 // Config CSRF protection
 app.use(csrfProtection)
+
+// Config to save flash messages in the session
+// https://www.npmjs.com/package/connect-flash
+app.use(flash())
 
 // Logout requests' info
 app.use('/', (req, res, next) => {
