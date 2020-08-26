@@ -1,6 +1,28 @@
 const bcrypt = require('bcryptjs')
+const sendgridMail = require('@sendgrid/mail')
 
 const User = require('../models/user')
+
+// Method 1 for sending emails
+// Use a combination of 'nodemailer' and 'nodemailer-sendgrid-transport' as follows
+//
+// const nodemailer = require('nodemailer')
+// const sendgridTransport = require('nodemailer-sendgrid-transport')
+// const transporter = nodemailer.createTransport(sendgridTransport({
+//   auth: {
+//     api_key: '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'
+//   }
+// }));
+// transporter.sendMail({
+//   to: email,
+//   from: 'hoangtx.ict@gmail.com',
+//   subject: 'Signup succeeded!',
+//   html: '<h1>You successfully signed up!</h1>'
+// })
+
+// Method 2 for sending emails
+// Use '@sendgrid/mail'
+sendgridMail.setApiKey('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')
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error')
@@ -83,7 +105,20 @@ exports.postSignup = (req, res, next) => {
         })
         .then(result => {
           res.redirect('/login')
+          console.log(`Sending email to ${email}`)
+          return sendgridMail.send({
+            to: email,
+            from: 'hoangtx.ict@gmail.com',
+            subject: 'Signup succeeded!',
+            html: '<h1>You successfully signed up!</h1>'
+          })
+          .then(result => {
+            console.log(`After sending a request to send an email to ${email}`)
+            console.log(result)
+          })
+          .catch(err => console.log(err))
         })
+        .catch(err => console.log(err))
     })
     .catch(err => console.log(err))
 }

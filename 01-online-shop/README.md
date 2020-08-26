@@ -27,6 +27,9 @@ The app uses the following 3rd-party packages
 | [bcryptjs](https://www.npmjs.com/package/bcryptjs) | `production` | Hash passwords using the widely supported [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) algorithm |
 | [csurf](https://www.npmjs.com/package/csurf) | `production` | Provide [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery) protection for Node.js app |
 | [connect-flash](https://www.npmjs.com/package/connect-flash) | `production` | Store/retrieve messages in/from _flash_ area of _session_ - the _flash_ used in combination with _redirects_ ensuring that the message is available to the next page that is to be rendered |
+| [nodemailer](https://www.npmjs.com/package/nodemailer) | `production` | [`Homepage`](https://nodemailer.com/) Send emails from Node.js apps |
+| [nodemailer-sendgrid-transport](https://www.npmjs.com/package/nodemailer-sendgrid-transport) | `production` | Work in combination with [nodemailer](https://www.npmjs.com/package/nodemailer) to send emails through [SendGrid's Web API](https://sendgrid.com/docs/API_Reference/Web_API/mail.html) |
+| [@sendgrid/mail](https://www.npmjs.com/package/@sendgrid/mail) | `production` | [`@sendgrid/mail's Github repo`](https://github.com/sendgrid/sendgrid-nodejs/tree/main/packages/mail) Send emails from Node.js apps through [SendGrid v3 API](https://sendgrid.com/docs/API_Reference/api_v3.html) |
 
 ## Source Code
 
