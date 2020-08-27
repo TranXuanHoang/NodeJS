@@ -11,5 +11,7 @@ route.post('/signup', authController.postSignup)
 route.post('/logout', authController.postLogout)
 route.get('/reset', authController.getReset)
 route.post('/reset', authController.postReset)
+route.get('/reset/:token', authController.getNewPassword)
+route.post('/new-password', authController.postNewPassword)
 
 module.exports = route

@@ -174,14 +174,63 @@ exports.postReset = (req, res, next) => {
           subject: 'Password Reset',
           html: `
             <p>You requested a password reset</p>
-            <p>Go to <a href="http://localhost:300/reset/${token}">this page</a> to set a new password.</p>
+            <p>Go to <a href="http://localhost:3000/reset/${token}">this page</a> to set a new password.</p>
           `
         })
-        .then(result => {
-          console.log(`Sent a password reset guiding email to ${req.body.email}`)
-          console.log(`http://localhost:300/reset/${token}`)
-        })
+          .then(result => {
+            console.log(`Sent a password reset guiding email to ${req.body.email}`)
+            console.log(`http://localhost:3000/reset/${token}`)
+          })
       })
       .catch(err => console.log(err))
   })
+}
+
+exports.getNewPassword = (req, res, next) => {
+  const token = req.params.token
+  User.findOne({ resetToken: token, resetTokenExpiration: { $gt: Date.now() } })
+    .then(user => {
+      let message = req.flash('error')
+      console.log(message)
+      if (message.length > 0) {
+        message = message[0]
+      } else {
+        message = null
+      }
+      res.render('auth/new-password', {
+        path: '/new-password',
+        pageTitle: 'New Password',
+        errorMessage: message,
+        userId: user._id.toString(),
+        passwordToken: token
+      })
+    })
+    .catch(err => console.log(err))
+}
+
+exports.postNewPassword = (req, res, next) => {
+  const newPassword = req.body.password
+  const userId = req.body.userId
+  const passwordToken = req.body.passwordToken
+  let resetUser
+
+  User.findOne({
+    resetToken: passwordToken,
+    resetTokenExpiration: { $gt: Date.now() },
+    _id: userId
+  })
+    .then(user => {
+      resetUser = user
+      return bcrypt.hash(newPassword, 12)
+    })
+    .then(hashedPassword => {
+      resetUser.password = hashedPassword
+      resetUser.resetToken = undefined
+      resetUser.resetTokenExpiration = undefined
+      return resetUser.save()
+    })
+    .then(result => {
+      res.redirect('/login')
+    })
+    .catch(err => console.log(err))
 }
