@@ -55,20 +55,23 @@ exports.postEditProduct = (req, res, next) => {
 
   Product.findById(id)
     .then(product => {
+      if (product.userId.toString() !== req.user._id.toString()) {
+        return res.redirect('/')
+      }
       product.title = title
       product.price = price
       product.description = description
       product.imageUrl = imageUrl
       return product.save()
-    })
-    .then(result => {
-      res.redirect('/admin/products')
+        .then(result => {
+          res.redirect('/admin/products')
+        })
     })
     .catch(err => console.log(err))
 }
 
 exports.getProducts = (req, res, next) => {
-  Product.find()
+  Product.find({ userId: req.user._id })
     // To get only product's title and price; and relate the userId with User
     // object in which only user's name is fetched use the following 2 methods
     // .select('title price -_id')
@@ -94,7 +97,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const productId = req.body.productId
-  Product.findByIdAndRemove(productId)
+  Product.deleteOne({ _id: productId, userId: req.user._id })
     .then(result => {
       res.redirect('/admin/products')
     })
