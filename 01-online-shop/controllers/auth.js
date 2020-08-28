@@ -2,6 +2,7 @@ const crypto = require('crypto')
 
 const bcrypt = require('bcryptjs')
 const sendgridMail = require('@sendgrid/mail')
+const { validationResult } = require('express-validator/check')
 
 const User = require('../models/user')
 
@@ -89,38 +90,37 @@ exports.postLogin = (req, res, next) => {
 }
 
 exports.postSignup = (req, res, next) => {
-  const { email, password, confirmPassword } = req.body
-  User.findOne({ email: email })
-    .then(userDoc => {
-      if (userDoc) {
-        req.flash('error', `E-Mail '${email}' exists already. Please pick a different one.`)
-        return res.redirect('/signup')
-      }
-      return bcrypt.hash(password, 12)
-        .then(hashedPassword => {
-          const user = new User({
-            email,
-            password: hashedPassword,
-            cart: { items: [] }
-          })
-          return user.save()
-        })
-        .then(result => {
-          res.redirect('/login')
-          console.log(`Sending email to ${email}`)
-          return sendgridMail.send({
-            to: email,
-            from: 'hoangtx.ict@gmail.com',
-            subject: 'Signup succeeded!',
-            html: '<h1>You successfully signed up!</h1>'
-          })
-            .then(result => {
-              console.log(`After sending a request to send an email to ${email}`)
-              console.log(result)
-            })
-            .catch(err => console.log(err))
-        })
-        .catch(err => console.log(err))
+  const { email, password } = req.body
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    console.log(errors.array())
+    return res.status(422).render('auth/signup', {
+      pageTitle: 'Signup',
+      path: '/signup',
+      errorMessage: errors.array()[0].msg
+    })
+  }
+  bcrypt.hash(password, 12)
+    .then(hashedPassword => {
+      const user = new User({
+        email,
+        password: hashedPassword,
+        cart: { items: [] }
+      })
+      return user.save()
+    })
+    .then(result => {
+      res.redirect('/login')
+      console.log(`Sending email to ${email}`)
+      return sendgridMail.send({
+        to: email,
+        from: 'hoangtx.ict@gmail.com',
+        subject: 'Signup succeeded!',
+        html: '<h1>You successfully signed up!</h1>'
+      }).then(result => {
+        console.log(`After sending a request to send an email to ${email}`)
+        console.log(result)
+      })
     })
     .catch(err => console.log(err))
 }
