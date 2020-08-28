@@ -42,6 +42,7 @@ Switch the source code to versions described below to view different implementat
 | [v2.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v2.0.0) | Saving app data in a SQL database ([MySQL](https://www.mysql.com/)) |
 | [v3.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v3.0.0) | Saving app data in a NoSQL database ([MongoDB](https://www.mongodb.com/)) and using [MongoDB Driver](https://github.com/mongodb/node-mongodb-native) to connect and interact with the database |
 | [v4.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v4.0.0) | Saving app data in a NoSQL [MongoDB](https://www.mongodb.com/) while using [Mongoose](https://mongoosejs.com/) to avoid boilerplate code when just using [MongoDB Driver](https://github.com/mongodb/node-mongodb-native) |
+| [v5.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v5.0.0) | Adding user authentication, user authorization and form inputs validation |
 
 ## SQL Database Model
 

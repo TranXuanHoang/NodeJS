@@ -1,10 +1,16 @@
+const { validationResult } = require('express-validator')
+
 const Product = require('../models/product')
 
 exports.getAddProduct = (req, res) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
-    editing: false
+    editing: false,
+    hasError: false,
+    errorMessage: undefined,
+    product: { title: '', imageUrl: '', price: undefined, description: '' },
+    validationErrors: []
   })
 }
 
@@ -14,6 +20,20 @@ exports.postAddProduct = (req, res) => {
   const price = req.body.price
   const description = req.body.description
   const userId = req.user // another way to write userId = req.user._id
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    console.log(errors.array())
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      hasError: true,
+      errorMessage: errors.array()[0].msg,
+      product: { title, imageUrl, price, description },
+      validationErrors: errors.array()
+    })
+  }
 
   const product = new Product({ title, price, description, imageUrl, userId })
   product.save()
@@ -40,7 +60,10 @@ exports.getEditProduct = (req, res, next) => {
         pageTitle: 'Edit Product',
         path: '/admin/edit-product',
         editing: editMode,
-        product: product
+        product: product,
+        hasError: false,
+        errorMessage: undefined,
+        validationErrors: []
       })
     })
     .catch(err => console.log(err))
@@ -52,6 +75,23 @@ exports.postEditProduct = (req, res, next) => {
   const price = req.body.price
   const imageUrl = req.body.imageUrl
   const description = req.body.description
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    console.log(errors.array())
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: true,
+      hasError: true,
+      errorMessage: errors.array()[0].msg,
+      product: {
+        title, imageUrl, price, description,
+        _id: id // Need to pass product._id for editing form
+      },
+      validationErrors: errors.array()
+    })
+  }
 
   Product.findById(id)
     .then(product => {
