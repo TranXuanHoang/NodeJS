@@ -11,10 +11,13 @@ route.get('/signup', authController.getSignup)
 
 route.post('/login',
   [
-    body('email').isEmail().withMessage('Please enter a valid email'),
+    body('email')
+      .isEmail().withMessage('Please enter a valid email')
+      .normalizeEmail({ gmail_remove_dots: false }),
     body('password', 'Please enter a valid password.')
       .isLength({ min: 5 })
       .isAlphanumeric()
+      .trim()
   ],
   authController.postLogin
 )
@@ -30,16 +33,20 @@ route.post('/signup',
               return Promise.reject(`E-Mail '${value}' exists already. Please pick a different one.`)
             }
           })
-      }),
+      })
+      .normalizeEmail({ gmail_remove_dots: false }),
     body('password', 'Please enter a password with only numbers and text and at least 5 characters.')
       .isLength({ min: 5 })
-      .isAlphanumeric(),
-    body('confirmPassword').custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error('Passwords have to match!')
-      }
-      return true
-    })
+      .isAlphanumeric()
+      .trim(),
+    body('confirmPassword')
+      .trim()
+      .custom((value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error('Passwords have to match!')
+        }
+        return true
+      })
   ],
   authController.postSignup
 )
