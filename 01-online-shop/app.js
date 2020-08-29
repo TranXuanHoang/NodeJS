@@ -7,6 +7,7 @@ const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const csrf = require('csurf')
 const flash = require('connect-flash')
+const multer = require('multer')
 
 const errorController = require('./controllers/error')
 const User = require('./models/user')
@@ -31,12 +32,35 @@ const store = new MongoDBStore({
 // https://www.npmjs.com/package/csurf
 const csrfProtection = csrf()
 
+// Define storage for saving uploaded files
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images')
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname)
+  }
+})
+
+// Define a filter to accept specific types of uploaded files
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg'
+    || file.mimetype === 'image/jpeg' || file.mimetype === 'image/svg') {
+    // Accept file whose type is either png/jpg/jpeg/svg
+    cb(null, true)
+  } else {
+    // Not accept file with other extensions
+    cb(null, false)
+  }
+}
+
 // Set up EJS as template engine
 app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 // Parse the request body so that the following handlers can directly read the body
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'))
 
 // Config session
 app.use(session({
@@ -71,6 +95,9 @@ app.use('/', (req, res, next) => {
   console.log(`${req.method} ${req.url}`)
   if (req.method === 'POST') {
     console.log(req.body)
+    if (req.file) {
+      console.log(req.file)
+    }
   }
   next()
 })

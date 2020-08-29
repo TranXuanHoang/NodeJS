@@ -31,6 +31,7 @@ The app uses the following 3rd-party packages
 | [nodemailer-sendgrid-transport](https://www.npmjs.com/package/nodemailer-sendgrid-transport) | `production` | Work in combination with [nodemailer](https://www.npmjs.com/package/nodemailer) to send emails through [SendGrid's Web API](https://sendgrid.com/docs/API_Reference/Web_API/mail.html) |
 | [@sendgrid/mail](https://www.npmjs.com/package/@sendgrid/mail) | `production` | [`@sendgrid/mail's Github repo`](https://github.com/sendgrid/sendgrid-nodejs/tree/main/packages/mail) Send emails from Node.js apps through [SendGrid v3 API](https://sendgrid.com/docs/API_Reference/api_v3.html) |
 | [express-validator](https://www.npmjs.com/package/express-validator) | `production` | [`Homepage`](https://express-validator.github.io/) Validate and sanitize user inputs |
+| [multer](https://www.npmjs.com/package/multer) | `production` | Handle forms whose `enctype` is `multipart/form-data` which is primarily used in file uploading |
 
 ## Source Code
 
