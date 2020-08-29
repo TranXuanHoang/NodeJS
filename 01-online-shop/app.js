@@ -75,6 +75,18 @@ app.use('/', (req, res, next) => {
   next()
 })
 
+// Serve static contents
+app.use(express.static(path.join(__dirname, 'public')))
+
+// Set available fields for view templates of every request
+app.use((req, res, next) => {
+  // Fields (data) of res.locals will be accessible to every view
+  // http://expressjs.com/en/api.html#res.locals
+  res.locals.isAuthenticated = req.session.isLoggedIn
+  res.locals.csrfToken = req.csrfToken()
+  next()
+})
+
 // Get user info from database
 app.use((req, res, next) => {
   if (!req.session.user) {
@@ -87,29 +99,35 @@ app.use((req, res, next) => {
       // but also auto-generated methods a Mongoose model should have.
       req.user = user
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      // Inside async code (like this catch), we shouldn't use
+      //     throw new Error(err)   // only use throw in sync code
+      // as this will not reach the error handler middleware
+      //     app.use((error, req, res, next) => { ...})
+      // Instead, use next() like below
+      next(new Error(err))
+    })
     .finally(() => next())
 })
-
-// Set available fields for view templates of every request
-app.use((req, res, next) => {
-  // Fields (data) of res.locals will be accessible to every view
-  // http://expressjs.com/en/api.html#res.locals
-  res.locals.isAuthenticated = req.session.isLoggedIn
-  res.locals.csrfToken = req.csrfToken()
-  next()
-})
-
-// Serve static contents
-app.use(express.static(path.join(__dirname, 'public')))
 
 // Handle app's routes
 app.use('/admin', adminRoutes)
 app.use(shopRoutes)
 app.use(authRoutes)
 
-// Handle 404 Not Found
-app.use(errorController.get404)
+// Handle errors
+// https://expressjs.com/en/guide/error-handling.html
+app.get('/500', errorController.get500) // 'GET /500 Error'
+app.use(errorController.get404) // '404 Page Not Found'
+app.use((error, req, res, next) => {
+  // Avoid use redirect() as this will lead to an infinite loop of
+  // redirecting to /500 when error occurred
+  // res.redirect('/500')
+  res.status(500).render('500', {
+    pageTitle: 'Error!',
+    path: null
+  })
+})
 
 mongoose.connect(
   MONGODB_URI,

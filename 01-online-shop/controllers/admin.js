@@ -14,7 +14,7 @@ exports.getAddProduct = (req, res) => {
   })
 }
 
-exports.postAddProduct = (req, res) => {
+exports.postAddProduct = (req, res, next) => {
   const title = req.body.title
   const imageUrl = req.body.imageUrl
   const price = req.body.price
@@ -40,7 +40,12 @@ exports.postAddProduct = (req, res) => {
     .then(result => {
       res.redirect('/admin/products')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('admin.postAddProduct failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.getEditProduct = (req, res, next) => {
@@ -66,7 +71,12 @@ exports.getEditProduct = (req, res, next) => {
         validationErrors: []
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('admin.getEditProduct failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.postEditProduct = (req, res, next) => {
@@ -107,7 +117,12 @@ exports.postEditProduct = (req, res, next) => {
           res.redirect('/admin/products')
         })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('admin.postEditProduct failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.getProducts = (req, res, next) => {
@@ -132,7 +147,12 @@ exports.getProducts = (req, res, next) => {
         prods: products
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('admin.getProducts failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.postDeleteProduct = (req, res, next) => {
@@ -141,5 +161,10 @@ exports.postDeleteProduct = (req, res, next) => {
     .then(result => {
       res.redirect('/admin/products')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('admin.postDeleteProduct failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }

@@ -111,7 +111,12 @@ exports.postLogin = (req, res, next) => {
           })
         })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('auth.postLogin failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.postSignup = (req, res, next) => {
@@ -149,7 +154,12 @@ exports.postSignup = (req, res, next) => {
         console.log(result)
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('auth.postSignup failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.postLogout = (req, res, next) => {
@@ -209,7 +219,12 @@ exports.postReset = (req, res, next) => {
             console.log(`http://localhost:3000/reset/${token}`)
           })
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log('auth.postReset failed')
+        const error = new Error(err)
+        error.httpStatusCode = 500
+        return next(error)
+      })
   })
 }
 
@@ -232,7 +247,12 @@ exports.getNewPassword = (req, res, next) => {
         passwordToken: token
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('auth.getNewPassword failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.postNewPassword = (req, res, next) => {
@@ -259,5 +279,10 @@ exports.postNewPassword = (req, res, next) => {
     .then(result => {
       res.redirect('/login')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log('auth.postNewPassword failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
