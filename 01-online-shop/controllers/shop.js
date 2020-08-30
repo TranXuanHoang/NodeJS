@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 const Product = require('../models/product')
 const Order = require('../models/order')
 
@@ -147,6 +150,53 @@ exports.getOrders = (req, res, next) => {
     })
     .catch(err => {
       console.log('shop.getOrders failed')
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
+}
+
+exports.getInvoice = (req, res, next) => {
+  const orderId = req.params.orderId
+  Order.findById(orderId)
+    .then(order => {
+      if (!order) {
+        return next(new Error('No order found.'))
+      }
+      if (order.user.userId.toString() !== req.user._id.toString()) {
+        return next(new Error('Unauthorize'))
+      }
+      const invoiceName = `invoice-${orderId}.pdf`
+      const invoicePath = path.join('data', 'invoices', invoiceName)
+      // Method 1 (Preload file): read the entire file content with fs.readFile()
+      //    and return the file to client with res.send().
+      //    This is not a good practice as we need memory to
+      //    load the entire file before sending it. Small file
+      //    is OK, but big files and number of request is big
+      //    will lead to bad performance
+      // fs.readFile(invoicePath, (err, data) => {
+      //   if (err) {
+      //     return next(err)
+      //   }
+      //   res.setHeader('Content-Type', 'application/pdf')
+      //   // Set the following header to allow user to download invoice when click 'Invoice' link
+      //   // res.setHeader('Content-Disposition', `attachment; filename="${invoiceName}"`)
+      //   res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`)
+      //   res.send(data)
+      // })
+
+      // Method 2 (Stream file): Pipe the file content which is read in as a stream of chunk data
+      //    to the writable 'res'. The 'res' is then streamed to the client browser
+      //    which will read these chunks of file on fly and when done the browser will
+      //    assemble them to create the original file. This method is a huge advancetage
+      //    because the app will not need to preload the entire file into memory.
+      const file = fs.createReadStream(invoicePath)
+      res.setHeader('Content-Type', 'application/pdf')
+      res.setHeader('Content-Disposition', `inline; filename="${invoiceName}"`)
+      file.pipe(res)
+    })
+    .catch(err => {
+      console.log('shop.getInvoice failed')
       const error = new Error(err)
       error.httpStatusCode = 500
       return next(error)
