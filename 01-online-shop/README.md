@@ -47,6 +47,7 @@ Switch the source code to versions described below to view different implementat
 | [v5.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v5.0.0) | Adding user authentication, user authorization and form inputs validation |
 | [v6.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v6.0.0) | Handling errors |
 | [v7.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.0.0) | Allowing product image uploads and invoice PDF files downloads |
+| [v7.1.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.1.0) | Adding pagination to the top and products pages |
 
 ## SQL Database Model
 
