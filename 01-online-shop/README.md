@@ -46,6 +46,7 @@ Switch the source code to versions described below to view different implementat
 | [v4.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v4.0.0) | Saving app data in a NoSQL [MongoDB](https://www.mongodb.com/) while using [Mongoose](https://mongoosejs.com/) to avoid boilerplate code when just using [MongoDB Driver](https://github.com/mongodb/node-mongodb-native) |
 | [v5.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v5.0.0) | Adding user authentication, user authorization and form inputs validation |
 | [v6.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v6.0.0) | Handling errors |
+| [v7.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.0.0) | Allowing product image uploads and invoice PDF files downloads |
 
 ## SQL Database Model
 

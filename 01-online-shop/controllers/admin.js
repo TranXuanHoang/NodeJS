@@ -1,9 +1,7 @@
-const path = require('path')
-const fs = require('fs')
-
 const { validationResult } = require('express-validator')
 
 const Product = require('../models/product')
+const fileHelper = require('../util/file')
 
 exports.getAddProduct = (req, res) => {
   res.render('admin/edit-product', {
@@ -129,15 +127,7 @@ exports.postEditProduct = (req, res, next) => {
       product.description = description
       if (image) {
         // Delete the current image
-        const currentImageUrl = product.imageUrl
-        const deleteFilePath = path.join(__dirname, '..', currentImageUrl)
-        fs.unlink(deleteFilePath, (err) => {
-          if (err) {
-            console.log(`Failed to delete old image: ${deleteFilePath}`)
-            console.log(err)
-          }
-          console.log(`Deleted old image: ${deleteFilePath}`)
-        })
+        fileHelper.deleteFile(product.imageUrl)
 
         // Set imageUrl to the new image's path
         product.imageUrl = image.path
@@ -187,7 +177,18 @@ exports.getProducts = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const productId = req.body.productId
-  Product.deleteOne({ _id: productId, userId: req.user._id })
+
+  Product.findById(productId)
+    .then(product => {
+      if (!product) {
+        return next(new Error('Product not found!'))
+      }
+      // Delete product image file
+      fileHelper.deleteFile(product.imageUrl)
+
+      // Delete product data from 'products' collection in the database
+      return Product.deleteOne({ _id: productId, userId: req.user._id })
+    })
     .then(result => {
       res.redirect('/admin/products')
     })
