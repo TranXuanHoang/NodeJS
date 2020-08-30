@@ -1,3 +1,6 @@
+const path = require('path')
+const fs = require('fs')
+
 const { validationResult } = require('express-validator')
 
 const Product = require('../models/product')
@@ -16,10 +19,22 @@ exports.getAddProduct = (req, res) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title
-  const imageUrl = req.body.imageUrl
+  const image = req.file
   const price = req.body.price
   const description = req.body.description
   const userId = req.user // another way to write userId = req.user._id
+
+  if (!image) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      hasError: true,
+      errorMessage: 'Attached file is not an allowed image.',
+      product: { title, price, description },
+      validationErrors: []
+    })
+  }
 
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
@@ -30,11 +45,12 @@ exports.postAddProduct = (req, res, next) => {
       editing: false,
       hasError: true,
       errorMessage: errors.array()[0].msg,
-      product: { title, imageUrl, price, description },
+      product: { title, price, description },
       validationErrors: errors.array()
     })
   }
 
+  const imageUrl = image.path
   const product = new Product({ title, price, description, imageUrl, userId })
   product.save()
     .then(result => {
@@ -83,7 +99,7 @@ exports.postEditProduct = (req, res, next) => {
   const id = req.body.id
   const title = req.body.title
   const price = req.body.price
-  const imageUrl = req.body.imageUrl
+  const image = req.file
   const description = req.body.description
 
   const errors = validationResult(req)
@@ -96,7 +112,7 @@ exports.postEditProduct = (req, res, next) => {
       hasError: true,
       errorMessage: errors.array()[0].msg,
       product: {
-        title, imageUrl, price, description,
+        title, price, description,
         _id: id // Need to pass product._id for editing form
       },
       validationErrors: errors.array()
@@ -111,7 +127,21 @@ exports.postEditProduct = (req, res, next) => {
       product.title = title
       product.price = price
       product.description = description
-      product.imageUrl = imageUrl
+      if (image) {
+        // Delete the current image
+        const currentImageUrl = product.imageUrl
+        const deleteFilePath = path.join(__dirname, '..', currentImageUrl)
+        fs.unlink(deleteFilePath, (err) => {
+          if (err) {
+            console.log(`Failed to delete old image: ${deleteFilePath}`)
+            console.log(err)
+          }
+          console.log(`Deleted old image: ${deleteFilePath}`)
+        })
+
+        // Set imageUrl to the new image's path
+        product.imageUrl = image.path
+      }
       return product.save()
         .then(result => {
           res.redirect('/admin/products')

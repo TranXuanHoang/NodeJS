@@ -104,6 +104,7 @@ app.use('/', (req, res, next) => {
 
 // Serve static contents
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 // Set available fields for view templates of every request
 app.use((req, res, next) => {

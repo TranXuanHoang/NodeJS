@@ -12,9 +12,6 @@ const PRODUCT_DATA_VALIDATOR = [
     .notEmpty().withMessage('Please provide a title.')
     .isString().withMessage('Title should be a string.')
     .isLength({ min: 3 }).withMessage('Please enter a title with at least 3 characters.'),
-  body('imageUrl', 'Please enter a valid image ULR.')
-    .trim()
-    .isURL(),
   body('price')
     .notEmpty().withMessage('Please specify price.')
     .custom((value, { req }) => {
