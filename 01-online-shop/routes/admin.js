@@ -41,7 +41,7 @@ route.post('/edit-product', isAuth,
   adminController.postEditProduct
 )
 
-route.post('/delete-product', isAuth, adminController.postDeleteProduct)
+route.delete('/product/:productId', isAuth, adminController.deleteProduct)
 route.get('/products', isAuth, adminController.getProducts)
 
 module.exports = route

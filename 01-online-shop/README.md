@@ -48,6 +48,7 @@ Switch the source code to versions described below to view different implementat
 | [v6.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v6.0.0) | Handling errors |
 | [v7.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.0.0) | Allowing product image uploads and invoice PDF files downloads |
 | [v7.1.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.1.0) | Adding pagination to the top and products pages |
+| [v7.2.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.2.0) | Deleting products using client-side JavaScript async requests |
 
 ## SQL Database Model
 
