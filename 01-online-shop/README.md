@@ -32,6 +32,7 @@ The app uses the following 3rd-party packages
 | [@sendgrid/mail](https://www.npmjs.com/package/@sendgrid/mail) | `production` | [`@sendgrid/mail's Github repo`](https://github.com/sendgrid/sendgrid-nodejs/tree/main/packages/mail) Send emails from Node.js apps through [SendGrid v3 API](https://sendgrid.com/docs/API_Reference/api_v3.html) |
 | [express-validator](https://www.npmjs.com/package/express-validator) | `production` | [`Homepage`](https://express-validator.github.io/) Validate and sanitize user inputs |
 | [multer](https://www.npmjs.com/package/multer) | `production` | Handle forms whose `enctype` is `multipart/form-data` which is primarily used in file uploading |
+| [pdfkit](https://www.npmjs.com/package/pdfkit) | `production` | [`Homepage`](https://pdfkit.org/) Generate PDF documents (order invoices) dynamically |
 
 ## Source Code
 
