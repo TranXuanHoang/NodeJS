@@ -1,10 +1,177 @@
 <%- include('../includes/head') %>
+  <link rel="stylesheet" href="/css/cart.css">
+  <% if (client_secret && !sessionId) { %>
+    <link rel="stylesheet" href="/css/payment.css">
+  <% } %>
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body>
   <%- include('../includes/navigation') %>
 
   <main>
-    Checkout Page Content
+    <ul class="cart__item-list">
+      <% products.forEach(p => { %>
+      <li class="cart__item">
+        <h1><%= p.productId.title %></h1>
+        <h2>Quantity: <%= p.quantity %></h2>
+      </li>
+      <% }) %>
+    </ul>
+    <div class="centered">
+      <h2>Total: $<%= totalSum %></h2>
+    </div>
+    <!-- Option 1: Navigate to Stripe's credit card input and payment page -->
+    <% if (sessionId) { %>
+      <div class="centered">
+        <button id="order-btn" class="btn">ORDER</button>
+        <script>
+          var stripe = Stripe('pk_test_51HMZGiKd6SYxphgZ0TnTRBJaXJ0eHlmGRTat8l25HTSv74TnirE61pBdfo5FYwSJckcYrf5LV3P89yaKjnYl7UAe008LTHUP0c')
+          var orderBtn = document.getElementById('order-btn')
+          orderBtn.addEventListener('click', () => {
+            stripe.redirectToCheckout({
+              sessionId: '<%= sessionId %>'
+            }).then(function (result) {
+              // If `redirectToCheckout` fails due to a browser or network
+              // error, display the localized error message to your customer
+              // using `result.error.message`.
+              console.log(result)
+            })
+          })
+        </script>
+      </div>
+    <% } %>
+
+    <!-- Option 2: Credit cart input form inside this checkout page -->
+    <% if (client_secret) { %>
+      <div class="sr-root">
+        <div class="sr-main">
+          <form id="payment-form" class="sr-payment-form">
+            <div class="sr-combo-inputs-row">
+              <div class="sr-input sr-card-element" id="card-element"></div>
+            </div>
+            <div class="sr-field-error" id="card-errors" role="alert"></div>
+            <button id="submit">
+              <div class="spinner hidden" id="spinner"></div>
+              <span id="button-text">Pay</span><span id="order-amount"></span>
+            </button>
+          </form>
+          <div class="sr-result hidden">
+            <p>Payment completed<br /></p>
+            <pre>
+              <code></code>
+            </pre>
+          </div>
+        </div>
+      </div>
+      <script>
+        // Logic for payments
+        var setupElements = function () {
+          var stripe = Stripe('pk_test_51HMZGiKd6SYxphgZ0TnTRBJaXJ0eHlmGRTat8l25HTSv74TnirE61pBdfo5FYwSJckcYrf5LV3P89yaKjnYl7UAe008LTHUP0c')
+          var elements = stripe.elements()
+          var style = {
+            base: {
+              color: "#32325d",
+              fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+              fontSmoothing: "antialiased",
+              fontSize: "16px",
+              "::placeholder": {
+                color: "#aab7c4"
+              }
+            },
+            invalid: {
+              color: "#fa755a",
+              iconColor: "#fa755a"
+            }
+          }
+          var card = elements.create("card", { style: style })
+          card.mount("#card-element")
+
+          return {
+            stripe: stripe,
+            card: card,
+            clientSecret: '<%= client_secret %>'
+          }
+        }
+
+        var pay = function (stripe, card, clientSecret) {
+          changeLoadingState(true)
+
+          // Initiate the payment.
+          // If authentication is required, confirmCardPayment will automatically display a modal
+          stripe
+            .confirmCardPayment(clientSecret, {
+              payment_method: {
+                card: card
+              }
+            })
+            .then(function (result) {
+              if (result.error) {
+                // Show error to your customer
+                showError(result.error.message)
+              } else {
+                // The payment has been processed!
+                orderComplete(stripe, clientSecret)
+                window.location.replace('/checkout/success')
+              }
+            })
+        }
+
+        /* ------- Post-payment helpers ------- */
+        /* Shows a success / error message when the payment is complete */
+        var orderComplete = function (stripe, clientSecret) {
+          // Just for the purpose of the sample, show the PaymentIntent response object
+          stripe.retrievePaymentIntent(clientSecret).then(function (result) {
+            var paymentIntent = result.paymentIntent;
+            var paymentIntentJson = JSON.stringify(paymentIntent, null, 2)
+
+            document.querySelector(".sr-payment-form").classList.add("hidden")
+            document.querySelector("pre").textContent = paymentIntentJson;
+
+            document.querySelector(".sr-result").classList.remove("hidden")
+            setTimeout(function () {
+              document.querySelector(".sr-result").classList.add("expand")
+            }, 200)
+
+            changeLoadingState(false)
+          })
+        }
+
+        var showError = function (errorMsgText) {
+          changeLoadingState(false)
+          var errorMsg = document.querySelector(".sr-field-error")
+          errorMsg.textContent = errorMsgText;
+          setTimeout(function () {
+            errorMsg.textContent = "";
+          }, 4000)
+        }
+
+        // Show a spinner on payment submission
+        var changeLoadingState = function (isLoading) {
+          if (isLoading) {
+            document.querySelector("button").disabled = true;
+            document.querySelector("#spinner").classList.remove("hidden")
+            document.querySelector("#button-text").classList.add("hidden")
+          } else {
+            document.querySelector("button").disabled = false;
+            document.querySelector("#spinner").classList.add("hidden")
+            document.querySelector("#button-text").classList.remove("hidden")
+          }
+        }
+
+        Promise.resolve(setupElements())
+          .then(function ({ stripe, card, clientSecret }) {
+            document.querySelector("button").disabled = false;
+
+            // Handle form submission.
+            var form = document.getElementById("payment-form")
+            form.addEventListener("submit", function (event) {
+              event.preventDefault()
+              // Initiate payment when the submit button is clicked
+              pay(stripe, card, clientSecret)
+            })
+          })
+      </script>
+    <% } %>
   </main>
 <%- include('../includes/end') %>

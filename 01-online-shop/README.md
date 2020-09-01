@@ -6,6 +6,10 @@
 
 Create an online shopping website with [Node.js](https://nodejs.org/) and [Express.js](https://expressjs.com/).
 
+<p align="center">
+  <img src="./docs/AppSnapshot.gif" width="70%"/>
+</p>
+
 ## 3rd-Party Packages
 
 The app uses the following 3rd-party packages
@@ -33,6 +37,7 @@ The app uses the following 3rd-party packages
 | [express-validator](https://www.npmjs.com/package/express-validator) | `production` | [`Homepage`](https://express-validator.github.io/) Validate and sanitize user inputs |
 | [multer](https://www.npmjs.com/package/multer) | `production` | Handle forms whose `enctype` is `multipart/form-data` which is primarily used in file uploading |
 | [pdfkit](https://www.npmjs.com/package/pdfkit) | `production` | [`Homepage`](https://pdfkit.org/) Generate PDF documents (order invoices) dynamically |
+| [stripe](https://www.npmjs.com/package/stripe) | `production` | [`Homepage`](https://stripe.com/) Handle online payments when making orders - checkout step |
 
 ## Source Code
 
@@ -49,6 +54,7 @@ Switch the source code to versions described below to view different implementat
 | [v7.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.0.0) | Allowing product image uploads and invoice PDF files downloads |
 | [v7.1.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.1.0) | Adding pagination to the top and products pages |
 | [v7.2.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.2.0) | Deleting products using client-side JavaScript async requests |
+| [v7.3.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.3.0) | Adding payments |
 
 ## SQL Database Model
 
