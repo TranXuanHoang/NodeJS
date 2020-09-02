@@ -11,3 +11,4 @@ The app uses the following 3rd-party packages
 | [express](https://www.npmjs.com/package/express) | `production` | Provide a web framework while using [Node.js](https://nodejs.org/) |
 | [body-parser](https://www.npmjs.com/package/body-parser) | `production` | Parse incoming request bodies in a middleware before the request handlers |
 | [nodemon](https://www.npmjs.com/package/nodemon) | `dev` | Auto reload app when making any changes to source code |
+| [express-validator](https://www.npmjs.com/package/express-validator) | `production` | [`Homepage`](https://express-validator.github.io/) Validate and sanitize user inputs |

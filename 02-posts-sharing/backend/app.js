@@ -17,6 +17,15 @@ app.use((req, res, next) => {
   next()
 })
 
+// Log the request information for debugging purpose
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`)
+  if (!(Object.keys(req.body).length === 0 && req.body.constructor === Object)) {
+    console.log(req.body)
+  }
+  next()
+})
+
 app.use('/feed', feedRoutes)
 
 app.listen(8080)
