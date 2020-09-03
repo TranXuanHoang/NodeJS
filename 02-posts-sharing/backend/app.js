@@ -1,3 +1,5 @@
+const path = require('path')
+
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -9,6 +11,9 @@ const app = express()
 // Parse incoming request body to JSON
 // app.use(bodyParser.urlencoded()) // Content-Type: x-www-form-urlencoded
 app.use(bodyParser.json()) // Content-Type: application/json
+
+// Serve static images
+app.use('/images', express.static(path.join(__dirname, 'images')))
 
 // Config CORS
 app.use((req, res, next) => {
@@ -28,6 +33,16 @@ app.use((req, res, next) => {
 })
 
 app.use('/feed', feedRoutes)
+
+// Handle errors
+app.use((error, req, res, next) => {
+  console.log(error)
+  const status = error.statusCode || 500
+  const message = error.message
+  res.status(status).json({
+    message
+  })
+})
 
 // MongoDB connection uri
 const db_username = 'node_app_user'

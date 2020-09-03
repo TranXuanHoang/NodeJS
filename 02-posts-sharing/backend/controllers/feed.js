@@ -22,10 +22,10 @@ exports.getPosts = (req, res, next) => {
 exports.createPost = (req, res, next) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
-    return res.status(422).json({
-      message: 'Validation failed, entered data is incorrect.',
-      errors: errors.array()
-    })
+    // Throw an error so that the control flow will reach to the error handler middleware
+    const error = new Error('Validation failed, entered data is incorrect.')
+    error.statusCode = 422
+    throw error
   }
   const { title, content } = req.body
   const post = new Post({
@@ -44,5 +44,11 @@ exports.createPost = (req, res, next) => {
         post: result
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      // Set error status code and pass it to the error handler middleware
+      if (!err.statusCode) {
+        err.statusCode = 500
+      }
+      next(err)
+    })
 }
