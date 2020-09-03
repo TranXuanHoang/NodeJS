@@ -3,14 +3,41 @@ const path = require('path')
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const multer = require('multer')
+const { v4: uuidv4 } = require('uuid')
 
 const feedRoutes = require('./routes/feed')
 
 const app = express()
 
+// Define storage for saving uploaded files
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images')
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${uuidv4()}-${file.originalname}`)
+  }
+})
+
+// Define a filter to accept specific types of uploaded files
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/png' || file.mimetype === 'image/jpg'
+    || file.mimetype === 'image/jpeg' || file.mimetype === 'image/svg') {
+    // Accept file whose type is either png/jpg/jpeg/svg
+    cb(null, true)
+  } else {
+    // Not accept file with other extensions
+    cb(null, false)
+  }
+}
+
 // Parse incoming request body to JSON
 // app.use(bodyParser.urlencoded()) // Content-Type: x-www-form-urlencoded
 app.use(bodyParser.json()) // Content-Type: application/json
+
+// Parse, filter and save images
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'))
 
 // Serve static images
 app.use('/images', express.static(path.join(__dirname, 'images')))

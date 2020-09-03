@@ -13,3 +13,5 @@ The app uses the following 3rd-party packages
 | [nodemon](https://www.npmjs.com/package/nodemon) | `dev` | Auto reload app when making any changes to source code |
 | [express-validator](https://www.npmjs.com/package/express-validator) | `production` | [`Homepage`](https://express-validator.github.io/) Validate and sanitize user inputs |
 | [mongoose](https://www.npmjs.com/package/mongoose) | `production` | [`Homepage`](https://mongoosejs.com/) Model app data and handle boilerplate queries and logic code when working with [MongoDB](https://www.mongodb.com/) - usually refered as `ODM` _Object Document Modeling_. |
+| [multer](https://www.npmjs.com/package/multer) | `production` | Handle forms whose `enctype` is `multipart/form-data` which is primarily used in file uploading |
+| [uuid](https://www.npmjs.com/package/uuid) | `production` | Generate [`Universally Unique IDentifier (UUID)`](https://www.ietf.org/rfc/rfc4122.txt) that can be used in naming uploaded image files |

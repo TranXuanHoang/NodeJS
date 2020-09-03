@@ -106,6 +106,10 @@ class Feed extends Component {
       editLoading: true
     });
     // Set up data (with image!)
+    const formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('content', postData.content);
+    formData.append('image', postData.image);
     let url = 'http://localhost:8080/feed/post';
     let method = 'POST';
     if (this.state.editPost) {
@@ -114,13 +118,14 @@ class Feed extends Component {
 
     fetch(url, {
       method: method,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        title: postData.title,
-        content: postData.content
-      })
+      // As we need to send image data, we cannot use
+      // 'Content-Type' of 'application/json' here. Instead, we use
+      // a FormData object that will automatically set the 'Content-Type'
+      // as 'multipart/form-data'
+      // headers: {
+      //   'Content-Type': 'application/json'
+      // },
+      body: formData
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
