@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 
 const feedRoutes = require('./routes/feed')
 
@@ -28,4 +29,18 @@ app.use((req, res, next) => {
 
 app.use('/feed', feedRoutes)
 
-app.listen(8080)
+// MongoDB connection uri
+const db_username = 'node_app_user'
+const password = '2QbSWJVa64KbXe65'
+const db_name = 'posts_sharing'
+const MONGODB_URI = `mongodb+srv://${db_username}:${password}@experiment.ejqjk.mongodb.net/${db_name}?retryWrites=true&w=majority`
+
+mongoose.connect(
+  MONGODB_URI,
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
+).then(result => {
+  console.log('Database Connected.')
+  app.listen(8080)
+}).catch(err => {
+  console.log(err)
+})
