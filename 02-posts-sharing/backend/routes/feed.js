@@ -28,4 +28,7 @@ router.put('/post/:postId',
   feedController.updatePost
 )
 
+// DETE /post/:postId
+router.delete('/post/:postId', feedController.deletePost)
+
 module.exports = router
