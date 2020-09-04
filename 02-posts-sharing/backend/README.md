@@ -15,3 +15,4 @@ The app uses the following 3rd-party packages
 | [mongoose](https://www.npmjs.com/package/mongoose) | `production` | [`Homepage`](https://mongoosejs.com/) Model app data and handle boilerplate queries and logic code when working with [MongoDB](https://www.mongodb.com/) - usually refered as `ODM` _Object Document Modeling_. |
 | [multer](https://www.npmjs.com/package/multer) | `production` | Handle forms whose `enctype` is `multipart/form-data` which is primarily used in file uploading |
 | [uuid](https://www.npmjs.com/package/uuid) | `production` | Generate [`Universally Unique IDentifier (UUID)`](https://www.ietf.org/rfc/rfc4122.txt) that can be used in naming uploaded image files |
+| [bcryptjs](https://www.npmjs.com/package/bcryptjs) | `production` | Hash passwords using the widely supported [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) algorithm |
