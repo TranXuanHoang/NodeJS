@@ -16,3 +16,4 @@ The app uses the following 3rd-party packages
 | [multer](https://www.npmjs.com/package/multer) | `production` | Handle forms whose `enctype` is `multipart/form-data` which is primarily used in file uploading |
 | [uuid](https://www.npmjs.com/package/uuid) | `production` | Generate [`Universally Unique IDentifier (UUID)`](https://www.ietf.org/rfc/rfc4122.txt) that can be used in naming uploaded image files |
 | [bcryptjs](https://www.npmjs.com/package/bcryptjs) | `production` | Hash passwords using the widely supported [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) algorithm |
+| [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) | `production` | Generate [JSON Web Tokens](https://jwt.io/introduction/) ([RFC-7519](https://tools.ietf.org/html/rfc7519)) when logging in users - the tokens are used to authenticate REST API requests |

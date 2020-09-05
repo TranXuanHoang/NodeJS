@@ -18,7 +18,7 @@ const USER_LOGIN_DATA_VALIDATORS = [
     })
     .normalizeEmail({ gmail_remove_dots: false }),
   body('password').trim()
-    .isLength({ min: 5 }).withMessage('Password must be a least 5 characters length.')
+    .isLength({ min: 5 }).withMessage('Password must be at least 5 characters length.')
 ]
 
 const USER_SIGNUP_DATA_VALIDATORS = [
@@ -31,6 +31,11 @@ const USER_SIGNUP_DATA_VALIDATORS = [
 router.put('/signup',
   USER_SIGNUP_DATA_VALIDATORS,
   authController.signup
+)
+
+router.post('/login',
+  USER_LOGIN_DATA_VALIDATORS,
+  authController.login
 )
 
 module.exports = router
