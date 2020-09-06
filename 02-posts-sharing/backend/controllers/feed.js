@@ -122,6 +122,13 @@ exports.updatePost = (req, res, next) => {
         error.statusCode = 404
         throw error
       }
+      // Check whether the user is allowed the update (authorization)
+      if (post.creator.toString() !== req.userId) {
+        const error = new Error('Not authorized.')
+        error.statusCode = 403
+        throw error
+      }
+
       // Delete old image if a new one was uploaded
       if (imageUrl !== post.imageUrl) {
         clearImage(post.imageUrl)
@@ -151,9 +158,23 @@ exports.deletePost = (req, res, next) => {
         error.statusCode = 404
         throw error
       }
+      // Check whether the user is allowed the delete (authorization)
+      if (post.creator.toString() !== req.userId) {
+        const error = new Error('Not authorized.')
+        error.statusCode = 403
+        throw error
+      }
       // Delete post image
       clearImage(post.imageUrl)
       return Post.findByIdAndRemove(postId)
+    })
+    .then(result => {
+      return User.findById(req.userId)
+    })
+    .then(user => {
+      // Delete element from User.posts that has the same id as postId
+      user.posts.pull(postId)
+      return user.save()
     })
     .then(result => {
       res.status(200).json({
