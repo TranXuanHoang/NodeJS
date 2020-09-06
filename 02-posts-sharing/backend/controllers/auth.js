@@ -72,3 +72,39 @@ exports.login = (req, res, next) => {
     })
     .catch(err => next(err))
 }
+
+exports.getUserStatus = (req, res, next) => {
+  User.findById(req.userId)
+    .then(user => {
+      if (!user) {
+        const error = new Error('Could not find user status.')
+        error.statusCode = 404
+        throw error
+      }
+      res.status(200).json({
+        message: 'Fetched status successfully',
+        status: user.status
+      })
+    })
+    .catch(err => next(err))
+}
+
+exports.updateUserStatus = (req, res, next) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    const error = new Error('Please specify your status.')
+    error.statusCode = 422
+    throw error
+  }
+  User.findById(req.userId)
+    .then(user => {
+      user.status = req.body.status
+      return user.save()
+    })
+    .then(result => {
+      res.status(200).json({
+        message: 'Status updated.',
+        status: req.body.status
+      })
+    })
+}
