@@ -86,7 +86,16 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 ).then(result => {
   console.log('Database Connected.')
-  app.listen(8080)
+  const server = app.listen(8080)
+
+  // Config socket.io
+  const io = require('socket.io')(server)
+
+  // Handle event of connections from clients
+  io.on('connection', socket => {
+    console.log('Client connected')
+    console.log(socket)
+  })
 }).catch(err => {
   console.log(err)
 })
