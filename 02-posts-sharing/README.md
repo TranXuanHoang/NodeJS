@@ -16,3 +16,4 @@ Switch the source code to versions described below to view different implementat
 | Git Tag | Implementation |
 |---------|----------------|
 | [v8.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v8.0.0) | Creating posts sharing app |
+| [v8.1.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v8.1.0) | Synchronizing posts adding, updating and deleting across online users |
