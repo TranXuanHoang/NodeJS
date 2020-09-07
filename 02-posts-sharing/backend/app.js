@@ -94,7 +94,6 @@ mongoose.connect(
   // Handle event of connections from clients
   io.on('connection', socket => {
     console.log('Client connected')
-    console.log(socket)
   })
 }).catch(err => {
   console.log(err)
