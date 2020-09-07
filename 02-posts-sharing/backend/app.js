@@ -89,7 +89,7 @@ mongoose.connect(
   const server = app.listen(8080)
 
   // Config socket.io
-  const io = require('socket.io')(server)
+  const io = require('./socket').init(server)
 
   // Handle event of connections from clients
   io.on('connection', socket => {
