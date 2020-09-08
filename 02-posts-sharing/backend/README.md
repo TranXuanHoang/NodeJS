@@ -21,6 +21,8 @@ The app uses the following 3rd-party packages
 | [bcryptjs](https://www.npmjs.com/package/bcryptjs) | `production` | Hash passwords using the widely supported [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) algorithm |
 | [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) | `production` | Generate [JSON Web Tokens](https://jwt.io/introduction/) ([RFC-7519](https://tools.ietf.org/html/rfc7519)) when logging in users - the tokens are used to authenticate REST API requests |
 | [socket.io](https://www.npmjs.com/package/socket.io) | `production` | [`Homepage`](https://socket.io/) Establish real-time bidirectional event-based communication between the backend server and frontend clients |
+| [graphql](https://www.npmjs.com/package/graphql) | `production` | [`Homepage`](https://graphql.org/) Run `GraphQL` in a Node.js environment - build type schemas and serve queries against those type schemas |
+| [`express-graphql`](https://www.npmjs.com/package/express-graphql) | `production` | Create a GraphQL HTTP server in conjunction with a regular Express webserver |
 
 ## Run App
 
