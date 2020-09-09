@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const validator = require('validator')
+const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
 
@@ -32,5 +33,36 @@ module.exports = {
     })
     const createdUser = await user.save()
     return { ...createdUser._doc, _id: createdUser._id.toString() }
+  },
+
+  login: async ({ email, password }, req) => {
+    const user = await User.findOne({ email: email })
+    if (!user) {
+      const error = new Error('User not found.')
+      error.code = 401
+      throw error
+    }
+    const isEqual = await bcrypt.compare(password, user.password)
+    if (!isEqual) {
+      const error = new Error('Password is incorrect.')
+      error.code = 401
+      throw error
+    }
+    // Sign the given {email: ..., userId: ...} into a JSON Web Token string payload
+    const token = jwt.sign(
+      // The payload to sign
+      {
+        email: user.email,
+        userId: user._id.toString()
+        // Shouldn't include password here
+      },
+      // Secret key for signing the payload
+      'Secret key for signing the payload - Should be a long unguessable string for production-ready app',
+      // Other options
+      {
+        expiresIn: '1h'
+      }
+    )
+    return { token, userId: user._id.toString() }
   }
 }
