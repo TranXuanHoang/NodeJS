@@ -3,9 +3,8 @@ const jwt = require('jsonwebtoken')
 module.exports = (req, res, next) => {
   const authHeader = req.get('Authorization')
   if (!authHeader) {
-    const error = new Error('Not autheticated.')
-    error.statusCode = 401
-    throw error
+    req.isAuth = false
+    return next()
   }
   const token = authHeader.split(' ')[1]
   let decodedToken
@@ -13,18 +12,18 @@ module.exports = (req, res, next) => {
     decodedToken = jwt.verify(
       token,
       // The same scret key used in
-      // ../controllers/auth.js jwt.sign()
+      // ../graphql/resolvers.js > login > jwt.sign()
       'Secret key for signing the payload - Should be a long unguessable string for production-ready app'
     )
   } catch (err) {
-    err.statusCode = 500
-    throw err
+    req.isAuth = false
+    return next()
   }
   if (!decodedToken) {
-    const error = new Error('Not authenticated')
-    error.statusCode = 401
-    throw error
+    req.isAuth = false
+    return next()
   }
   req.userId = decodedToken.userId
+  req.isAuth = true
   next()
 }
