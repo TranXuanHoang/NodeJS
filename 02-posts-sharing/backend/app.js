@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -78,6 +79,26 @@ app.use((req, res, next) => {
 // status - which is set with the 'auth' middleware here.
 app.use(auth)
 
+// Handle file uploads - files are sent to the server and saved in
+// the server hard disk by Multer. File uploads are made as REST requests
+// and be responded with the path of the location where the file is saved.
+// Then pass this path to GraphQL API when creating/updating posts.
+app.put('/post-image', (req, res, next) => {
+  if (!req.isAuth) {
+    throw new Error('Not authenticated.')
+  }
+  if (!req.file) {
+    return res.status(200).json({ message: 'No file provided.' })
+  }
+  if (req.body.oldPath) {
+    clearImage(req.body.oldPath)
+  }
+  return res.status(201).json({
+    message: 'File stored.',
+    filePath: req.file.path.replace('\\', '/')
+  })
+})
+
 app.use('/graphql', graphqlHTTP({
   schema: graphqlSchema,
   rootValue: graphqlResolver,
@@ -120,3 +141,13 @@ mongoose.connect(
 }).catch(err => {
   console.log(err)
 })
+
+const clearImage = filePath => {
+  filePath = path.join(__dirname, filePath)
+  fs.unlink(filePath, err => {
+    if (err) {
+      console.log(err)
+    }
+    console.log(`Deleted ${filePath}`)
+  })
+}
