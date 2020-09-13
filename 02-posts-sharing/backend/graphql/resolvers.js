@@ -118,7 +118,7 @@ module.exports = {
     if (!page) {
       page = 1
     }
-    const perPage = 3
+    const perPage = 2
     const totalPosts = await Post.find().countDocuments()
     const posts = await Post.find()
       .sort({ createdAt: 'DESC' })
@@ -240,7 +240,10 @@ module.exports = {
       error.code = 404
       throw error
     }
-    return user
+    return {
+      ...user._doc,
+      password: null // avoid leaking password
+    }
   },
 
   updateStatus: async ({ status }, req) => {
@@ -257,6 +260,9 @@ module.exports = {
     }
     user.status = status
     const updatedUser = await user.save()
-    return updatedUser
+    return {
+      ...updatedUser._doc,
+      password: null // avoid leaking password
+    }
   }
 }
