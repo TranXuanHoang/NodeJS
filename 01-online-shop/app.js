@@ -8,6 +8,7 @@ const MongoDBStore = require('connect-mongodb-session')(session)
 const csrf = require('csurf')
 const flash = require('connect-flash')
 const multer = require('multer')
+const helmet = require('helmet')
 
 const errorController = require('./controllers/error')
 const User = require('./models/user')
@@ -57,6 +58,10 @@ const fileFilter = (req, file, cb) => {
 // Set up EJS as template engine
 app.set('view engine', 'ejs')
 app.set('views', 'views')
+
+// Set secure response headers with Helmet
+// See https://helmetjs.github.io/
+app.use(helmet())
 
 // Parse the request body so that the following handlers can directly read the body
 app.use(bodyParser.urlencoded({ extended: true }))
