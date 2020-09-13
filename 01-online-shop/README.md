@@ -137,3 +137,11 @@ Below is an example of collections and documents representing the app data relea
   }
 ]
 ```
+
+## Run App
+
+For local development:
+
+* Environment variables are set in the [nodemon.json](./nodemon.json) file
+* Run `npm run start:dev` to start the app
+* Open a browser and load `localhost:3000`

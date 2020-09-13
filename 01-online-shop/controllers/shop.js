@@ -4,7 +4,7 @@ const path = require('path')
 // Import stripe for payments
 // Set secret key. Remember to switch to live secret key in production!
 // See keys here: https://dashboard.stripe.com/account/apikeys
-const stripe = require('stripe')('sk_test_51HMZGiKd6SYxphgZcTRplzSyJhasqg7RgjAmNzm0vuUEKQmYwW0t6ClNHcD7CsAccQfcDeCNJUGNBuehSumNbIjV00luSeloFS')
+const stripe = require('stripe')(process.env.STRIPE_KEY)
 
 const PDFDocument = require('pdfkit')
 

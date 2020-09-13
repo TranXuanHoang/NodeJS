@@ -17,9 +17,9 @@ const shopRoutes = require('./routes/shop')
 const authRoutes = require('./routes/auth')
 
 // MongoDB connection uri
-const db_username = 'node_app_user'
-const password = '2QbSWJVa64KbXe65'
-const db_name = 'online_shop'
+const db_username = process.env.MONGO_USER
+const password = process.env.MONGO_PASSWORD
+const db_name = process.env.MONGO_DEFAULT_DATABASE
 const MONGODB_URI = `mongodb+srv://${db_username}:${password}@experiment.ejqjk.mongodb.net/${db_name}?retryWrites=true&w=majority`
 
 const app = express()
@@ -162,7 +162,7 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 ).then(result => {
   console.log('Database Connected.')
-  app.listen(3000)
+  app.listen(process.env.PORT || 3000)
 }).catch(err => {
   console.log(err)
 })
