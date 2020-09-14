@@ -58,6 +58,7 @@ Switch the source code to versions described below to view different implementat
 | [v7.1.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.1.0) | Adding pagination to the top and products pages |
 | [v7.2.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.2.0) | Deleting products using client-side JavaScript async requests |
 | [v7.3.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v7.3.0) | Adding payments |
+| [v9.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v9.0.0) | Configuring app hosting with Heroku |
 
 ## SQL Database Model
 
@@ -163,3 +164,19 @@ For local development:
 * Environment variables are set in the [nodemon.json](./nodemon.json) file
 * Run `npm run start:dev` to start the app
 * Open a browser and load `localhost:3000`
+
+For deploying the app to Heroku (_there are many other hosting services, here Heroku is selected as one example_)
+
+* Commit all untracked and modified source code to get ready to push to Heroku Git repository
+* Then run the following commands
+
+    ```shell
+    # Login to Heroku
+    heroku login
+
+    # Set Git to track with Heroku Git remote repo
+    heroku git:remote -a <heroku-app-name>
+
+    # Push only '01-online-shop' directory to Heroku Git remote repo
+    git subtree push --prefix 01-online-shop heroku master
+    ```
