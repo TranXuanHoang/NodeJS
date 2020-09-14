@@ -40,6 +40,7 @@ The app uses the following 3rd-party packages
 | [stripe](https://www.npmjs.com/package/stripe) | `production` | [`Homepage`](https://stripe.com/) Handle online payments when making orders - checkout step |
 | [helmet](https://www.npmjs.com/package/helmet) | `production` | [`Homepage`](https://helmetjs.github.io/) Secure `Express.js` apps by setting various HTTP secure headers |
 | [compression](https://www.npmjs.com/package/compression) | `production` | Compress HTTP response bodies |
+| [morgan](https://www.npmjs.com/package/morgan) | `production` | Log HTTP requests |
 
 ## Source Code
 

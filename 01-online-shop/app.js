@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -10,6 +11,7 @@ const flash = require('connect-flash')
 const multer = require('multer')
 const helmet = require('helmet')
 const compression = require('compression')
+const morgan = require('morgan')
 
 const errorController = require('./controllers/error')
 const User = require('./models/user')
@@ -66,6 +68,16 @@ app.use(helmet())
 
 // Compress responses including CSS, JavaScript and so on
 app.use(compression())
+
+// Log HTTP request
+// See https://www.npmjs.com/package/morgan
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  {
+    flags: 'a' // new data will be appended to the end of the stream
+  }
+)
+app.use(morgan('combined', { stream: accessLogStream }))
 
 // Parse the request body so that the following handlers can directly read the body
 app.use(bodyParser.urlencoded({ extended: true }))
