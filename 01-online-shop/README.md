@@ -39,6 +39,7 @@ The app uses the following 3rd-party packages
 | [pdfkit](https://www.npmjs.com/package/pdfkit) | `production` | [`Homepage`](https://pdfkit.org/) Generate PDF documents (order invoices) dynamically |
 | [stripe](https://www.npmjs.com/package/stripe) | `production` | [`Homepage`](https://stripe.com/) Handle online payments when making orders - checkout step |
 | [helmet](https://www.npmjs.com/package/helmet) | `production` | [`Homepage`](https://helmetjs.github.io/) Secure `Express.js` apps by setting various HTTP secure headers |
+| [compression](https://www.npmjs.com/package/compression) | `production` | Compress HTTP response bodies |
 
 ## Source Code
 

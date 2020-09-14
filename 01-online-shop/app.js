@@ -9,6 +9,7 @@ const csrf = require('csurf')
 const flash = require('connect-flash')
 const multer = require('multer')
 const helmet = require('helmet')
+const compression = require('compression')
 
 const errorController = require('./controllers/error')
 const User = require('./models/user')
@@ -62,6 +63,9 @@ app.set('views', 'views')
 // Set secure response headers with Helmet
 // See https://helmetjs.github.io/
 app.use(helmet())
+
+// Compress responses including CSS, JavaScript and so on
+app.use(compression())
 
 // Parse the request body so that the following handlers can directly read the body
 app.use(bodyParser.urlencoded({ extended: true }))
