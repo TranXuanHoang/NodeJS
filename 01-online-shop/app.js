@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const https = require('https')
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -183,6 +184,15 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
 ).then(result => {
   console.log('Database Connected.')
+
+  // Uncomment the following snippet of source code to
+  // start app while securing app with SSL/TLS certificate
+  // const privateKey = fs.readFileSync('server.key')
+  // const certificate = fs.readFileSync('server.cert')
+  // https.createServer({ key: privateKey, cert: certificate }, app)
+  //   .listen(process.env.PORT || 3000)
+
+  // Start app without securing app with SSL/TLS certificate
   app.listen(process.env.PORT || 3000)
 }).catch(err => {
   console.log(err)

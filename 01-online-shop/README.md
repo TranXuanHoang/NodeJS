@@ -141,6 +141,21 @@ Below is an example of collections and documents representing the app data relea
 ]
 ```
 
+## SSL/TLS Certificate
+
+To setup a SSL server while developing the app locally, an SSL certificate created with [`openssl`](https://www.openssl.org/) can be used. To generate a SSL certificale
+
+* on `Windows`, install `openssl` using installers that can be download from [this page](https://slproweb.com/products/Win32OpenSSL.html) (see also [this page](https://wiki.openssl.org/index.php/Binaries)). Then set environment variable to the folder where the `openssl.exe` is located e.g. `C:\Program Files\OpenSSL-Win64\bin`
+* on `macOS` or `Linux`, `openssl` is probably available and there is no need to install it
+* run
+
+    ```shell
+    openssl req -nodes -new -x509 -keyout server.key -out server.cert
+    ```
+
+    and enter neccessary information to generate a `public key` and a `private key` in certificate files. Note that, to generate a SSL certificate for the `localhost` you should enter `localhost` when being asked for `Common Name (e.g. server FQDN or YOUR name)`.
+* after running the above command, a `server.cert` which is the SSL certificate and a `server.key` which contains a `private key` will be generated. The `server.cert` will be sent to the clients while the `server.key` will always stay on the server.
+
 ## Run App
 
 For local development:
