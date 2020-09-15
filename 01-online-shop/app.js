@@ -1,6 +1,5 @@
 const path = require('path')
 const fs = require('fs')
-const https = require('https')
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -65,7 +64,26 @@ app.set('views', 'views')
 
 // Set secure response headers with Helmet
 // See https://helmetjs.github.io/
-app.use(helmet())
+//     https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+app.use(
+  helmet(),
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      frameSrc: ["'self'", "https://js.stripe.com/v3/"],
+      baseUri: ["'self'"],
+      blockAllMixedContent: [],
+      fontSrc: ["'self'", "https:", "data:"],
+      frameAncestors: ["'self'"],
+      imgSrc: ["'self'", "data:"],
+      objectSrc: ["'none'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com/v3/"],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      styleSrc: ["'self'", "https: 'unsafe-inline'"],
+      upgradeInsecureRequests: []
+    }
+  })
+)
 
 // Compress responses including CSS, JavaScript and so on
 app.use(compression())
@@ -173,6 +191,7 @@ app.use((error, req, res, next) => {
   // Avoid use redirect() as this will lead to an infinite loop of
   // redirecting to /500 when error occurred
   // res.redirect('/500')
+  console.log(error)
   res.status(500).render('500', {
     pageTitle: 'Error!',
     path: null
@@ -187,6 +206,7 @@ mongoose.connect(
 
   // Uncomment the following snippet of source code to
   // start app while securing app with SSL/TLS certificate
+  // const https = require('https')
   // const privateKey = fs.readFileSync('server.key')
   // const certificate = fs.readFileSync('server.cert')
   // https.createServer({ key: privateKey, cert: certificate }, app)
