@@ -214,6 +214,11 @@ mongoose.connect(
 
   // Start app without securing app with SSL/TLS certificate
   app.listen(process.env.PORT || 3000)
+
+  // Create 'images' directory if it doesn't exist
+  if (!fs.existsSync('images')) {
+    fs.mkdirSync('images')
+  }
 }).catch(err => {
   console.log(err)
 })
