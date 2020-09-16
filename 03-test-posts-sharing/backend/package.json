@@ -4,7 +4,9 @@
   "description": "Create an app allowing users to share posts online",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "test": "mocha",
+    "auto:test": "nodemon -x 'npm test'"
   },
   "keywords": [
     "REST",
@@ -23,6 +25,8 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
+    "chai": "*",
+    "mocha": "*",
     "nodemon": "^2.0.4"
   }
 }
