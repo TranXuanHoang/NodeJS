@@ -24,6 +24,7 @@ The app uses the following 3rd-party packages
 | [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken) | `production` | Generate [JSON Web Tokens](https://jwt.io/introduction/) ([RFC-7519](https://tools.ietf.org/html/rfc7519)) when logging in users - the tokens are used to authenticate REST API requests |
 | [mocha](https://www.npmjs.com/package/mocha) | `dev` | [`Homepage`](https://mochajs.org/) Make asynchronous testing of Node.js apps simple |
 | [chai](https://www.npmjs.com/package/chai) | `dev` | [`Homepage`](https://www.chaijs.com/) Assert test suites for Node.js apps |
+| [sinon](https://www.npmjs.com/package/sinon) | `dev` | [`Homepage`](https://sinonjs.org/) Create standalone test spies, stubs and mocks to make testing JavaScript code easier |
 
 ## Run App
 
