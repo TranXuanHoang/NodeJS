@@ -4,6 +4,7 @@
 [![Framework](https://img.shields.io/badge/Framework-Express.js-FA8072?style=flat)](https://expressjs.com/)
 [![Test Framework](https://img.shields.io/badge/Test%20Framework-Mocha-8D6748?style=flat&logo=Mocha)](https://mochajs.org/)
 [![Test Assertion Library](https://img.shields.io/badge/Test%20Assertion%20Library-Chai-8D6748?style=flat)](https://www.chaijs.com/)
+[![Test Mocks Creation Library](https://img.shields.io/badge/Test%20Mocks%20Library-Sinon-8D6748?style=flat)](https://sinonjs.org/)
 
 This back-end app provides APIs for the [post sharing application](../). It will serve data and authentication services to the [frontend](../frontend) app (written in [`React`](https://reactjs.org/)).
 

@@ -57,12 +57,13 @@ exports.createPost = async (req, res, next) => {
     await post.save()
     const creator = await User.findById(req.userId)
     creator.posts.push(post)
-    await creator.save()
+    const savedUser = await creator.save()
     res.status(201).json({
       message: 'Post created successfully',
       post: post,
       creator: { _id: creator._id, name: creator.name }
     })
+    return savedUser
   } catch (err) { next(err) }
 }
 

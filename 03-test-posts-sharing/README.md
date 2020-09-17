@@ -5,6 +5,7 @@
 [![Frontend Framework](https://img.shields.io/badge/Frontend%20Framework-React-61DAFB?style=flat&logo=React)](https://reactjs.org/)
 [![Test Framework](https://img.shields.io/badge/Test%20Framework-Mocha-8D6748?style=flat&logo=Mocha)](https://mochajs.org/)
 [![Test Assertion Library](https://img.shields.io/badge/Test%20Assertion%20Library-Chai-8D6748?style=flat)](https://www.chaijs.com/)
+[![Test Mocks Creation Library](https://img.shields.io/badge/Test%20Mocks%20Library-Sinon-8D6748?style=flat)](https://sinonjs.org/)
 
 This project starts off with a complete copy of [v8.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v8.0.0) of the [02-posts-sharing](../02-posts-sharing) project source code. In this project, automated tests are added so that whenever new changes are added the source code can be automatically tested using CI/CD tools.
 
