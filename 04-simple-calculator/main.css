@@ -1,0 +1,63 @@
+div {
+  margin: 20px 30px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input {
+  padding: 10px 20px;
+  border: 1px solid rebeccapurple;
+  border-radius: 20px;
+}
+
+input:focus {
+  outline: none;
+}
+
+button.equalto, span {
+  padding: 10px 20px;
+  font-size: large;
+  font-weight: bold;
+  min-width: 50px;
+}
+
+button.equalto {
+  margin: 0 0 0 20px;
+  min-width: 80px;
+}
+
+button {
+  padding: 10px 20px;
+  border: 1px solid rebeccapurple;
+  border-radius: 20px;
+}
+
+button:hover {
+  cursor: pointer;
+  color: white;
+  background-color: rebeccapurple;
+}
+
+button:focus {
+  outline: none;
+}
+
+button.control {
+  color: brown;
+  border: 1px solid brown;
+}
+
+button.control:hover {
+  color: white;
+  background-color: brown;
+}
+
+div#history p {
+  padding: 5px 10px;
+  margin: 0;
+}
+p.history__odd {
+  background-color: bisque;
+}
+p.history__even {
+  background-color: lightskyblue;
+}
