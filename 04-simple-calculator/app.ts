@@ -1,17 +1,19 @@
+type Operand = number | undefined
+
 enum Operator {
-  ADD,
-  SUBTRACT,
-  MULTIPLY,
-  DIVIDE
+  ADD = '+',
+  SUBTRACT = '-',
+  MULTIPLY = '*',
+  DIVIDE = '/'
 }
 
 class Expression {
-  operand1: number
-  operand2: number
+  operand1: Operand
+  operand2: Operand
   operator: Operator
   result: number | Error
 
-  constructor(operand1: number, operand2: number, operator: Operator) {
+  constructor(operand1: Operand, operand2: Operand, operator: Operator) {
     this.operand1 = operand1
     this.operand2 = operand2
     this.operator = operator || Operator.ADD
@@ -19,9 +21,9 @@ class Expression {
   }
 
   eval() {
-    if (!this.operand1) {
+    if (this.operand1 === undefined) {
       return new Error('The first operand is not specified.')
-    } else if (!this.operand2) {
+    } else if (this.operand2 === undefined) {
       return new Error('The second operand is not specified.')
     } else if (this.operator === undefined || this.operator === null) {
       return new Error('Operator is not specified.')
@@ -51,7 +53,7 @@ class AppState {
   dirty: boolean
 
   constructor() {
-    this.currentExp = new Expression(0, 0, Operator.ADD)
+    this.currentExp = new Expression(undefined, undefined, Operator.ADD)
     this.history = []
     this.dirty = false
   }
@@ -79,44 +81,96 @@ class EventBinding {
   constructor(appState: AppState, appUI: AppUI) {
     this.appState = appState
     this.appUI = appUI
-    this.registerEvents()
+    this.bindEventHandlers()
   }
 
-  registerEvents() {
+  bindEventHandlers() {
     this.appUI.operand1.addEventListener('input', () => {
-      //TODO
+      this.appState.currentExp.operand1 =
+        this.appUI.operand1.value.length > 0 ? +this.appUI.operand1.value : undefined
+      this.appState.dirty = true
+      console.log(this.appState)
     })
 
     this.appUI.operand2.addEventListener('input', () => {
-      //TODO
+      this.appState.currentExp.operand2 =
+        this.appUI.operand2.value.length > 0 ? +this.appUI.operand2.value : undefined
+      this.appState.dirty = true
+      console.log(this.appState)
     })
 
     this.appUI.calculateBtn.addEventListener('click', () => {
-      //TODO
+      this.appState.currentExp.result = this.appState.currentExp.eval()
+      if (this.appState.currentExp.result instanceof Error) {
+        this.appUI.result.innerHTML = this.appState.currentExp.result.message
+      } else {
+        if (this.appState.history.length >= 4) {
+          this.appState.history.pop()
+        }
+        this.appState.history.unshift(new Expression(
+          this.appState.currentExp.operand1,
+          this.appState.currentExp.operand2,
+          this.appState.currentExp.operator
+        ))
+        this.appState.dirty = false
+
+        this.appUI.result.innerText = `${this.appState.currentExp.result}`
+        this.appUI.history.innerHTML = ''
+        this.appState.history.forEach((h, index) => {
+          let exp = document.createElement('p')
+          exp.className = (index + 1) % 2 === 1 ? 'history__odd' : 'history__even'
+          exp.innerText = `${h.operand1} ${h.operator} ${h.operand2} = ${h.result}`
+          this.appUI.history.appendChild(exp)
+        })
+      }
     })
 
     this.appUI.addOpBtn.addEventListener('click', () => {
-      //TODO
+      this.appState.currentExp.operator = Operator.ADD
+      this.appUI.operator.innerText = '+'
+      console.log(this.appState)
     })
 
     this.appUI.subOpBtn.addEventListener('click', () => {
-      //TODO
+      this.appState.currentExp.operator = Operator.SUBTRACT
+      this.appUI.operator.innerText = '-'
+      console.log(this.appState)
     })
 
     this.appUI.mulOpBtn.addEventListener('click', () => {
-      //TODO
+      this.appState.currentExp.operator = Operator.MULTIPLY
+      this.appUI.operator.innerText = '*'
+      console.log(this.appState)
     })
 
     this.appUI.divOpBtn.addEventListener('click', () => {
-      //TODO
+      this.appState.currentExp.operator = Operator.DIVIDE
+      this.appUI.operator.innerText = '/'
+      console.log(this.appState)
     })
 
     this.appUI.clearBtn.addEventListener('click', () => {
-      //TODO
+      this.appState.currentExp.operand1 = undefined
+      this.appState.currentExp.operand2 = undefined
+      this.appState.dirty = false
+
+      this.appUI.operand1.value = ''
+      this.appUI.operand2.value = ''
+      this.appUI.result.innerText = ''
+      console.log(this.appState)
     })
 
     this.appUI.resetAllBtn.addEventListener('click', () => {
-      //TODO
+      this.appState.currentExp = new Expression(undefined, undefined, Operator.ADD)
+      this.appState.history = []
+      this.appState.dirty = false
+
+      this.appUI.operand1.value = ''
+      this.appUI.operand2.value = ''
+      this.appUI.operator.innerText = '+'
+      this.appUI.result.innerText = ''
+      this.appUI.history.innerHTML = ''
+      console.log(this.appState)
     })
   }
 }
