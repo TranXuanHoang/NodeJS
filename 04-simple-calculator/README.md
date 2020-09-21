@@ -5,6 +5,18 @@
 
 Write a simple calculator using [TypeScript](https://www.typescriptlang.org/) in combination with [Node.js](https://nodejs.org/).
 
+<p align="center">
+  <img src="./docs/AppSnapshot.gif" width="70%"/>
+</p>
+
+## Source Code
+
+Switch the source code to the version described below to view its implementation.
+
+| Git Tag | Implementation |
+|---------|----------------|
+| [v11.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v11.0.0) | Creating a simple calculator app with `TypeScript`, `Node.js` and `Express.js` |
+
 ## 3rd-Party Packages
 
 The app uses the following 3rd-party packages
