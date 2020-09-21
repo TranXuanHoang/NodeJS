@@ -1,6 +1,6 @@
 div {
   margin: 20px 30px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 input {
@@ -13,7 +13,8 @@ input:focus {
   outline: none;
 }
 
-button.equalto, span {
+button.equalto,
+span {
   padding: 10px 20px;
   font-size: large;
   font-weight: bold;
@@ -54,10 +55,54 @@ button.control:hover {
 div#history p {
   padding: 5px 10px;
   margin: 0;
+  display: flex;
+  flex-flow: row;
 }
 p.history__odd {
   background-color: bisque;
 }
 p.history__even {
   background-color: lightskyblue;
+}
+
+p span.history__expression,
+p a.history__edit,
+p a.history__delete {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+p span.history__expression {
+  flex-grow: 6;
+}
+
+p a.history__edit,
+p a.history__delete {
+  flex-grow: 1;
+  text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 20px;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+p a.history__edit {
+  border: 1px solid darkcyan;
+  color: darkcyan;
+}
+p a.history__delete {
+  border: 1px solid brown;
+  color: brown;
+}
+
+p a.history__edit:hover {
+  cursor: pointer;
+  background-color: darkcyan;
+  color: white;
+}
+p a.history__delete:hover {
+  cursor: pointer;
+  background-color: brown;
+  color: white;
 }

@@ -47,13 +47,22 @@ class Expression {
   }
 }
 
+interface History {
+  id: string
+  expression: Expression
+}
+
 class AppState {
   currentExp: Expression
-  history: Array<Expression>
+  editingMode: boolean
+  editingIndex: number | undefined
+  edittingExpressionId: string | undefined
+  history: Array<History>
   dirty: boolean
 
   constructor() {
     this.currentExp = new Expression(undefined, undefined, Operator.ADD)
+    this.editingMode = false
     this.history = []
     this.dirty = false
   }
@@ -81,6 +90,9 @@ class EventBinding {
   constructor(appState: AppState, appUI: AppUI) {
     this.appState = appState
     this.appUI = appUI
+    this.fetchHistory().then(() => {
+      this.updateHistoryUI()
+    })
     this.bindEventHandlers()
   }
 
@@ -99,29 +111,31 @@ class EventBinding {
       console.log(this.appState)
     })
 
-    this.appUI.calculateBtn.addEventListener('click', () => {
+    this.appUI.calculateBtn.addEventListener('click', async () => {
       this.appState.currentExp.result = this.appState.currentExp.eval()
       if (this.appState.currentExp.result instanceof Error) {
         this.appUI.result.innerHTML = this.appState.currentExp.result.message
       } else {
-        if (this.appState.history.length >= 4) {
-          this.appState.history.pop()
+        let url = 'http://localhost:3000/expression'
+        let method = 'POST'
+        if (this.appState.editingMode) {
+          url += `/${this.appState.edittingExpressionId}`
+          method = 'PUT'
         }
-        this.appState.history.unshift(new Expression(
-          this.appState.currentExp.operand1,
-          this.appState.currentExp.operand2,
-          this.appState.currentExp.operator
-        ))
+        const resData = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.appState.currentExp)
+        }).then(res => res.json())
+
+        console.log(resData)
+        this.appState.history = resData.histories as Array<History>
         this.appState.dirty = false
 
         this.appUI.result.innerText = `${this.appState.currentExp.result}`
-        this.appUI.history.innerHTML = ''
-        this.appState.history.forEach((h, index) => {
-          let exp = document.createElement('p')
-          exp.className = (index + 1) % 2 === 1 ? 'history__odd' : 'history__even'
-          exp.innerText = `${h.operand1} ${h.operator} ${h.operand2} = ${h.result}`
-          this.appUI.history.appendChild(exp)
-        })
+        this.updateHistoryUI()
       }
     })
 
@@ -152,6 +166,9 @@ class EventBinding {
     this.appUI.clearBtn.addEventListener('click', () => {
       this.appState.currentExp.operand1 = undefined
       this.appState.currentExp.operand2 = undefined
+      this.appState.editingMode = false
+      this.appState.editingIndex = undefined
+      this.appState.edittingExpressionId = undefined
       this.appState.dirty = false
 
       this.appUI.operand1.value = ''
@@ -160,8 +177,14 @@ class EventBinding {
       console.log(this.appState)
     })
 
-    this.appUI.resetAllBtn.addEventListener('click', () => {
+    this.appUI.resetAllBtn.addEventListener('click', async () => {
+      await fetch('http://localhost:3000/expressions', {
+        method: 'DELETE'
+      }).then(res => res.json())
       this.appState.currentExp = new Expression(undefined, undefined, Operator.ADD)
+      this.appState.editingMode = false
+      this.appState.editingIndex = undefined
+      this.appState.edittingExpressionId = undefined
       this.appState.history = []
       this.appState.dirty = false
 
@@ -171,6 +194,68 @@ class EventBinding {
       this.appUI.result.innerText = ''
       this.appUI.history.innerHTML = ''
       console.log(this.appState)
+    })
+  }
+
+  async fetchHistory() {
+    const resData = await fetch('http://localhost:3000/histories').then(res => res.json())
+    this.appState.history = resData.histories as Array<History>
+  }
+
+  updateHistoryUI() {
+    this.appUI.history.innerHTML = ''
+    this.appState.history.forEach((h, index) => {
+      let paragraph = document.createElement('p')
+      paragraph.className = (index + 1) % 2 === 1 ? 'history__odd' : 'history__even'
+
+      let expression = document.createElement('span')
+      expression.className = 'history__expression'
+      expression.innerText = `${h.expression.operand1} ${h.expression.operator} ${h.expression.operand2} = ${h.expression.result}`
+
+      let editAnchor = document.createElement('a')
+      editAnchor.className = 'history__edit'
+      editAnchor.innerText = 'Edit'
+      editAnchor.addEventListener('click', () => {
+        this.appState.editingMode = true
+        this.appState.editingIndex = index
+        this.appState.edittingExpressionId = h.id
+        this.appState.currentExp = new Expression(h.expression.operand1, h.expression.operand2, h.expression.operator)
+
+        this.appUI.operand1.value = `${h.expression.operand1}`
+        this.appUI.operand2.value = `${h.expression.operand2}`
+        this.appUI.operator.innerText = h.expression.operator
+        this.appUI.result.innerText = `${h.expression.result instanceof Error ? h.expression.result.message : h.expression.result}`
+        console.log(this.appState)
+      })
+
+      let deleteAnchor = document.createElement('a')
+      deleteAnchor.className = 'history__delete'
+      deleteAnchor.innerText = 'Delete'
+      deleteAnchor.addEventListener('click', async () => {
+        const resData = await fetch(`http://localhost:3000/expression/${h.id}`, {
+          method: 'DELETE'
+        }).then(res => res.json())
+
+        this.appState.currentExp = new Expression(undefined, undefined, Operator.ADD)
+        this.appState.editingMode = false
+        this.appState.editingIndex = undefined
+        this.appState.edittingExpressionId = undefined
+        this.appState.history = resData.histories as Array<History>
+        this.appState.dirty = false
+
+        this.appUI.operand1.value = ''
+        this.appUI.operand2.value = ''
+        this.appUI.operator.innerText = '+'
+        this.appUI.result.innerText = ''
+        this.appUI.history.innerHTML = ''
+        this.updateHistoryUI()
+        console.log(this.appState)
+      })
+
+      paragraph.appendChild(expression)
+      paragraph.appendChild(editAnchor)
+      paragraph.appendChild(deleteAnchor)
+      this.appUI.history.appendChild(paragraph)
     })
   }
 }

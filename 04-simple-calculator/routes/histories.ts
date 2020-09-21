@@ -19,7 +19,7 @@ router.post('/expression', (req, res, next) => {
   const { operand1, operand2, operator } = req.body
   const newHistory: History = {
     id: Date.now().toString(),
-    expession: new Expression(+operand1, +operand2, operator)
+    expression: new Expression(+operand1, +operand2, operator)
   }
 
   histories.unshift(newHistory)
@@ -38,7 +38,7 @@ router.put('/expression/:id', (req, res, next) => {
     const { operand1, operand2, operator } = req.body
     histories[historyIndex] = {
       id,
-      expession: new Expression(operand1, operand2, operator)
+      expression: new Expression(operand1, operand2, operator)
     }
     return res.status(200).json({
       message: 'Updated history.',
