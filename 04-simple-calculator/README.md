@@ -16,6 +16,7 @@ The app uses the following 3rd-party packages
 | [nodemon](https://www.npmjs.com/package/nodemon) | `dev` | Auto reload app when making any changes to source code |
 | [@types/node](https://www.npmjs.com/package/@types/node) | `dev` | Provides type definitions for [Node.js](https://nodejs.org/) so that `Node.js` syntax can be used in `.ts` [TypeScript](https://www.typescriptlang.org/) source code files |
 | [@types/express](https://www.npmjs.com/package/@types/express) | `dev` | Provides type definitions for [Express.js](http://expressjs.com/) so that code autocompletion will be enabled in the VS Code editor |
+| [@types/body-parser](https://www.npmjs.com/package/@types/body-parser) | `dev` | Provides type definitions for [body-parser](https://www.npmjs.com/package/body-parser) so that code autocompletion will be enabled in the VS Code editor |
 
 ## Config TypeScript in Node.js Applications
 
