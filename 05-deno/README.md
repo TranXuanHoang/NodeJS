@@ -12,3 +12,18 @@ The project contains the following `TypeScript` `.ts` files which are entry poin
 | App | Description |
 |-----|-------------|
 | [language.ts](./language.ts) | An example of how to _(i) write data to a file on the local hard disk_ and _(ii) handle HTTP requests_ with `Deno` core runtime API and standard library <pre lang="shell" style="color: #2471A3">deno run --allow-write --allow-net language.ts</pre> |
+| [tasks.ts](./tasks.ts) | Demonstrates how to write REST APIs with `Deno` and [`Oak`](https://deno.land/x/oak) <pre lang="shell" style="color: #2471A3">deno run --allow-net tasks.ts</pre> |
+
+> Note:
+>
+> * To force Deno to re-fetch remote dependencies (i.e. to clear the locally cached files), run the `deno run` command with `--reload` flag
+>
+>     ```shell
+>     deno run --reload app_entry_file.ts
+>     ```
+>
+> * To lock a certain version for a remote file, specify its version (normally a GIT tag of a release of the library containing that file) in the import URL
+>
+>     ```javascript
+>     import { serve } from 'https://deno.land/std@0.70.0/http/server.ts'
+>     ```
