@@ -17,6 +17,9 @@
     },
     {
       "path": "04-simple-calculator"
+    },
+    {
+      "path": "05-deno"
     }
   ]
 }
