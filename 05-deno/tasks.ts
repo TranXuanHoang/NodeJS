@@ -22,9 +22,17 @@ app.use(async (ctx, next) => {
   await next()
 })
 
+// Config to allow CORS
+app.use(async (ctx, next) => {
+  ctx.response.headers.set('Access-Control-Allow-Origin', '*')
+  ctx.response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  ctx.response.headers.set('Access-Control-Allow-Headers', 'Content-Type')
+  await next()
+})
+
 // Should register both routes() and allowedMethods()
 // so that Oak properly handles incomming requests
 app.use(todosRoutes.routes())
 app.use(todosRoutes.allowedMethods())
 
-await app.listen({ port: 3000 })
+await app.listen({ port: 8000 })
