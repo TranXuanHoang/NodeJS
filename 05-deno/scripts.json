@@ -1,0 +1,24 @@
+{
+  "$schema": "https://deno.land/x/denon/schema.json",
+  "scripts": {
+    "start:language": {
+      "cmd": "deno run language.ts",
+      "desc": "run language.ts file",
+      "allow": ["net", "write"]
+    },
+    "start:tasks": {
+      "cmd": "deno run tasks.ts",
+      "desc": "run tasks.ts file",
+      "allow": ["run", "net", "write", "read", "plugin"],
+      "unstable": true
+    }
+  },
+  "watcher": {
+    "interval": 350,
+    "paths": ["./", "./helpers/", "./routes/"],
+    "exts": ["js", "jsx", "ts", "tsx", "json"],
+    "match": ["*.*"],
+    "skip": ["*/.git/*"],
+    "legacy": false
+  }
+}
