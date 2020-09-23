@@ -12,7 +12,7 @@ The project contains the following `TypeScript` `.ts` files which are entry poin
 | App | Description |
 |-----|-------------|
 | [language.ts](./language.ts) | An example of how to _(i) write data to a file on the local hard disk_ and _(ii) handle HTTP requests_ with `Deno` core runtime API and standard library <pre lang="shell" style="color: #2471A3">deno run --allow-write --allow-net language.ts</pre> |
-| [tasks.ts](./tasks.ts) | Demonstrates how to write REST APIs with `Deno` and [`Oak`](https://deno.land/x/oak) <pre lang="shell" style="color: #2471A3">deno run --allow-net tasks.ts</pre> |
+| [tasks.ts](./tasks.ts) | Demonstrates how to write REST APIs with `Deno` and [`Oak`](https://deno.land/x/oak) <pre lang="shell" style="color: #2471A3">deno run --allow-net tasks.ts</pre> The app will run on `localhost:8000`. To start its front-end app, change directory to [tasks-frontend](./tasks-frontend) and run `npm start` - the front-end app will run on `localhost:3000`. |
 
 > Note:
 >
