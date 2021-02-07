@@ -7,9 +7,10 @@ This project builds up a blog website with
 
   * [`posts`](./posts) - providing APIs to create new posts
   * [`comments`](./comments) - providing APIs to create new comments
+  * [`moderation`](./moderation) - providing APIs to moderate comments (approve or reject comments)
   * [`query`](./query) - providing APIs to retrieve all posts and their associated comments
 
-  and an [`event-bus`](./event-bus) to receive events from each of the above `microservices` and forward these events to all of them.
+  and an [`event-bus`](./event-bus) to receive events from each of the above `microservices` and forward these events to all of these `microservices`.
 
 ## Source Code
 
