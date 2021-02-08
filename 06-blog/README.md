@@ -3,7 +3,7 @@
 This project builds up a blog website with
 
 * the front-end [`client`](./client) is a `React` app
-* and the back-end is a set of `microservices` which are `Express.js` based `Node.js` apps providing APIs for creating and retrieving posts and comments. The backend includes three `microservices`
+* and the back-end is a set of `microservices` which are `Express.js` based `Node.js` apps providing APIs for creating and retrieving posts and comments. The backend includes four `microservices`
 
   * [`posts`](./posts) - providing APIs to create new posts
   * [`comments`](./comments) - providing APIs to create new comments
@@ -11,6 +11,10 @@ This project builds up a blog website with
   * [`query`](./query) - providing APIs to retrieve all posts and their associated comments
 
   and an [`event-bus`](./event-bus) to receive events from each of the above `microservices` and forward these events to all of these `microservices`.
+
+## Architecture
+
+![System Architecture](./_doc/SystemArchitecture.svg)
 
 ## Source Code
 
