@@ -38,7 +38,7 @@ This project uses [Docker](https://www.docker.com/) and [Kubernetes](https://kub
 | [`comments`](./comments) | [`Dockerfile`](./comments/Dockerfile) |  |
 | [`moderation`](./moderation) | [`Dockerfile`](./moderation/Dockerfile) |  |
 | [`query`](./query) | [`Dockerfile`](./query/Dockerfile) |  |
-| [`event-bus`](./event-bus) | [`Dockerfile`](./event-bus/Dockerfile) |  |
+| [`event-bus`](./event-bus) | [`Dockerfile`](./event-bus/Dockerfile) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_event-bus) |
 | [`client`](./client) | [`Dockerfile`](./client/Dockerfile) |  |
 
 Run the following commands to build (or rebuild) a new `Docker image`, then apply (or update) the `Kubernetes deployment` config to start (or restart) a `Kubernetes cluster` that will host and run containers of each microservice.
@@ -62,9 +62,12 @@ infra/k8s:~$ kubectl apply -f posts-depl.yaml
 infra/k8s:~$ kubectl apply -f posts-srv.yaml
 # NOTE: Run the following command to get the port used to load the app
 # via browsers/Postman on local machine
-# kubectl describe service posts-srv
-# Then use that PPPPP port in combination with localhost to form
-# a URL of http://localhost:PPPPP
+#   ~$ kubectl describe service posts-srv
+#   ~$ ...
+#   ~$ NodePort: posts  31255/TCP
+#   ~$ ...
+# Then use that PPPPP (31255 in the above example) port in combination
+# with localhost to form a URL of http://localhost:PPPPP
 
 # Restart the Kubernetes deployment to use the latest version of the Docker image
 infra/k8s:~$ kubectl rollout restart deployment posts-depl
