@@ -17,15 +17,15 @@ app.post('/events', (req, res) => {
     .catch((err) => {
       console.log(err.message);
     })
-  axios.post('http://localhost:4001/events', event)
+  axios.post('http://comments-clusterip-srv:4001/events', event)
     .catch((err) => {
       console.log(err.message);
     })
-  axios.post('http://localhost:4002/events', event)
+  axios.post('http://query-clusterip-srv:4002/events', event)
     .catch((err) => {
       console.log(err.message);
     })
-  axios.post('http://localhost:4003/events', event)
+  axios.post('http://moderation-clusterip-srv:4003/events', event)
     .catch((err) => {
       console.log(err.message);
     })

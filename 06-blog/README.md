@@ -35,10 +35,10 @@ This project uses [Docker](https://www.docker.com/) and [Kubernetes](https://kub
 | Microservice | Docker / K8s Config Files | Docker Hub |
 |--------------|---------------------------|------------|
 | [`posts`](./posts) | [`Dockerfile`](./posts/Dockerfile) [`K8s file`](./infra/k8s/posts-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_posts) |
-| [`comments`](./comments) | [`Dockerfile`](./comments/Dockerfile) |  |
-| [`moderation`](./moderation) | [`Dockerfile`](./moderation/Dockerfile) |  |
-| [`query`](./query) | [`Dockerfile`](./query/Dockerfile) |  |
-| [`event-bus`](./event-bus) | [`Dockerfile`](./event-bus/Dockerfile) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_event-bus) |
+| [`comments`](./comments) | [`Dockerfile`](./comments/Dockerfile) [`K8s file`](./infra/k8s/comments-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_comments) |
+| [`moderation`](./moderation) | [`Dockerfile`](./moderation/Dockerfile) [`K8s file`](./infra/k8s/moderation-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_moderation) |
+| [`query`](./query) | [`Dockerfile`](./query/Dockerfile) [`K8s file`](./infra/k8s/query-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_query) |
+| [`event-bus`](./event-bus) | [`Dockerfile`](./event-bus/Dockerfile) [`K8s file`](./infra/k8s/event-bus-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_event-bus) |
 | [`client`](./client) | [`Dockerfile`](./client/Dockerfile) |  |
 
 Run the following commands to build (or rebuild) a new `Docker image`, then apply (or update) the `Kubernetes deployment` config to start (or restart) a `Kubernetes cluster` that will host and run containers of each microservice.
@@ -54,7 +54,10 @@ posts:~$ docker build -t hoangtrx/microservices_blog_posts .
 posts:~$ docker push hoangtrx/microservices_blog_posts
 
 # Apply Kubernetes deployment config to create a new Kubernetes deployment
+# Run either the following command to apply K8s deployment config for only the posts microservice
 infra/k8s:~$ kubectl apply -f posts-depl.yaml
+# Or run the following command to apply all K8s configs for all microservices
+infra/k8s:~$ kubectl apply -f .
 
 # Apply Kubernetes service config to create a Kubernetes node service
 # and expose the container with the app inside it to the outside,
