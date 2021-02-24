@@ -75,3 +75,30 @@ infra/k8s:~$ kubectl apply -f posts-srv.yaml
 # Restart the Kubernetes deployment to use the latest version of the Docker image
 infra/k8s:~$ kubectl rollout restart deployment posts-depl
 ```
+
+We also need to set up [`NGINX Ingress Controller`](https://kubernetes.github.io/ingress-nginx/) using the following command
+
+```powershell
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/cloud/deploy.yaml
+
+# Then view the list of running services
+kubectl get svc -n ingress-nginx
+```
+
+Next, run the following command to instruct `NGINX Ingress` to which `K8s ClusterIP` service it should redirect requests. For example, the [`ingress-srv.yaml`](./infra/k8s/ingress-srv.yaml) in this project is set up to tell `NGINX Ingress` that it should redirect any `/posts` requests to `posts-clusterip-srv` which in turn will redirect the requests to the `posts` microservice.
+
+```powershell
+infra/k8s:~$ kubectl apply -f ingress-srv.yaml
+```
+
+Update hosts file to instruct the local machine to reach to `localhost` when loading `blog.com` (instead of loading a real `blog.com` website from the Internet)
+
+```powershell
+# Windows
+# C:\Windows\System32\drivers\etc\hosts
+127.0.0.1 posts.com
+
+# MacOS/Linux
+# /etc/hosts
+127.0.0.1 posts.com
+```
