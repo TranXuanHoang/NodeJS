@@ -14,7 +14,7 @@ This project builds up a blog website with
   * [`moderation`](./moderation) - providing APIs to moderate comments (approve or reject comments)
   * [`query`](./query) - providing APIs to retrieve all posts and their associated comments
 
-  and an [`event-bus`](./event-bus) to receive events from each of the above `microservices` and forward these events to all of these `microservices`.
+  and an [`event-bus`](./event-bus) to receive events from each of the above `microservices` and forward these events to all of the others.
 
 ## Architecture
 
@@ -39,7 +39,7 @@ This project uses [Docker](https://www.docker.com/) and [Kubernetes](https://kub
 | [`moderation`](./moderation) | [`Dockerfile`](./moderation/Dockerfile) [`K8s file`](./infra/k8s/moderation-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_moderation) |
 | [`query`](./query) | [`Dockerfile`](./query/Dockerfile) [`K8s file`](./infra/k8s/query-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_query) |
 | [`event-bus`](./event-bus) | [`Dockerfile`](./event-bus/Dockerfile) [`K8s file`](./infra/k8s/event-bus-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_event-bus) |
-| [`client`](./client) | [`Dockerfile`](./client/Dockerfile) |  |
+| [`client`](./client) | [`Dockerfile`](./client/Dockerfile) [`K8s file`](./infra/k8s/client-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/microservices_blog_client) |
 
 Run the following commands to build (or rebuild) a new `Docker image`, then apply (or update) the `Kubernetes deployment` config to start (or restart) a `Kubernetes cluster` that will host and run containers of each microservice.
 
@@ -85,7 +85,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 kubectl get svc -n ingress-nginx
 ```
 
-Next, run the following command to instruct `NGINX Ingress` to which `K8s ClusterIP` service it should redirect requests. For example, the [`ingress-srv.yaml`](./infra/k8s/ingress-srv.yaml) in this project is set up to tell `NGINX Ingress` that it should redirect any `/posts` requests to `posts-clusterip-srv` which in turn will redirect the requests to the `posts` microservice.
+Next, run the following command to instruct `NGINX Ingress` to which `K8s ClusterIP` service it should redirect requests. For example, the [`ingress-srv.yaml`](./infra/k8s/ingress-srv.yaml) in this project is set up to tell `NGINX Ingress` that it should redirect any `/posts/create` requests to `posts-clusterip-srv` which in turn will redirect the requests to the `posts` microservice.
 
 ```powershell
 infra/k8s:~$ kubectl apply -f ingress-srv.yaml
@@ -96,9 +96,11 @@ Update hosts file to instruct the local machine to reach to `localhost` when loa
 ```powershell
 # Windows
 # C:\Windows\System32\drivers\etc\hosts
-127.0.0.1 posts.com
+127.0.0.1 blog.com
 
 # MacOS/Linux
 # /etc/hosts
-127.0.0.1 posts.com
+127.0.0.1 blog.com
 ```
+
+Now open a browser and load `https://blog.com/` (accept the SSL is not secure while testing the app in during the development phase)
