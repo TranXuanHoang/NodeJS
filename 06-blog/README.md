@@ -105,6 +105,10 @@ Update hosts file to instruct the local machine to reach to `localhost` when loa
 
 Now open a browser and load `https://blog.com/` (accept the SSL is not secure while testing the app in during the development phase)
 
+## App Deployment Infrastructure
+
+![Deployment Architecture](./_doc/DeploymentArchitecture.svg)
+
 ## Automatic Build and Deploy with `Skaffold`
 
 In this project, a config file named [`skaffold.yaml`](./skaffold.yaml) was added so that we can use [`Skaffold`](https://skaffold.dev/) to automate the entire process of building a new `Docker` image, pushing it to the `Docker Hub` then `rollout` the image to get its `pod` updated. In stead, during the app development, we only need to run the following command and let `Skaffold` do the entire process for us (no pushing images to the `Docker Hub` as it is unnecessary during the development, and `Skaffold` even deletes all `pods`, `service` and `deployments` when we stop it)
