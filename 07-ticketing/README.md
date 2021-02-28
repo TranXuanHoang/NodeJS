@@ -30,3 +30,34 @@ While developing the app in your local machine, run [`Skaffold`](https://skaffol
 ```powershell
 07-ticketing:~$ skaffold dev
 ```
+
+We also need to set up an [`NGINX Ingress Controller`](https://kubernetes.github.io/ingress-nginx/) using the following command
+
+```powershell
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.44.0/deploy/static/provider/cloud/deploy.yaml
+
+# Then view the list of running services
+kubectl get svc -n ingress-nginx
+```
+
+Next, run the following command to instruct `NGINX Ingress` to which `K8s ClusterIP` service it should redirect requests. For example, the [`ingress-srv.yaml`](./infra/k8s/ingress-srv.yaml) in this project is set up to tell `NGINX Ingress` that it should redirect any requests prefixing with `/api/users/` to `auth-srv` which in turn will redirect the requests to the `auth` microservice.
+
+```powershell
+infra/k8s:~$ kubectl apply -f ingress-srv.yaml
+```
+
+Update hosts file to instruct the local machine to reach to `localhost` when loading `ticketing.dev` (instead of loading a real `ticketing.dev` website from the Internet)
+
+```powershell
+# Windows
+# C:\Windows\System32\drivers\etc\hosts
+127.0.0.1 ticketing.dev
+
+# MacOS/Linux
+# /etc/hosts
+127.0.0.1 ticketing.dev
+```
+
+Now open a browser and load `https://ticketing.dev/` (accept the SSL is not secure while testing the app in during the development phase)
+
+> Note: For `Chrome`, to accept the SSL unsecure alert type `thisisunsafe`.
