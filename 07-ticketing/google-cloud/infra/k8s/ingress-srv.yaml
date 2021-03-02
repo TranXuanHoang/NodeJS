@@ -1,0 +1,19 @@
+# This file config an Nginx Ingress to route requests
+# to the corresponding pods where microservices are running
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: ticketing.dev
+      http:
+        paths:
+          - path: /api/users/?(.*)
+            pathType: Prefix
+            backend:
+              serviceName: auth-srv
+              servicePort: 3000

@@ -13,7 +13,7 @@ Switch the source code to the version described below to view its implementation
 
 | Git Tag | Git Diff | Implementation |
 |---------|----------|----------------|
-| [v14.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v14.0.0) | [diff](https://github.com/TranXuanHoang/NodeJS/compare/v13.0.0...v14.0.0) | Build a `posts and comments` app with a `microservices` architecture |
+| [v14.0.0](https://github.com/TranXuanHoang/NodeJS/releases/tag/v14.0.0) | [diff](https://github.com/TranXuanHoang/NodeJS/compare/v13.0.0...v14.0.0) | Build a `ticketing` web app using a `microservices` architecture |
 
 ## App Architecture
 
@@ -24,6 +24,8 @@ Bellow is a list of microservices that will communicate, process requests and da
 | [`auth`](./auth) | [`Dockerfile`](./auth/Dockerfile) [`K8s file`](./infra/k8s/auth-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/ticketing_auth) |
 
 ## Build and Deploy
+
+### On Local Machine
 
 While developing the app in your local machine, run [`Skaffold`](https://skaffold.dev/) to automatically build (rebuild) all microservices whenever something inside the source code was changed.
 
@@ -61,3 +63,58 @@ Update hosts file to instruct the local machine to reach to `localhost` when loa
 Now open a browser and load `https://ticketing.dev/` (accept the SSL is not secure while testing the app in during the development phase)
 
 > Note: For `Chrome`, to accept the SSL unsecure alert type `thisisunsafe`.
+
+### On Google Cloud
+
+* [Install Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+* Login Google Cloud SDK and then set project
+
+  ```powershell
+  gcloud auth login
+
+  # E.g. PROJECT_ID = ticketing-dev-306213
+  gcloud config set project <PROJECT_ID>
+  ```
+
+* Install Google Cloud context
+
+  ```powershell
+  # E.g. CLUSTER_NAME = ticketing-dev
+  gcloud container clusters get-credentials <CLUSTER_NAME>
+  ```
+
+* Create an [`ingress-nginx`](https://kubernetes.github.io/ingress-nginx/) controller and a load balancer on Google Cloud
+
+  ```powershell
+  # Change Kubernetes's context to Google Cloud by right-clicking on
+  # the Docker tray icon, select Kubernetes menu item and choose the
+  # Google Cloud Context from there
+
+  # Then go to this site https://kubernetes.github.io/ingress-nginx/
+  # find the following section for installing and configuring
+  # Ingress Nginx on Google Cloud
+  # https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke
+  ```
+
+* Add the IP Address of the Google Cloud load balancer to map to `ticketing.dev` in the `hosts` file. The IP can be found from `Google Cloud` > `Networking` > `Network services` > `Load balancing`
+
+  ```powershell
+  # Windows
+  # C:\Windows\System32\drivers\etc\hosts
+  35.193.153.207 ticketing.dev
+
+  # MacOS/Linux
+  # /etc/hosts
+  35.193.153.207 ticketing.dev
+  ```
+
+* Run `Skaffold` to push source code to Google Cloud remote server and get build and deploy executed there
+
+  ```powershell
+  # Obtains Google Cloud user access credentials for using in local development machine
+  # https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login
+  gcloud auth application-default login
+
+  # Navigate to `google-cloud` folder and run Skaffold
+  07-ticketing/google-cloud:~$ skaffold dev
+  ```

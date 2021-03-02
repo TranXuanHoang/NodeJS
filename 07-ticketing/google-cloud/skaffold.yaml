@@ -1,0 +1,21 @@
+# https://skaffold.dev/docs/references/yaml/?version=v2beta12
+apiVersion: skaffold/v2beta12
+kind: Config
+metadata:
+  name: --ticketing
+deploy:
+  kubectl:
+    manifests:
+    - ./infra/k8s/*
+build:
+  googleCloudBuild:
+    projectId: ticketing-dev-306213
+  artifacts:
+  - image: us.gcr.io/ticketing-dev-306213/auth
+    context: ../auth
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+      - src: 'src/**/*.ts'
+        dest: .
