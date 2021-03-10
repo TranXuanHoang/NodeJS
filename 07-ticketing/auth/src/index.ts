@@ -1,4 +1,5 @@
 import { json } from 'body-parser'
+import cookieSession from 'cookie-session'
 import express from 'express'
 import 'express-async-errors' // handle error in async functions
 import mongoose from 'mongoose'
@@ -10,7 +11,16 @@ import { signoutRouter } from './routes/signout'
 import { signupRouter } from './routes/signup'
 
 const app = express()
+
+// Traffic requests go through Nginx Ingress - which means they are proxied
+// Tell Express to trust those HTTPS requests even though they are proxied
+app.set('trust proxy', true)
+
 app.use(json())
+app.use(cookieSession({
+  signed: false,
+  secure: true
+}))
 
 app.use(currentUserRouter)
 app.use(signinRouter)
