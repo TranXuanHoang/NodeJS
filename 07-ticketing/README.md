@@ -118,3 +118,45 @@ Now open a browser and load `https://ticketing.dev/` (accept the SSL is not secu
   # Navigate to `google-cloud` folder and run Skaffold
   07-ticketing/google-cloud:~$ skaffold dev
   ```
+
+### Create and Access Secret
+
+#### Create Secret
+
+Run the following command to create a `Kubernetes secret` that will provides an `environment variable` named `jwt-secret` to every `pod` running on the same `node`. The `SECRET_OR_PRIVATE_KEY` is a secret or private key that will be used when creating `JSON Web Token`s (`JWT`). In this project the logic of creating `JWT`s is in the [signup.ts](./auth/src/routes/signup.ts) file. All microservices running on the same `node` can now use this `SECRET_OR_PRIVATE_KEY` to verify any `JWT`s generated using the same `SECRET_OR_PRIVATE_KEY` and determine whether the `JWT`s are valid or not.
+
+```powershell
+kubectl create secret generic jwt-secret --from-literal=JWT_KEY=<SECRET_OR_PRIVATE_KEY>
+# E.g.
+# kubectl create secret generic jwt-secret --from-literal=JWT_KEY=SecretOrPrivateKey
+```
+
+#### Access Secret
+
+To access the `JWT_KEY` from the `jwt-secret` created in the previous shell command, first add the following additional config to the `Kubernetes Deployment` config file of the microservice that wants to access the `JWT_KEY`. Below is an example [`Deployment` config](./infra/k8s/auth-depl.yaml) for the [auth](./auth) microservice.
+
+```yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: hoangtrx/ticketing_auth
++         env:
++           - name: JWT_KEY
++             valueFrom:
++               secretKeyRef:
++                 name: jwt-secret # kubectl create secret generic jwt-secret
++                 key: JWT_KEY     # --from-literal=JWT_KEY
+```
