@@ -30,6 +30,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     requited: true
   }
+}, {
+  toJSON: {
+    transform(doc, ret) {
+      ret.id = ret._id
+      delete ret._id
+      delete ret.password
+      delete ret.__v
+    }
+  }
 })
 
 // pre('save', function Fn) means anytime we attempt to
