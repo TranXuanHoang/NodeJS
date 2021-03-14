@@ -14,4 +14,4 @@ Working with [Node.js](https://nodejs.org/) through example projects
 | [04-simple-calculator](./04-simple-calculator) | Shows how to config and use [TypeScript](https://www.typescriptlang.org/) in [Node.js](https://nodejs.org/) apps | `TypeScript` |
 | [05-deno](./05-deno) | Introduction to the basic of [Deno](https://deno.land/) | `Deno` |
 | [06-blog](./06-blog) | A mini-microservices app | `microservices` `React` `Express.js` `Docker` `Kubernetes` |
-| [07-ticketing](./07-ticketing) |  | `microservices` `TypeScript` `Express.js` `Next.js` `Docker` `Kubernetes` |
+| [07-ticketing](./07-ticketing) | **Practical Project -** Builds an online ticket selling web with a microservices architecture | `microservices` `TypeScript` `Express.js` `Next.js` `Docker` `Kubernetes` `Google Cloud` `Jest [testing]` |
