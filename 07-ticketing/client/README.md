@@ -9,4 +9,7 @@ npm i react react-dom next
 
 # Install bootstrap for styling
 npm i bootstrap
+
+# Install bootstrap to send HTTP requests
+npm i axios
 ```
