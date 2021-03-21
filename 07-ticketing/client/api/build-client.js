@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export default ({ req }) => {
+const buildClient = ({ req }) => {
   if (typeof window === 'undefined') {
     // We are on the server
     const NAME_OF_SERVICE = 'ingress-nginx-controller'
@@ -17,3 +17,5 @@ export default ({ req }) => {
     })
   }
 }
+
+export default buildClient
