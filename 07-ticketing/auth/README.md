@@ -24,4 +24,8 @@ npm i jsonwebtoken @types/jsonwebtoken
 
 # Install dependencies for testing
 npm i -D @types/jest @types/supertest jest ts-jest supertest mongodb-memory-server
+
+# Install common dependency (defined in the common module)
+# To update this dependency, run npm update @hoang-ticketing/common
+npm i @hoang-ticketing/common
 ```
