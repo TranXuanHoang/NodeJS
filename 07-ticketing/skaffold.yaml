@@ -26,3 +26,11 @@ build:
       manual:
       - src: '**/*.js'
         dest: .
+  - image: hoangtrx/ticketing_tickets
+    context: tickets
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+      - src: 'src/**/*.ts'
+        dest: .
