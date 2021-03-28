@@ -4,6 +4,7 @@ import cookieSession from 'cookie-session'
 import express from 'express'
 import 'express-async-errors' // handle error in async functions
 import { createTicketRouter } from './routes/new'
+import { showTicketRouter } from './routes/show'
 
 const app = express()
 
@@ -22,6 +23,7 @@ app.use(cookieSession({
 app.use(currentUser)
 
 app.use(createTicketRouter)
+app.use(showTicketRouter)
 
 app.all('*', async () => {
   // Throw an error for any routes that are not found
