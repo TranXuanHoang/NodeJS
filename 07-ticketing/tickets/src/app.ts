@@ -3,6 +3,7 @@ import { json } from 'body-parser'
 import cookieSession from 'cookie-session'
 import express from 'express'
 import 'express-async-errors' // handle error in async functions
+import { indexTicketRouter } from './routes/index'
 import { createTicketRouter } from './routes/new'
 import { showTicketRouter } from './routes/show'
 
@@ -24,6 +25,7 @@ app.use(currentUser)
 
 app.use(createTicketRouter)
 app.use(showTicketRouter)
+app.use(indexTicketRouter)
 
 app.all('*', async () => {
   // Throw an error for any routes that are not found
