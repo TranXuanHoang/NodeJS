@@ -6,6 +6,7 @@ import 'express-async-errors' // handle error in async functions
 import { indexTicketRouter } from './routes/index'
 import { createTicketRouter } from './routes/new'
 import { showTicketRouter } from './routes/show'
+import { updateTicketRouter } from './routes/update'
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use(cookieSession({
 app.use(currentUser)
 
 app.use(createTicketRouter)
+app.use(updateTicketRouter)
 app.use(showTicketRouter)
 app.use(indexTicketRouter)
 
