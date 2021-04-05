@@ -55,11 +55,22 @@ nats-depl-5ff5fff9b-ccmzl             1/1     Running   0          56m   # This 
 tickets-depl-58b89d7c98-g52lx         1/1     Running   0          56m
 tickets-mongo-depl-5c7c6746f8-5nc9b   1/1     Running   0          56m
 
-# Tell K8s to forward port 4222
+# Tell K8s to forward port 4222 (for connection) and 8222 (for monitoring)
 $ kubectl port-forward <NATS_POD_NAME> <LOCAL_MACHINE_PORT>:<K8S_POD_ACTUAL_PORT>
 # In this example here, we can run the following command to forward port 4222
 # on local machine to port 4222 of the K8s pod that running NATS Streaming Server
 #   $ kubectl port-forward nats-depl-5ff5fff9b-ccmzl 4222:4222
 #   Forwarding from 127.0.0.1:4222 -> 4222
 #   Forwarding from [::1]:4222 -> 4222
+#
+# In the same way, we can run the following command to forward port 8222
+#   $ kubectl port-forward nats-depl-5ff5fff9b-ccmzl 8222:8222
+#   Forwarding from 127.0.0.1:8222 -> 8222
+#   Forwarding from [::1]:8222 -> 8222
+
+# Open the following URL to see the NATS monitoring webpage
+http://localhost:8222/streaming
+
+# Open the first channel subscribed in NATS Streaming Server with the link below
+http://localhost:8222/streaming/channelsz?subs=1
 ```
