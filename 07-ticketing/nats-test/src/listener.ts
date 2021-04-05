@@ -18,10 +18,12 @@ stan.on('connect', () => {
 
   const options = stan.subscriptionOptions()
     .setManualAckMode(true) // up to this listener to notify NATS the message has been received
+    .setDeliverAllAvailable() // Get all events be redelivered when app restarted
+    .setDurableName('orders-service') // Only get events redelivered if they haven't been processed
 
   const subscription = stan.subscribe(
     'ticket:created',
-    'orders-service-queue-group',
+    'orders-service-queue-group', // Each event is only sent to one listener that subscribed to this queue group
     options
   )
 
