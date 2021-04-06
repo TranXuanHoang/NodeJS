@@ -1,5 +1,6 @@
-import nats, { Message } from 'node-nats-streaming'
 import { randomBytes } from 'crypto'
+import nats from 'node-nats-streaming'
+import { TicketCreatedListener } from './events/ticket-created-listener'
 
 console.clear()
 
@@ -16,29 +17,7 @@ stan.on('connect', () => {
     process.exit()
   })
 
-  const options = stan.subscriptionOptions()
-    .setManualAckMode(true) // up to this listener to notify NATS the message has been received
-    .setDeliverAllAvailable() // Get all events be redelivered when app restarted
-    .setDurableName('orders-service') // Only get events redelivered if they haven't been processed
-
-  const subscription = stan.subscribe(
-    'ticket:created',
-    'orders-service-queue-group', // Each event is only sent to one listener that subscribed to this queue group
-    options
-  )
-
-  subscription.on('message', (msg: Message) => {
-    const data = msg.getData()
-
-    if (typeof data === 'string') {
-      console.log(`Received event #${msg.getSequence()}, with data:\n` +
-        `${JSON.stringify(JSON.parse(data), null, 2)}`)
-    }
-
-    // Acknowledge the NATS Streaming Server that the message was already
-    // received AND processed
-    msg.ack()
-  })
+  new TicketCreatedListener(stan).listen()
 })
 
 // Handle interupt signal
