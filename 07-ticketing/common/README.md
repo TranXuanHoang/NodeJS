@@ -46,4 +46,6 @@ common:~$ npm publish --access public
 
 # Change version for next publish (only change the patch)
 common:~$ npm version patch
+
+common:~$ npm i node-nats-streaming
 ```
