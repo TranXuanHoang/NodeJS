@@ -11,6 +11,9 @@ declare global {
   }
 }
 
+// Mock the '../nats-wrapper' with the '../__mocks__/nats-wrapper.ts'
+jest.mock('../nats-wrapper')
+
 let mongo: MongoMemoryServer
 
 /** Before doing all tests, connect to an in-memory MongoDB */
@@ -29,6 +32,9 @@ beforeAll(async () => {
 
 /** Before each test, delete all existing collections */
 beforeEach(async () => {
+  // This will clear nat-wrapper mock
+  jest.clearAllMocks()
+
   const collections = await mongoose.connection.db.collections()
 
   for (let collection of collections) {

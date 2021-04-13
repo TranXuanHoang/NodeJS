@@ -1,6 +1,7 @@
 import request from 'supertest'
 import { app } from '../../app'
 import { Ticket } from '../../models/ticket'
+import { natsWrapper } from '../../nats-wrapper'
 
 const credential = { email: 'test@mail.com', password: 'password' }
 
@@ -85,4 +86,22 @@ it('creates a ticket with valid inputs', async () => {
   expect(tickets.length).toEqual(1)
   expect(tickets[0].title).toEqual(ticket.title)
   expect(tickets[0].price).toEqual(ticket.price)
+})
+
+it('publishes a event', async () => {
+  let tickets = await Ticket.find({})
+  expect(tickets.length).toEqual(0)
+
+  const ticket = {
+    title: 'Title',
+    price: 10
+  }
+
+  await request(app)
+    .post('/api/tickets')
+    .set('Cookie', global.signup(credential))
+    .send(ticket)
+    .expect(201)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled()
 })

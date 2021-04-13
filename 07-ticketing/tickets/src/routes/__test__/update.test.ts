@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import request from 'supertest'
 import { app } from '../../app'
+import { natsWrapper } from '../../nats-wrapper'
 
 const credential = { email: 'test@mail.com', password: 'password' }
 
@@ -115,4 +116,32 @@ it('updates the ticket provided valid inputs', async () => {
 
   expect(ticketResponse.body.title).toEqual(ticketModifiedData.title)
   expect(ticketResponse.body.price).toEqual(ticketModifiedData.price)
+})
+
+it('publishes a event', async () => {
+  const ticketOriginalData = {
+    title: 'Concert',
+    price: 20
+  }
+
+  const cookie = global.signup(credential)
+
+  const createResponse = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', cookie)
+    .send(ticketOriginalData)
+    .expect(201)
+
+  const ticketModifiedData = {
+    title: 'Music Concert',
+    price: 30
+  }
+
+  await request(app)
+    .put(`/api/tickets/${createResponse.body.id}`)
+    .set('Cookie', cookie)
+    .send(ticketModifiedData)
+    .expect(200)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled()
 })
