@@ -34,3 +34,11 @@ build:
       manual:
       - src: 'src/**/*.ts'
         dest: .
+  - image: hoangtrx/ticketing_orders
+    context: orders
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+      - src: 'src/**/*.ts'
+        dest: .
