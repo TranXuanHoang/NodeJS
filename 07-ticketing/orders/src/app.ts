@@ -3,6 +3,10 @@ import { json } from 'body-parser'
 import cookieSession from 'cookie-session'
 import express from 'express'
 import 'express-async-errors' // handle error in async functions
+import { deleteOrderRouter } from './routes/delete'
+import { indexOrderRouter } from './routes/index'
+import { newOrderRouter } from './routes/new'
+import { showOrderRouter } from './routes/show'
 
 const app = express()
 
@@ -19,6 +23,11 @@ app.use(cookieSession({
 // Check if there is a JSON Web Token and decode it to extract
 // the user information
 app.use(currentUser)
+
+app.use(newOrderRouter)
+app.use(deleteOrderRouter)
+app.use(showOrderRouter)
+app.use(indexOrderRouter)
 
 app.all('*', async () => {
   // Throw an error for any routes that are not found
