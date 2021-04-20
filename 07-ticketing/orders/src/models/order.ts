@@ -2,6 +2,8 @@ import { OrderStatus } from '@hoang-ticketing/common'
 import mongoose from 'mongoose'
 import { TicketDoc } from './ticket'
 
+export { OrderStatus }
+
 /**
  * An interface describing properties that are
  * required to create a new Order.
