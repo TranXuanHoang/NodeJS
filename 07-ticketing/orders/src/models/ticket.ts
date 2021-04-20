@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import { Order, OrderStatus } from './order'
 
 /** An interface describing properties that are required to create a new Ticket. */
-interface TicketAttrs {
+export interface TicketAttrs {
   title: string
   price: number
 }
