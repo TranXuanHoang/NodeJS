@@ -3,6 +3,7 @@ import request from 'supertest'
 import { app } from '../../app'
 import { Order, OrderStatus } from '../../models/order'
 import { Ticket } from '../../models/ticket'
+import { natsWrapper } from '../../nats-wrapper'
 
 const credential = { email: 'test@mail.com', password: 'password' }
 
@@ -27,7 +28,7 @@ it('returns an error if the ticket is already reserved', async () => {
   // Create an order whilte associating it with the ticket created above
   const order = Order.build({
     userId: mongoose.Types.ObjectId().toHexString(),
-    expriresAt: new Date(),
+    expiresAt: new Date(),
     status: OrderStatus.Created,
     ticket: ticket
   })
@@ -81,4 +82,21 @@ it('reserves a ticket', async () => {
   expect(orders.length).toEqual(2)
 })
 
-it.todo('emits an order created event')
+it('emits an order created event', async () => {
+  // Create tickets
+  const ticket = Ticket.build({
+    title: 'Title',
+    price: 10
+  })
+  await ticket.save()
+
+  // Try to create an order
+  const user = global.signup(credential)
+  await request(app)
+    .post('/api/orders')
+    .set('Cookie', user)
+    .send({ ticketId: ticket.id })
+    .expect(201)
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled()
+})

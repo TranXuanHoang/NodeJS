@@ -118,7 +118,7 @@ it('updates the ticket provided valid inputs', async () => {
   expect(ticketResponse.body.price).toEqual(ticketModifiedData.price)
 })
 
-it('publishes a event', async () => {
+it('publishes an event', async () => {
   const ticketOriginalData = {
     title: 'Concert',
     price: 20

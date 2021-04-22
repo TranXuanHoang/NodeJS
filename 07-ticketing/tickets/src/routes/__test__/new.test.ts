@@ -88,7 +88,7 @@ it('creates a ticket with valid inputs', async () => {
   expect(tickets[0].price).toEqual(ticket.price)
 })
 
-it('publishes a event', async () => {
+it('publishes an event', async () => {
   let tickets = await Ticket.find({})
   expect(tickets.length).toEqual(0)
 
