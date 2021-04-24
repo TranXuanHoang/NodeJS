@@ -3,6 +3,7 @@ import { Order, OrderStatus } from './order'
 
 /** An interface describing properties that are required to create a new Ticket. */
 export interface TicketAttrs {
+  id: string
   title: string
   price: number
 }
@@ -54,7 +55,10 @@ ticketSchema.pre('save', async function (done) {
 })
 
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
-  return new Ticket(attrs)
+  // When new Ticket(), we tranform the id property to _id so that
+  // MongoDB will use that _id as the id of the document to be added
+  const { id, ...attrsWithoutId } = attrs
+  return new Ticket({ _id: attrs.id, ...attrsWithoutId })
 }
 
 // Note that it is critical to use the 'function' keyword here
