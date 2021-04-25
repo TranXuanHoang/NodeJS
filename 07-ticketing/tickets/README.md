@@ -28,4 +28,9 @@ npm i -D @types/jest @types/supertest jest ts-jest supertest mongodb-memory-serv
 # Install common dependency (defined in the common module)
 # To update this dependency, run npm update @hoang-ticketing/common
 npm i @hoang-ticketing/common
+
+# Install optimistic concurrency control plugin for Mongoose
+# (increase document version numbers on each save, and prevent previous
+# versions of a document from being saved over the current version)
+npm i mongoose-update-if-current
 ```
