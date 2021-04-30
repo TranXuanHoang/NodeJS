@@ -1,5 +1,6 @@
 import { OrderStatus } from '@hoang-ticketing/common'
 import mongoose from 'mongoose'
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current'
 import { TicketDoc } from './ticket'
 
 export { OrderStatus }
@@ -23,6 +24,7 @@ interface OrderDoc extends mongoose.Document {
   status: OrderStatus
   expiresAt: Date
   ticket: TicketDoc
+  version: number
 }
 
 /**
@@ -63,6 +65,10 @@ const orderSchema = new mongoose.Schema({
     }
   }
 })
+
+// Config a plugin to automatically increase version by one for each update session
+orderSchema.set('versionKey', 'version')
+orderSchema.plugin(updateIfCurrentPlugin)
 
 // pre('save', function Fn) means anytime we attempt to
 // save a document to the database collection, we are going to

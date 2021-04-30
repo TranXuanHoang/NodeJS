@@ -1,4 +1,5 @@
 import { OrderStatus } from '@hoang-ticketing/common'
+import mongoose from 'mongoose'
 import request from 'supertest'
 import { app } from '../../app'
 import { Ticket } from '../../models/ticket'
@@ -9,6 +10,7 @@ const credential = { email: 'test@mail.com', password: 'password' }
 it('marks an order as cancelled', async () => {
   // Create a ticket with Ticket model
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: 'Title',
     price: 20
   })
@@ -43,6 +45,7 @@ it('marks an order as cancelled', async () => {
 it('emits an order cancelled event', async () => {
   // Create a ticket with Ticket model
   const ticket = Ticket.build({
+    id: mongoose.Types.ObjectId().toHexString(),
     title: 'Title',
     price: 20
   })

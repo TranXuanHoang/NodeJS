@@ -64,7 +64,8 @@ router.post('/api/orders',
       id: order.id,
       status: order.status,
       userId: order.userId,
-      expiresAt: order.expiresAt.toISOString(), // UTC time in string format
+      expiresAt: order.expiresAt.toISOString(), // UTC time in string format,
+      version: order.version,
       ticket: {
         id: order.ticket.id,
         price: order.ticket.price
