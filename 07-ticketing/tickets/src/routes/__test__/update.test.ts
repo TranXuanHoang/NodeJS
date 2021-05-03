@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import request from 'supertest'
 import { app } from '../../app'
+import { Ticket } from '../../models/ticket'
 import { natsWrapper } from '../../nats-wrapper'
 
 const credential = { email: 'test@mail.com', password: 'password' }
@@ -144,4 +145,46 @@ it('publishes an event', async () => {
     .expect(200)
 
   expect(natsWrapper.client.publish).toHaveBeenCalled()
+})
+
+it('rejects updates if the ticket is reserved', async () => {
+  const cookie = global.signup(credential)
+
+  // Create and save a new ticket
+  const ticketOriginalData = {
+    title: 'Concert',
+    price: 20
+  }
+
+  const createResponse = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', cookie)
+    .send(ticketOriginalData)
+    .expect(201)
+
+  const ticketId = createResponse.body.id
+
+  // Set the ticket as being reserved by specifying an orderId
+  const ticket = await Ticket.findById(ticketId)
+  const orderId = mongoose.Types.ObjectId().toHexString()
+  ticket!.set({ orderId })
+  await ticket!.save()
+
+  // Try to send an update ticket request
+  const ticketModifiedData = {
+    title: 'Music Concert',
+    price: 30
+  }
+
+  await request(app)
+    .put(`/api/tickets/${ticketId}`)
+    .set('Cookie', cookie)
+    .send(ticketModifiedData)
+    .expect(400)
+
+  // Assert that the tiket was not updated
+  const currentTicket = await Ticket.findById(ticketId)
+  expect(currentTicket!.title).toEqual(ticketOriginalData.title)
+  expect(currentTicket!.price).toEqual(ticketOriginalData.price)
+  expect(currentTicket!.orderId).toEqual(orderId)
 })
