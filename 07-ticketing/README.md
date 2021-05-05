@@ -25,6 +25,7 @@ Bellow is a list of microservices that will communicate, process requests and da
 | [`auth`](./auth) | [`Dockerfile`](./auth/Dockerfile) [`K8s file`](./infra/k8s/auth-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/ticketing_auth) |
 | [`tickets`](./tickets) | [`Dockerfile`](./tickets/Dockerfile) [`K8s file`](./infra/k8s/tickets-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/ticketing_tickets) |
 | [`orders`](./orders) | [`Dockerfile`](./orders/Dockerfile) [`K8s file`](./infra/k8s/orders-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/ticketing_orders) |
+| [`expiration`](./expiration) | [`Dockerfile`](./expiration/Dockerfile) [`K8s file`](./infra/k8s/expiration-depl.yaml) | [`Docker Hub`](https://hub.docker.com/r/hoangtrx/ticketing_expiration) |
 
 ## Build and Deploy
 
