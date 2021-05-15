@@ -5,8 +5,11 @@ import mongoose from 'mongoose'
 declare global {
   namespace NodeJS {
     interface Global {
-      /** A global utility function for signing a user up and getting back an auth cookie */
-      signup(credential: { email: string, password: string }): string[]
+      /** A global utility function for signing a user up and getting back
+       * - an auth session that will be set as a cookie in the header of HTTP requests
+       * - and a userId */
+      signup(credential: { email: string, password: string })
+        : { authSession: string[], userId: string }
     }
   }
 }
@@ -67,6 +70,11 @@ global.signup = (credential) => {
   // Take JSON and encode it as base64
   const base64 = Buffer.from(sessionJSON).toString('base64')
 
-  // Return a string express:sess=BASE64_ENCODED_SESSION
-  return [`express:sess=${base64}`]
+  // Return an object containing an array of only one string in the form
+  // express:sess=BASE64_ENCODED_SESSION
+  // and the signed-up userId
+  return {
+    authSession: [`express:sess=${base64}`],
+    userId: payload.id
+  }
 }
