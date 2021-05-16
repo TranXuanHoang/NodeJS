@@ -33,4 +33,7 @@ npm i @hoang-ticketing/common
 # (increase document version numbers on each save, and prevent previous
 # versions of a document from being saved over the current version)
 npm i mongoose-update-if-current
+
+# Install Stripe to handle payment requests
+npm i stripe
 ```
