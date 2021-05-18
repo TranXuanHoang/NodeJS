@@ -1,7 +1,15 @@
-import { BadRequestError, NotAuthorizedError, NotFoundError, OrderStatus, requireAuth, validateRequest } from '@hoang-ticketing/common'
+import {
+  BadRequestError,
+  NotAuthorizedError,
+  NotFoundError,
+  OrderStatus,
+  requireAuth,
+  validateRequest
+} from '@hoang-ticketing/common'
 import express, { Request, Response } from 'express'
 import { body } from 'express-validator'
 import { Order } from '../models/order'
+import { stripe } from '../stripe'
 
 const router = express.Router()
 
@@ -33,7 +41,15 @@ router.post('/api/payments',
       throw new BadRequestError('Cannot pay for a cancelled order')
     }
 
-    res.send({ success: true })
+    // For more information about Stripe 'charges/create' API, see
+    // https://stripe.com/docs/api/charges/create
+    await stripe.charges.create({
+      currency: 'usd',
+      amount: order.price * 100, // amount in smallest currency unit - cent for USD
+      source: token
+    })
+
+    res.status(201).send({ success: true })
   }
 )
 
