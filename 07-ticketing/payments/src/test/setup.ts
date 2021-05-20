@@ -17,6 +17,8 @@ declare global {
 // Mock the '../nats-wrapper' with the '../__mocks__/nats-wrapper.ts'
 jest.mock('../nats-wrapper')
 
+process.env.STRIPE_KEY = 'sk_test_51IreSzAZMJkkVU2ZNCepEDfdThhQ2jr43XA0CSgfDYOTx6yDWC9bEmjjkwJMdREEmVH9sFjNtJYLWwBvAOmmeQuU001su5ZQvF'
+
 let mongo: MongoMemoryServer
 
 /** Before doing all tests, connect to an in-memory MongoDB */

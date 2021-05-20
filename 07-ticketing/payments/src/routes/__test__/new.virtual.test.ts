@@ -1,3 +1,5 @@
+/** This file contains all test cases that uses a mocked version of Stripe. */
+
 import { OrderStatus } from '@hoang-ticketing/common'
 import mongoose from 'mongoose'
 import request from 'supertest'
