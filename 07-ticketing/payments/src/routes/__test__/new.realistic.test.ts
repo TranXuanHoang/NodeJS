@@ -9,6 +9,7 @@ import mongoose from 'mongoose'
 import request from 'supertest'
 import { app } from '../../app'
 import { Order } from '../../models/order'
+import { Payment } from '../../models/payment'
 
 // Do not mock the 'stripe' dependency and the 'stripe.ts' file itself
 jest.unmock('stripe')
@@ -101,4 +102,11 @@ it('returns a 201 with valid inputs', async () => {
     return charge.amount === price * 100
   })
   expect(stripeCharge).toBeDefined()
+
+  // Make sure that payment object was created and saved
+  const payment = await Payment.findOne({
+    orderId: order.id,
+    stripeId: stripeCharge!.id
+  })
+  expect(payment).not.toBeNull()
 })
