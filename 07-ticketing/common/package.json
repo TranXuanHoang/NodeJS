@@ -1,6 +1,6 @@
 {
   "name": "@hoang-ticketing/common",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Common library for a ticketing web app",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
