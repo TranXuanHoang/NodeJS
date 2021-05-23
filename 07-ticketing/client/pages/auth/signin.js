@@ -21,7 +21,7 @@ const Signin = () => {
     doRequest()
   }
 
-  return <form className="container" onSubmit={onSubmit}>
+  return <form onSubmit={onSubmit}>
     <h1>Sign In</h1>
     <div className="form-group">
       <label>Email Address</label>

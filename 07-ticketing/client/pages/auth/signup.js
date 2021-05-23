@@ -21,7 +21,7 @@ const Signup = () => {
     doRequest()
   }
 
-  return <form className="container" onSubmit={onSubmit}>
+  return <form onSubmit={onSubmit}>
     <h1>Sign Up</h1>
     <div className="form-group">
       <label>Email Address</label>
