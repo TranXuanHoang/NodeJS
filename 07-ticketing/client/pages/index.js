@@ -6,9 +6,14 @@ const LandingPage = ({ currentUser, tickets }) => {
       <td>{ticket.title}</td>
       <td>{ticket.price}</td>
       <td>
-        <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
-          <a>View</a>
-        </Link>
+        {ticket.orderId
+          ?
+          <span className="badge badge-info">Reserved</span>
+          :
+          <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+            <a>View</a>
+          </Link>
+        }
       </td>
     </tr>
   )
