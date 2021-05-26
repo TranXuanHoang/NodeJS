@@ -14,6 +14,9 @@ npm i bootstrap
 
 # Install bootstrap to send HTTP requests
 npm i axios
+
+# Install React Stripe Checkout to handle payment charges
+npm i react-stripe-checkout
 ```
 
 ## Sending HTTP Requests on Server Side or Client Side
@@ -78,3 +81,7 @@ export default ({ req }) => {
   }
 };
 ```
+
+## Credit Card Numbers for Testing Payments with Stripe
+
+See [this page](https://stripe.com/docs/testing#cards)
