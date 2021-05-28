@@ -1,12 +1,7 @@
-name: tests
+name: tests-auth
 
 # Controls when the action will run.
 on:
-  # Triggers the workflow on push events but only for the master branch
-  push:
-    branches: [master, main, 'releases/**']
-    paths:
-      - "07-ticketing/**"
   # Triggers the workflow on pull request events
   pull_request:
     branches: [master, main, 'releases/**']
@@ -41,9 +36,3 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run unit tests for auth
         run: cd auth && npm install && npm run test:ci
-      - name: Run unit tests for orders
-        run: cd orders && npm install && npm run test:ci
-      - name: Run unit tests for payments
-        run: cd payments && npm install && npm run test:ci
-      - name: Run unit tests for tickets
-        run: cd tickets && npm install && npm run test:ci
