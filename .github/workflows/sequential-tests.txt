@@ -1,3 +1,6 @@
+# Change the name of this file from sequential-tests.txt to sequential-tests.yml
+# to make this file a Github action. This action config file is to run unit tests
+# for both auth, orders, payments and tickets microservices sequentially.
 name: tests
 
 # Controls when the action will run.
