@@ -5,8 +5,9 @@ on:
   # Triggers the workflow on pull request events
   pull_request:
     branches: [master, main, 'releases/**']
+    # Only run the workflow if changes were made inside the 'auth' directory
     paths:
-      - "07-ticketing/**"
+      - "07-ticketing/auth/**"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -28,10 +29,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      # - name: Run a one-line script
-      #   run: cd auth && npm install && npm run test:ci
 
       # Runs a set of commands using the runners shell
       - name: Run unit tests for auth
