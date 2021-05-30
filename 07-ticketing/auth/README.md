@@ -1,5 +1,7 @@
 # Authentication Microservice
 
+## Commands Log
+
 ```powershell
 # Install initial dependencies
 npm i typescript ts-node-dev express @types/express
