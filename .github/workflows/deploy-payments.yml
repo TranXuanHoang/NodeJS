@@ -1,0 +1,55 @@
+name: deploy-payments
+
+on:
+  # Triggers the workflow on push events
+  push:
+    branches:
+      - master
+      - main
+    # Only run the workflow if changes were made inside the 'payments' directory
+    paths:
+      - "07-ticketing/payments/**"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    paths:
+      - "07-ticketing/payments/**"
+
+defaults:
+  run:
+    working-directory: "07-ticketing/payments"
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on.
+    # This ubuntu-latest already gets Docker pre-installed
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a set of commands using the runners shell
+      - name: Build a Docker image for payments microservice
+        run: docker build -t hoangtrx/ticketing_payments .
+      - name: Log in to DockerHub
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push the Docker image to DockerHub
+        run: docker push hoangtrx/ticketing_payments
+
+      - name: Install doctl (DigitalOcean CLI)
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Switch Kubernetes context to the cluster created on DigitalOcean
+        run: doctl kubernetes cluster kubeconfig save ticketing
+
+      - name: Deploy the service (to DigitalOcean Kubernetes cluster)
+        run: kubectl rollout restart deployment payments-depl
