@@ -6,6 +6,8 @@ import { OrderCreatedListener } from './events/listeners/order-created-listener'
 import { natsWrapper } from './nats-wrapper'
 
 const start = async () => {
+  console.log('Starting...')
+
   if (!process.env.STRIPE_KEY) {
     throw new Error('STRIPE_KEY must be defined')
   }
