@@ -1,0 +1,48 @@
+##
+## Apply all deployment config files inside the 'infra/k8s' and 'infra/k8s-prod' directories
+##
+name: deploy-manifest
+
+on:
+  # Triggers the workflow on push events
+  push:
+    branches:
+      - master
+      - main
+    # Only run the workflow if changes were made inside the 'infra' directory
+    paths:
+      - "07-ticketing/infra/**"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    paths:
+      - "07-ticketing/infra/**"
+
+defaults:
+  run:
+    working-directory: "07-ticketing/infra"
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on.
+    # This ubuntu-latest already gets Docker pre-installed
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs a set of commands using the runners shell
+      - name: Install doctl (DigitalOcean CLI)
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Switch Kubernetes context to the cluster created on DigitalOcean
+        run: doctl kubernetes cluster kubeconfig save ticketing
+
+      - name: Apply deployment config files inside 'infra/k8s' and 'infra/k8s-prod' (to DigitalOcean K8s cluster)
+        run: kubectl apply -f k8s -f k8s-prod
