@@ -4,7 +4,6 @@ name: tests-auth
 on:
   # Triggers the workflow on pull request events
   pull_request:
-    branches: [master, main, 'releases/**']
     # Only run the workflow if changes were made inside the 'auth' directory
     paths:
       - "07-ticketing/auth/**"

@@ -4,7 +4,6 @@ name: tests-orders
 on:
   # Triggers the workflow on pull request events
   pull_request:
-    branches: [master, main, 'releases/**']
     # Only run the workflow if changes were made inside the 'orders' directory
     paths:
       - "07-ticketing/orders/**"
