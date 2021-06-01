@@ -69,6 +69,10 @@ Now open a browser and load `https://ticketing.dev/` (accept the SSL is not secu
 
 > Note: For `Chrome`, to accept the SSL unsecure alert type `thisisunsafe`.
 
+### On DigitalOcean (Production Environment)
+
+Refer to [Deployment.prod.md](./Deployment.prod.md) for steps to test microservices with `Github Actions` and deploy the whole system to `DigitalOcean`.
+
 ### On Google Cloud
 
 * [Install Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
