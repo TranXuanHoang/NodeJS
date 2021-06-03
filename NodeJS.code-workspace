@@ -26,6 +26,9 @@
     },
     {
       "path": "07-ticketing"
+    },
+    {
+      "path": "08-authentication"
     }
   ]
 }
