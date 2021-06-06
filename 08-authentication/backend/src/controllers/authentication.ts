@@ -4,6 +4,10 @@ import { User } from "../models/user";
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body
 
+  if (!email || !password) {
+    return res.status(422).send({ error: 'You must provide email and password' })
+  }
+
   // See if a user with the given email exists
   const existingUser = await User.findOne({ email })
 

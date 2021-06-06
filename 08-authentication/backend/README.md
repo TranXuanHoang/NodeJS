@@ -11,4 +11,8 @@ npm i --save-dev @types/morgan @types/express
 
 # Init TypeScript config file
 tsc --init
+
+# Install dependencies to encrypt and decrypt passwords
+npm i bcrypt
+npm i --save-dev @types/bcrypt
 ```
