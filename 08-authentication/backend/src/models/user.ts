@@ -2,19 +2,19 @@ import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 
 /** An interface describing properties that are required to create a new User. */
-interface UserAttrs {
+export interface UserAttrs {
   email: string
   password: string
 }
 
 /** An interface describing properties that a User Document has. */
-interface UserDoc extends mongoose.Document {
+export interface UserDoc extends mongoose.Document {
   email: string
   password: string
 }
 
 /** An interface describing properties that a User Model has. */
-interface UserModel extends mongoose.Model<UserDoc> {
+export interface UserModel extends mongoose.Model<UserDoc> {
   build(attrs: UserAttrs): UserDoc
 }
 

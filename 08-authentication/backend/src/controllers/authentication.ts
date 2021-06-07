@@ -1,5 +1,26 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../models/user";
+import jwt from 'jsonwebtoken';
+import { config } from "../config";
+import { User, UserDoc } from "../models/user";
+
+/** Generates a `JSON Web Token` recognizing the input `user`. */
+const tokenForUser = (user: UserDoc) => {
+  return jwt.sign(
+    // The payload to sign
+    {
+      sub: user.id,
+      iat: new Date().getTime() // issued at time
+      // Shouldn't include password here
+    },
+    // Secret key for signing the payload
+    config.jwt_secret_key,
+    // Other options
+    {
+      // With 1 hour of expiration
+      expiresIn: '1h'
+    }
+  )
+}
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body
@@ -23,6 +44,9 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
   })
   await user.save()
 
+  // Generate a JWT
+  const token = tokenForUser(user)
+
   // Respond to request indicating the user was created
-  return res.send({ success: true })
+  return res.send({ token })
 }

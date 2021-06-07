@@ -11,6 +11,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
     "morgan": "^1.10.0",
     "ts-node-dev": "^1.1.6",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.12",
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/morgan": "^1.9.2"
   }
 }
