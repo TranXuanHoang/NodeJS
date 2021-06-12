@@ -20,4 +20,7 @@ npm i axios
 
 # Install dependency to handle form
 npm i final-form react-final-form
+
+# Install SASS
+npm i sass
 ```
