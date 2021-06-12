@@ -11,6 +11,7 @@ export interface UserAttrs {
 export interface UserDoc extends mongoose.Document {
   email: string
   password: string
+  comparePassword(candidatePassword: string): Promise<boolean>
 }
 
 /** An interface describing properties that a User Model has. */
@@ -68,6 +69,21 @@ userSchema.pre('save', async function (next) {
   // Go ahead and save the model
   next()
 })
+
+// `methods` here means whenever we create a new user object
+// it is going to have access to the method define here (methods.method_name)
+userSchema.methods.comparePassword = async function (candidatePassword: string/*, callback: Function*/) {
+  try {
+    // Get access to the user model
+    const user = this
+
+    const isMatch = await bcrypt.compare(candidatePassword, user.get('password'))
+
+    return Promise.resolve(isMatch)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+}
 
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs)

@@ -50,3 +50,15 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
   // Respond to request indicating the user was created
   return res.send({ token })
 }
+
+export const signin = async (req: Request, res: Response, next: NextFunction) => {
+  // User has already had their email and password authenticated
+  // We just need to given them a token
+  const authenticatedUser = req.user as UserDoc
+
+  // Generate a JWT
+  const token = tokenForUser(authenticatedUser)
+
+  // Respond to request indicating the user was created
+  return res.send({ token })
+}

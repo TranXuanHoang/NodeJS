@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
 import passport from 'passport'
-import { signup } from '../controllers/authentication'
+import { signin, signup } from '../controllers/authentication'
 import passportService from '../services/passport'
 
 // Run the logic inside the passportService
@@ -13,6 +13,14 @@ const requireAuth = passport.authenticate('jwt', {
   session: false
 })
 
+/**
+ * Defines a helper for authenticating using email and password
+ * (local authentication strategy)
+ */
+const requireSignin = passport.authenticate('local', {
+  session: false
+})
+
 const router = Router()
 
 router.get('/',
@@ -22,6 +30,7 @@ router.get('/',
   }
 )
 
+router.post('/signin', requireSignin, signin)
 router.post('/signup', signup)
 
 export { router as appRoutes }
