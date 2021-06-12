@@ -1,11 +1,27 @@
 .Header {
-  width: 100%;
+  width: calc(100% - 2rem);
   height: 3rem;
+  font-size: calc(10px + 2vmin);
   background-color: #a9e0c7;
   color: #8d3d08;
   position: absolute;
   top: 0;
+
   display: grid;
+  grid-template-columns: repeat(8, max-content);
+  gap: 2rem;
   align-items: center;
-  font-size: calc(10px + 2vmin);
+  padding: 0 1rem;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    border-bottom: solid 2px transparent;
+
+    &:hover, &:active {
+      $hoverColor: #d65600;
+      color: $hoverColor;
+      border-bottom: solid 2px $hoverColor;
+    }
+  }
 }
