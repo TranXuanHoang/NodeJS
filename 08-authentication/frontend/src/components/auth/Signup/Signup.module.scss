@@ -1,0 +1,77 @@
+.Signup {
+  display: grid;
+  grid-template-areas:
+    "Header Header"
+    "EmailLabel EmailInput"
+    "PasswordLabel PasswordInput"
+    "ActionButtons ActionButtons";
+  gap: 1rem;
+
+  background: linear-gradient(to bottom right, #8c519b, #80005a);
+  padding: 3rem 2.5rem;
+  border-radius: 1rem;
+
+  .Header {
+    grid-area: Header;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+  }
+
+  .EmailLabel {
+    grid-area: EmailLabel;
+    text-align: right;
+  }
+
+  .EmailInput {
+    grid-area: EmailInput;
+  }
+
+  .PasswordLabel {
+    grid-area: PasswordLabel;
+    text-align: right;
+  }
+
+  .PasswordInput {
+    grid-area: PasswordInput;
+  }
+
+  .EmailInput,
+  .PasswordInput {
+    padding: 0.5rem;
+    outline: none;
+    border: none;
+    border-radius: 0.2rem;
+
+    &:focus {
+      background-color: beige;
+    }
+  }
+
+  .ActionButtons {
+    grid-area: ActionButtons;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+
+    button {
+      padding: 0.5rem 2rem;
+      border: none;
+      border-radius: 5rem;
+      transition: all 0.3s ease-in;
+
+      &:hover {
+        cursor: pointer;
+        background: linear-gradient(to bottom right, #00ffaa, #03a803);
+      }
+
+      &:active {
+        background: linear-gradient(to bottom right, #04e097, #068106);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
