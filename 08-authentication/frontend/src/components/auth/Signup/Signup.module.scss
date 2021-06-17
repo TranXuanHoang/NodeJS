@@ -49,10 +49,18 @@
 
   .ActionButtons {
     grid-area: ActionButtons;
-    display: flex;
+    display: grid;
+    grid-template-areas:
+      "Error Error"
+      "Buttons Buttons";
     justify-content: center;
     gap: 1rem;
     margin-top: 1.5rem;
+
+    .Error {
+      grid-area: Error;
+      color: red;
+    }
 
     button {
       padding: 0.5rem 2rem;

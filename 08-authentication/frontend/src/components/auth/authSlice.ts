@@ -5,6 +5,10 @@ export interface User {
   password: string
 }
 
+export interface Authenticated {
+  token: string
+}
+
 export interface AuthState {
   /** Contains authentication token */
   authenticated: string
@@ -21,8 +25,14 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    signUp(state, action: PayloadAction<User>) {
-      // TODO
+    signUpSuccessful(state, action: PayloadAction<Authenticated>) {
+      state.authenticated = action.payload.token
+      state.errorMessage = ''
+    },
+
+    signUpFailed(state, action: PayloadAction<string>) {
+      state.errorMessage = action.payload
+      state.authenticated = ''
     },
 
     signIn(state, action: PayloadAction<User>) {
@@ -35,6 +45,11 @@ const authSlice = createSlice({
   }
 })
 
-export const { signUp, signIn, signOut } = authSlice.actions
+export const {
+  signUpSuccessful,
+  signUpFailed,
+  signIn,
+  signOut
+} = authSlice.actions
 
 export default authSlice.reducer

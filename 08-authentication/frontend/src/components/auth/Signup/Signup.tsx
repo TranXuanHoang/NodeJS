@@ -1,5 +1,9 @@
 import { Field, Form } from 'react-final-form'
-import { User } from '../authSlice'
+import { useHistory } from 'react-router-dom'
+import { useSignupMutation } from '../../../state/backendApi'
+import { useAppDispatch, useAppSelector } from '../../../state/hooks'
+import Spinner from '../../Spinner/Spinner'
+import { signUpFailed, signUpSuccessful, User } from '../authSlice'
 import styles from './Signup.module.scss'
 
 const someValuesUnset = (userCredential: User) => {
@@ -11,8 +15,20 @@ const allvaluesUnset = (userCredential: User) => {
 }
 
 const Signup = () => {
-  const onSubmit = (userCredential: User) => {
-    console.log(userCredential)
+  const dispatch = useAppDispatch()
+  const [signup, { isLoading, isError }] = useSignupMutation()
+  const errorMessage = useAppSelector(state => state.auth.errorMessage)
+  const history = useHistory()
+
+  const onSubmit = async (userCredential: User) => {
+    try {
+      const response = await signup(userCredential).unwrap()
+      dispatch(signUpSuccessful(response))
+      history.push('/feature')
+    } catch (err) {
+      console.error(err)
+      dispatch(signUpFailed(err.data.error))
+    }
   }
 
   return (
@@ -42,17 +58,23 @@ const Signup = () => {
             className={styles.PasswordInput}
           />
           <div className={styles.ActionButtons}>
-            <button type="submit"
-              disabled={submitting || pristine || someValuesUnset(values)}
-            >
-              Sign Up
-            </button>
-            <button type="reset"
-              onClick={e => form.reset()}
-              disabled={submitting || pristine || allvaluesUnset(values)}
-            >
-              Reset
-            </button>
+            {isLoading
+              ? <Spinner />
+              : <>
+                {isError && <div className={styles.Error}>{errorMessage}</div>}
+                <button type="submit"
+                  disabled={submitting || pristine || someValuesUnset(values)}
+                >
+                  Sign Up
+                </button>
+                <button type="reset"
+                  onClick={e => form.reset()}
+                  disabled={submitting || pristine || allvaluesUnset(values)}
+                >
+                  Reset
+                </button>
+              </>
+            }
           </div>
         </form>
       )}
