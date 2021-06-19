@@ -42,7 +42,8 @@ const authSlice = createSlice({
     },
 
     signOut(state) {
-      // TODO
+      state.authenticated = ''
+      localStorage.removeItem('token')
     }
   }
 })
