@@ -17,7 +17,7 @@ export interface AuthState {
 }
 
 const initialState = {
-  authenticated: '',
+  authenticated: localStorage.getItem('token') || '',
   errorMessage: ''
 } as AuthState
 
@@ -28,11 +28,13 @@ const authSlice = createSlice({
     signUpSuccessful(state, action: PayloadAction<Authenticated>) {
       state.authenticated = action.payload.token
       state.errorMessage = ''
+      localStorage.setItem('token', state.authenticated)
     },
 
     signUpFailed(state, action: PayloadAction<string>) {
       state.errorMessage = action.payload
       state.authenticated = ''
+      localStorage.removeItem('token')
     },
 
     signIn(state, action: PayloadAction<User>) {
