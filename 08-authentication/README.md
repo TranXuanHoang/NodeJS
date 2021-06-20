@@ -11,4 +11,4 @@ Switch the source code to the version described below to view its implementation
 
 | Git Tag | Git Diff | Implementation |
 |---------|----------|----------------|
-| [v15.0.1](https://github.com/TranXuanHoang/NodeJS/releases/tag/v15.0.1) | [diff](https://github.com/TranXuanHoang/NodeJS/compare/v15.0.0...v15.0.1) | Build a `ticketing` web app using a `microservices` architecture |
+| [v15.0.1](https://github.com/TranXuanHoang/NodeJS/releases/tag/v15.0.1) | [diff](https://github.com/TranXuanHoang/NodeJS/compare/v15.0.0...v15.0.1) | Build a web app demonstrating how to implement authentication to secure the web app itself |

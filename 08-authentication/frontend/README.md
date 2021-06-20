@@ -15,9 +15,6 @@ npm i --save-dev @types/react-router-dom
 npm i @reduxjs/toolkit react-redux
 npm i --save-dev @types/react-redux
 
-# Install dependency to send HTTP requests
-npm i axios
-
 # Install dependency to handle form
 npm i final-form react-final-form
 
