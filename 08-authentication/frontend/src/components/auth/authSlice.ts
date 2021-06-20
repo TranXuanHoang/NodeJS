@@ -37,8 +37,16 @@ const authSlice = createSlice({
       localStorage.removeItem('token')
     },
 
-    signIn(state, action: PayloadAction<User>) {
-      // TODO
+    signInSuccessful(state, action: PayloadAction<Authenticated>) {
+      state.authenticated = action.payload.token
+      state.errorMessage = ''
+      localStorage.setItem('token', state.authenticated)
+    },
+
+    signInFailed(state, action: PayloadAction<string>) {
+      state.errorMessage = action.payload
+      state.authenticated = ''
+      localStorage.removeItem('token')
     },
 
     signOut(state) {
@@ -51,7 +59,8 @@ const authSlice = createSlice({
 export const {
   signUpSuccessful,
   signUpFailed,
-  signIn,
+  signInSuccessful,
+  signInFailed,
   signOut
 } = authSlice.actions
 

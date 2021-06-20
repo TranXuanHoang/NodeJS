@@ -7,9 +7,15 @@ export const backendApi = createApi({
   endpoints: (builder) => ({
     signup: builder.mutation<Authenticated, User>({
       query: (user: User) => ({ url: 'signup', method: 'POST', body: user }),
+    }),
+    signin: builder.mutation<Authenticated, User>({
+      query: (user: User) => ({ url: 'signin', method: 'POST', body: user })
     })
   })
 })
 
 // Export hooks for usage in functional components
-export const { useSignupMutation } = backendApi
+export const {
+  useSignupMutation,
+  useSigninMutation
+} = backendApi

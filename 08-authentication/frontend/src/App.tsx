@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import styles from './App.module.scss';
+import Signin from './components/auth/Signin/Signin';
 import Signout from './components/auth/Signout/Signout';
 import Signup from './components/auth/Signup/Signup';
 import Feature from './components/Feature/Feature';
@@ -16,6 +17,9 @@ function App() {
             <Route path="/" exact component={Welcome}></Route>
             <Route path="/signup">
               <Signup />
+            </Route>
+            <Route path="/signin">
+              <Signin />
             </Route>
             <Route path="/signout">
               <Signout />
