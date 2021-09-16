@@ -9,6 +9,7 @@
   "scripts": {
     "clean": "del-cli ./build/*",
     "build": "npm run clean && tsc",
+    "build:watch": "npm run clean && tsc --watch",
     "install:cli:windows": "npm link",
     "install:cli:mac": "sudo npm link"
   },

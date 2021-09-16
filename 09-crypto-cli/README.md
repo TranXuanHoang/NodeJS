@@ -23,7 +23,11 @@ Switch the source code to the version described below to view its implementation
 ### Build app
 
 ```powershell
+# Build one time and done
 npm run build
+
+# Build in watch mode (any changes in the source code will trigger a build again)
+npm run build:watch
 ```
 
 ### Install CLI
