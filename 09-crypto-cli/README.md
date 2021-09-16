@@ -17,3 +17,27 @@ Switch the source code to the version described below to view its implementation
 | Git Tag | Git Diff | Implementation |
 |---------|----------|----------------|
 | [v16.0.1](https://github.com/TranXuanHoang/NodeJS/releases/tag/v16.0.1) | [diff](https://github.com/TranXuanHoang/NodeJS/compare/v16.0.0...v16.0.1) | Build a cryptography `CLI` |
+
+## How to install and use the CLI
+
+### Build app
+
+```powershell
+npm run build
+```
+
+### Install CLI
+
+```powershell
+# Windows
+npm run install:cli:windows
+
+# macOS/Linux
+npm run install:cli:mac
+```
+
+### Run CLI
+
+```powershell
+cryptocli
+```

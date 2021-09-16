@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "This project demonstrates how to build a `Command Line Interface (CLI)` with `Node.js`. The `CLI` allows us to:",
   "main": "index.js",
+  "bin": {
+    "cryptocli": "./build/cli/crypto-cli.js"
+  },
   "scripts": {
     "clean": "del-cli ./build/*",
-    "build": "npm run clean && tsc"
+    "build": "npm run clean && tsc",
+    "install:cli:windows": "npm link",
+    "install:cli:mac": "sudo npm link"
   },
   "author": "",
   "license": "MIT",
