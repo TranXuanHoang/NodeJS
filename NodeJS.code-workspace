@@ -29,6 +29,9 @@
     },
     {
       "path": "08-authentication"
+    },
+    {
+      "path": "09-crypto-cli"
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "name": "cryptocli",
+  "version": "1.0.0",
+  "description": "This project demonstrates how to build a `Command Line Interface (CLI)` with `Node.js`. The `CLI` allows us to:",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
