@@ -14,6 +14,20 @@ declare global {
   }
 }
 
+// May need to change the above code snippet to the following one
+// to avoid a TS error like
+//   "Element implicitly has an 'any' type because type
+//   'typeof globalThis' has no index signature.ts(7017)"
+// This is caused by a recent change in the @types/node library
+// which is a dependency of ts-node-dev.
+// declare global {
+//   /** A global utility function for signing a user up and getting back
+//    * - an auth session that will be set as a cookie in the header of HTTP requests
+//    * - and a userId */
+//   var signup: (credential: { email: string, password: string }) =>
+//     { authSession: string[], userId: string }
+// }
+
 // Mock the '../nats-wrapper' with the '../__mocks__/nats-wrapper.ts'
 jest.mock('../nats-wrapper')
 

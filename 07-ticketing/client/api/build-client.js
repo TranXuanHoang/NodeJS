@@ -7,6 +7,8 @@ const buildClient = ({ req }) => {
     const NAMESPACE = 'ingress-nginx'
     return axios.create({
       baseURL: `http://${NAME_OF_SERVICE}.${NAMESPACE}.svc.cluster.local`,
+      // For production release, change the above base URL to the purchased domain
+      // baseURL: 'Whatever_your_purchased_domain_is',
       // Forward all the request headers comming from client to ingress-nginx
       headers: req.headers
     })

@@ -12,6 +12,17 @@ declare global {
   }
 }
 
+// May need to change the above code snippet to the following one
+// to avoid a TS error like
+//   "Element implicitly has an 'any' type because type
+//   'typeof globalThis' has no index signature.ts(7017)"
+// This is caused by a recent change in the @types/node library
+// which is a dependency of ts-node-dev.
+// declare global {
+//   /** A global utility function for signing a user up and getting back an auth cookie */
+//   var signup: (credential: { email: string, password: string }) => Promise<string[]>
+// }
+
 let mongo: MongoMemoryServer
 
 /** Before doing all tests, connect to an in-memory MongoDB */

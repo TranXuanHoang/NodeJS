@@ -26,7 +26,10 @@ it('implements opimistic concurrency control', async (done) => {
   try {
     await secondInstance!.save()
   } catch (err) {
-    return done()
+    // return done()
+    // newer version of Jest cannot both take a 'done' callback and return something.
+    // Either use a 'done' callback, or return a promise.
+    return
   }
 
   // The logic should not go until this throw statement
