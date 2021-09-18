@@ -10,6 +10,31 @@ This project demonstrates how to build a `Command Line Interface (CLI)` with `No
 - Generate and verify `JSON Web Token`
 - ...
 
+## Command Logs
+
+```powershell
+# Initialize project
+npm init
+
+# Add TypeScript
+npm i -D typescript
+npx tsc --init
+
+# Add NodeJS type definitions
+npm i -D @types/node
+
+# Add a dependency to delete (clean) directories
+npm i -D del-cli
+
+# Add dependencies to
+# make CLI commands (commander),
+# get user inputs (inquirer),
+# handle configurations (configstore),
+# add colors to CLI (colors),
+# and handle HTTP requests/responses (node-fetch)
+npm i commander inquirer configstore colors node-fetch
+```
+
 ## Source Code
 
 Switch the source code to the version described below to view its implementation.
